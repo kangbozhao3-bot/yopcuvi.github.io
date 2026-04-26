@@ -3,459 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yopcuvi | Official Gift Store</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Yopcuvi | Official Premium Gift Store</title>
     <style>
-        /* 核心样式表 - 继承自你的专业版 */
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif;}
-        :root{--primary:#2563eb;--dark:#111827;--gray:#6b7280;--red:#dc2626;--light:#f9fafb;--white:#fff;--border:#e5e7eb;--shadow:0 8px 30px rgba(0,0,0,0.08);}
+        :root{--primary:#2563eb;--dark:#111827;--gray:#6b7280;--red:#dc2626;--light:#f9fafb;--white:#fff;}
         html{scroll-behavior:smooth;}
-        body{background:#fff;color:var(--dark);line-height:1.6;}
-        .hidden{display:none !important;}
-        .d-flex{display:flex;}
-        .justify-between{justify-content:space-between;}
-        .justify-center{justify-content:center;}
-        .align-center{align-items:center;}
-        .text-center{text-align:center;}
-        .mt-1{margin-top:0.5rem;} .mt-2{margin-top:1rem;} .mt-3{margin-top:1.5rem;}
-        .mb-2{margin-bottom:1rem;} .gap-1{gap:0.5rem;} .gap-2{gap:1rem;}
-        .w-100{width:100%;}
+        body{background:#fff;color:var(--dark);line-height:1.5;}
 
-        /* 星级评分 */
-        .stars{display:flex;gap:0.2rem;color:#f59e0b;font-size:1.2rem;}
-        .star-empty{color:var(--border);}
-        .review-item{padding:1rem;border-bottom:1px solid var(--border);}
-        .review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;}
-        .review-name{font-weight:600;}
-        .review-time{color:var(--gray);font-size:0.9rem;}
-
-        /* 规格选择 */
-        .spec-group{margin:1rem 0;}
-        .spec-title{font-weight:600;margin-bottom:0.8rem;}
-        .spec-options{display:flex;gap:0.8rem;flex-wrap:wrap;}
-        .spec-btn{padding:0.6rem 1.2rem;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:#fff;}
-        .spec-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
-
-        /* 促销标签 */
-        .product-tags{display:flex;gap:0.5rem;margin:1rem 0;}
-        .tag{padding:0.3rem 0.8rem;border-radius:4px;font-size:0.8rem;font-weight:600;}
-        .tag-hot{background:#fee2e2;color:var(--red);}
-        .tag-sale{background:#fef3c7;color:#92400e;}
-
-        /* 详情页弹窗 */
-        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:none;align-items:center;justify-content:center;}
-        .modal-overlay.active{display:flex;}
-        .modal-box{background:#fff;border-radius:12px;width:100%;max-width:95vw;max-height:95vh;overflow-y:auto;padding:2.5rem;position:relative;}
-        .modal-close{position:absolute;top:1.5rem;right:1.5rem;font-size:2rem;cursor:pointer;color:var(--gray);z-index:10;}
-
-        /* 导航与购物车 */
-        header{position:fixed;top:0;left:0;width:100%;background:var(--dark);padding:1rem 5%;z-index:998;}
+        /* Navigation */
+        header{position:fixed;top:0;left:0;width:100%;background:var(--dark);padding:1rem 5%;z-index:999;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
         .nav{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
-        .logo{color:#fff;font-size:1.5rem;font-weight:800;text-decoration:none;}
-        .nav-links{display:flex;align-items:center;gap:1.5rem;}
-        .nav-links a, .nav-links button{color:#fff;text-decoration:none;font-weight:600;background:none;border:none;cursor:pointer;}
-        .cart-icon{position:relative;color:#fff;font-size:1.2rem;cursor:pointer;}
-        .cart-count{position:absolute;top:-8px;right:-8px;background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;font-size:12px;display:flex;align-items:center;justify-content:center;}
-        .cart-sidebar{position:fixed;top:0;right:-420px;width:420px;height:100vh;background:#fff;z-index:997;transition:0.3s ease;padding:2rem;box-shadow:-5px 0 15px rgba(0,0,0,0.1);}
-        .cart-sidebar.active{right:0;}
-        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:996;display:none;}
+        .logo{color:#fff;font-size:1.8rem;font-weight:800;text-decoration:none;}
+        .nav-links{display:flex;align-items:center;gap:2rem;}
+        .nav-links a{color:#e5e7eb;text-decoration:none;font-weight:600;transition:0.3s;}
+        .nav-links a:hover{color:var(--primary);}
+
+        /* Cart Icon */
+        .cart-icon{position:relative;cursor:pointer;color:#fff;font-size:1.4rem;}
+        .cart-count{position:absolute;top:-8px;right:-8px;background:var(--red);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;}
+
+        /* Cart Sidebar */
+        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:999;display:none;}
         .overlay.active{display:block;}
+        .cart-sidebar{position:fixed;top:0;right:-400px;width:400px;height:100vh;background:#fff;box-shadow:-5px 0 15px rgba(0,0,0,0.1);z-index:1000;transition:0.4s ease;padding:2rem;display:flex;flex-direction:center;flex-direction:column;}
+        .cart-sidebar.active{right:0;}
+        .cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
+        .cart-close{font-size:1.5rem;cursor:pointer;}
+        .cart-items{flex:1;overflow-y:auto;margin-bottom:1rem;}
+        .cart-empty{text-align:center;color:var(--gray);padding:2rem 0;}
+        .cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid #eee;align-items:center;}
+        .cart-item img{width:60px;height:60px;object-fit:cover;border-radius:8px;}
+        .cart-item-info{flex:1;}
+        .cart-item-name{font-size:14px;margin-bottom:4px;}
+        .cart-item-asin{font-size:12px;color:var(--primary);}
+        .cart-item-price{font-weight:600;margin:4px 0;}
+        .cart-qty{display:flex;align-items:center;gap:8px;}
+        .qty-btn{width:26px;height:26px;border:none;background:var(--light);border-radius:4px;cursor:pointer;}
+        .cart-delete{color:var(--red);cursor:pointer;font-size:12px;margin-top:4px;}
+        .cart-footer{border-top:1px solid #eee;padding-top:1rem;}
+        .cart-total{display:flex;justify-content:space-between;font-weight:700;font-size:1.2rem;margin-bottom:1rem;}
+        .cart-btns{display:flex;gap:1rem;}
+        .btn{padding:0.8rem 1.5rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:0.3s;flex:1;text-align:center;}
+        .btn:hover{opacity:0.9;}
+        .btn-clear{background:var(--light);color:var(--dark);}
+        .btn-checkout{background:var(--primary);color:#fff;}
+        .btn-cart{background:var(--dark);color:#fff;margin-top:1rem;}
 
-        /* 详情页10张图布局 */
-        .detail-gallery{flex:1.2;min-width:350px;}
-        .detail-main-img{width:100%;height:500px;object-fit:cover;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1rem;cursor:pointer;}
-        .thumbnails{display:grid;grid-template-columns:repeat(5,1fr);gap:0.8rem;margin-top:1rem;}
-        .thumb-img{width:100%;height:80px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:0.2s;}
-        .thumb-img.active{border-color:var(--primary);}
-        .detail-info{flex:1;min-width:350px;}
+        /* Hero Section */
+        .hero{height:550px;background:linear-gradient(135deg,#1f2937,#111827);display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;margin-top:70px;padding:0 20px;}
+        .hero-box h1{font-size:3rem;margin-bottom:1rem;}
+        .hero-box p{font-size:1.2rem;color:#d1d5db;max-width:700px;margin:0 auto;}
 
-        /* 后台样式 */
-        #admin{background:#f8f9fa;min-height:100vh;}
-        .admin-body{display:flex;margin-top:60px;}
-        .admin-sidebar{width:250px;background:var(--dark);color:#fff;height:calc(100vh - 60px);position:fixed;padding:1.5rem 0;}
-        .admin-main{flex:1;margin-left:250px;padding:2rem;}
-        .admin-menu{list-style:none;}
-        .admin-menu li{padding:1rem 1.5rem;cursor:pointer;transition:0.2s;}
-        .admin-menu li:hover,.admin-menu li.active{background:var(--primary);}
-        .table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;}
-        .table th, .table td{padding:1rem;text-align:left;border-bottom:1px solid var(--border);}
-        .table img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
+        /* Products */
+        .wrapper{max-width:1400px;margin:4rem auto;padding:0 5%;}
+        .section-head{text-align:center;margin-bottom:3rem;}
+        .section-head h2{font-size:2.2rem;margin-bottom:0.5rem;}
+        .section-head p{color:var(--gray);}
+        .products-layout{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2rem;}
+        .product-item{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.06);transition:0.3s;cursor:pointer;}
+        .product-item:hover{transform:translateY(-8px);}
+        .product-img{width:100%;height:280px;object-fit:cover;}
+        .product-text{padding:1.5rem;}
+        .product-text h3{font-size:1rem;color:var(--dark);margin-bottom:0.5rem;line-height:1.4;}
+        .asin-tag{font-size:0.85rem;color:var(--primary);font-weight:600;}
 
-        /* 按钮通用 */
-        .btn{padding:0.7rem 1.2rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:0.2s;}
-        .btn-primary{background:var(--primary);color:#fff;}
-        .btn-red{background:var(--red);color:#fff;}
-        .btn-dark{background:var(--dark);color:#fff;}
-        .btn-light{background:var(--light);color:var(--dark);}
-        .form-control{width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;font-size:1rem;margin-top:0.3rem;}
+        /* Product Modal */
+        .product-modal{background:#fff;border-radius:20px;padding:3rem;box-shadow:0 10px 40px rgba(0,0,0,0.1);margin:3rem 0;display:none;}
+        .product-modal.show{display:block;}
+        .modal-title{font-size:1.5rem;margin-bottom:1rem;}
+        .modal-asin{color:var(--primary);font-weight:600;margin-bottom:2rem;}
+        .modal-gallery{display:flex;gap:1rem;overflow-x:auto;padding:1rem 0;margin-bottom:2rem;}
+        .modal-gallery img{height:300px;border-radius:12px;flex-shrink:0;}
+        .modal-desc{line-height:1.9;color:#374151;margin-bottom:2rem;}
+        .buy-group{display:flex;justify-content:center;}
+
+        /* Copyright */
+        .copyright-banner{background:var(--light);padding:4rem 5%;border-top:3px solid var(--red);}
+        .copyright-box{max-width:900px;margin:auto;background:#fff;padding:2.5rem;border-radius:16px;}
+        .copyright-box h3{color:var(--red);margin-bottom:1rem;}
+        .copyright-box p{line-height:1.8;margin-bottom:0.8rem;}
+
+        /* Footer */
+        footer{background:var(--dark);color:#fff;padding:3rem 5%;text-align:center;}
+        footer p{color:#9ca3af;margin-top:0.8rem;}
+
+        /* Scrollbar */
+        ::-webkit-scrollbar{width:8px;height:6px;}
+        ::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:10px;}
     </style>
 </head>
 <body>
 
-<div id="frontend">
-    <header>
-        <div class="nav">
-            <a href="#" class="logo" onclick="location.reload()">Yopcuvi</a>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#products">Products</a>
-                <button onclick="openLoginModal()">Login</button>
-                <div class="cart-icon" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">0</span></div>
-            </div>
-        </div>
-    </header>
-
-    <div class="overlay" onclick="toggleCart()"></div>
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="d-flex justify-between align-center mb-2">
-            <h3>Shopping Cart</h3>
-            <span style="font-size:2rem;cursor:pointer;" onclick="toggleCart()">&times;</span>
-        </div>
-        <div id="cartItems"></div>
-        <div class="cart-total" style="padding:1rem 0; font-weight:bold; font-size:1.2rem; text-align:right;">Total: <span id="cartTotal">$0.00</span></div>
-        <button class="btn btn-primary w-100" onclick="goCheckout()">Checkout Now</button>
-    </div>
-
-    <div class="modal-overlay" id="detailModal">
-        <div class="modal-box">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <div id="productDetail"></div>
+<!-- Navigation & Cart -->
+<header>
+    <div class="nav">
+        <a href="#" class="logo">Yopcuvi</a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#products">Products</a>
+            <a href="#copyright">Copyright</a>
+            <a href="#contact">Contact</a>
+            <div class="cart-icon" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">0</span></div>
         </div>
     </div>
+</header>
 
-    <section class="hero" id="home" style="height:500px; display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; background:#111827; margin-top:60px;">
-        <div>
-            <h1 id="heroTitle" style="font-size:3.5rem;">Loading...</h1>
-            <p id="heroDesc" style="font-size:1.2rem; margin-top:1rem;"></p>
-        </div>
-    </section>
-
-    <div class="wrapper" id="products" style="padding:4rem 5%; max-width:1400px; margin:0 auto;">
-        <h2 class="text-center" style="font-size:2.5rem; margin-bottom:3rem;">Featured Products</h2>
-        <div class="products" id="productList" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:2.5rem;"></div>
+<!-- Cart Sidebar -->
+<div class="overlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+        <h2>Your Cart</h2>
+        <span class="cart-close" onclick="toggleCart()">✕</span>
     </div>
-
-    <div class="wrapper" id="copyright" style="background:var(--light); padding:3rem 5%; margin-top:4rem;">
-        <div class="copyright-box">
-            <h3 id="storeNameBottom">Yopcuvi Official</h3>
-            <p class="mt-2" id="copyrightText" style="color:var(--gray)"></p>
-            <p class="mt-1" id="copyrightEmail" style="font-weight:600;"></p>
-        </div>
-    </div>
-
-    <footer class="text-center" style="background:var(--dark); color:#fff; padding:3rem 0;">
-        <p>© 2026 Yopcuvi | <span onclick="openAdminLogin()" style="cursor:pointer; opacity:0.5;">Admin Access</span></p>
-    </footer>
-</div>
-
-<div id="admin" class="hidden">
-    <header>
-        <div class="nav">
-            <span class="logo">Admin Control Panel</span>
-            <div class="nav-links">
-                <button onclick="backToFront()">Back to Store</button>
-                <button onclick="adminLogout()" class="btn-red">Logout</button>
-            </div>
-        </div>
-    </header>
-    <div class="admin-body">
-        <div class="admin-sidebar">
-            <ul class="admin-menu">
-                <li id="menu-dash" class="active" onclick="switchMenu('dashboard')">📊 Dashboard</li>
-                <li id="menu-prod" onclick="switchMenu('products')">🛍️ Products</li>
-                <li id="menu-set" onclick="switchMenu('settings')">⚙️ Settings</li>
-                <li onclick="backupData()">💾 Backup JSON</li>
-            </ul>
-        </div>
-        <div class="admin-main">
-            <div id="dashboard" class="menu-content">
-                <h2>Overview</h2>
-                <div class="stat-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:2rem;">
-                    <div style="background:#fff; padding:2rem; border-radius:12px; box-shadow:var(--shadow);">
-                        <h4>Total Products</h4>
-                        <h2 id="statProduct" style="font-size:2.5rem;">0</h2>
-                    </div>
-                </div>
-            </div>
-
-            <div id="products" class="menu-content hidden">
-                <div class="d-flex justify-between align-center mb-2">
-                    <h2>Product Management</h2>
-                    <button class="btn btn-primary" onclick="openAddProduct()">+ Add Product</button>
-                </div>
-                <table class="table">
-                    <thead><tr><th>Image</th><th>Name</th><th>Price</th><th>ASIN</th><th>Action</th></tr></thead>
-                    <tbody id="productTable"></tbody>
-                </table>
-            </div>
-
-            <div id="settings" class="menu-content hidden">
-                <h2>Website Settings</h2>
-                <div style="background:#fff; padding:2rem; border-radius:12px; margin-top:1rem;">
-                    <div class="form-group"><label>Hero Title</label><input type="text" class="form-control" id="heroTitleInput"></div>
-                    <div class="form-group"><label>Hero Description</label><textarea class="form-control" id="heroDescInput"></textarea></div>
-                    <div class="form-group"><label>Copyright Info</label><textarea class="form-control" id="storeCopyright"></textarea></div>
-                    <button class="btn btn-primary w-100 mt-2" onclick="saveSettings()">Save Changes</button>
-                </div>
-            </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+        <div class="cart-total">Total: <span id="cartTotal">$0.00</span></div>
+        <div class="cart-btns">
+            <button class="btn btn-clear" onclick="clearCart()">Clear Cart</button>
+            <button class="btn btn-checkout" onclick="checkout()">Checkout</button>
         </div>
     </div>
 </div>
 
-<div class="modal-overlay" id="productModal">
-    <div class="modal-box" style="max-width:800px;">
-        <span class="modal-close" onclick="closeProductModal()">&times;</span>
-        <h3 id="productModalTitle">Edit Product</h3>
-        <input type="hidden" id="editProductId">
-        <div class="form-group"><label>Name</label><input type="text" class="form-control" id="productName"></div>
-        <div class="d-flex gap-2">
-            <div class="form-group w-100"><label>Price ($)</label><input type="number" step="0.01" class="form-control" id="productPrice"></div>
-            <div class="form-group w-100"><label>ASIN</label><input type="text" class="form-control" id="productAsin"></div>
+<!-- Hero -->
+<section class="hero" id="home">
+    <div class="hero-box">
+        <h1>Yopcuvi Official Gift Store</h1>
+        <p>Original Designs | U.S. Copyright Protected | Premium Emotional Support Gifts</p>
+    </div>
+</section>
+
+<!-- Products -->
+<div class="wrapper" id="products">
+    <div class="section-head">
+        <h2>All Products</h2>
+        <p>First Published: 2026-04-25 | Amazon US Official Brand</p>
+    </div>
+
+    <div class="products-layout">
+        <!-- Product 1 -->
+        <div class="product-item" onclick="openModal('p1')">
+            <img src="p1.jpg" alt="Middle Finger Crochet Gifts" class="product-img" style="max-width: 100%; height: auto;">
+            <div class="product-text">
+                <h3>Middle Finger Crochet Positive Animals Gifts</h3>
+                <p class="asin-tag">ASIN: B0GWMB9J8J</p>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Image URLs (Input 1-10 URLs, one per line)</label>
-            <textarea class="form-control" id="productImagesArea" style="height:150px;" placeholder="https://url1.jpg&#10;https://url2.jpg"></textarea>
+        <!-- Product Template -->
+        <div class="product-item" onclick="openModal('p2')">
+            <img src="https://picsum.photos/800/800" class="product-img">
+            <div class="product-text">
+                <h3>New Premium Product</h3>
+                <p class="asin-tag">ASIN: XXXXXXXXXX</p>
+            </div>
         </div>
-        <div class="form-group"><label>Description</label><textarea class="form-control" id="productDesc" style="height:100px;"></textarea></div>
-        <button class="btn btn-primary w-100 mt-2" onclick="saveProductFunc()">Save Product</button>
+    </div>
+
+    <!-- Product 1 Detail -->
+    <div class="product-modal" id="p1">
+        <h2 class="modal-title">Middle Finger Crochet Positive Animals Gifts, Sarcastic Gag Gift for Adults for Women Men, Friend Coworkers Inner Care Emotional Well-Being</h2>
+        <p class="modal-asin">ASIN: B0GWMB9J8J</p>
+        <div class="modal-gallery">
+           <img src="p1.jpg" alt="product" style="max-width: 100%; height: auto;">
+<img src="p2.jpg" alt="product" style="max-width: 100%; height: auto;">
+<img src="p3.jpg" alt="product" style="max-width: 100%; height: auto;">
+<img src="p4.jpg" alt="product" style="max-width: 100%; height: auto;">
+<img src="p5.JPG" alt="product" style="max-width: 100%; height: auto;">
+<img src="p6.JPG" alt="product" style="max-width: 100%; height: auto;">
+<img src="p7.JPG" alt="product" style="max-width: 100%; height: auto;">
+        </div>
+        <div class="modal-desc">
+            <p>Fun And emotional well-being: When You're Facing Difficulties, This "Positive Energy flying friend" Middle Finger Plush Toy Will "Always Be There For You." Its Adorable Design, With A Touch Of Adult Irony And Humor, Will Instantly Bring A Smile To Your Face And Relieve Stress.</p>
+            <p>Crocheted Design: This Crocheted Middle Finger Doll, Meticulously Woven From High-Quality Soft Yarn, Features Cute Eyes And A Smiling Face; It Makes A Beautiful Desktop Ornament Or Car Decoration; Its Quirky And Fun Design Is Sure To Stand Out And Bring A Smile To The Recipient's Face.</p>
+            <p>Perfect Size: This Personalized Men's Desktop Ornament Is Approximately 4.5 Inches Tall And 3.8 Inches Wide (Hand-Crocheted Dimensions May Vary Slightly), Adding A Touch Of Humor To Any Workspace. It's An eye-Catching Office Decoration Suitable For Both Men And Women.</p>
+            <p>Humorous Message Card: The Card Reads, "Has Your Little flying friend Flown Away? Don't Worry, I'll Always Be By Your Side," Cleverly Blending Positive Energy With The Playful Tone Of A Middle Finger Gesture.</p>
+            <p>Adult Prank Gift: This Hilarious Gift Is Perfect For Christmas, Birthdays, Or Other Holidays, Or Simply To Make Someone Laugh. A Great Gift For Men Or Women, It's Sure To Make Anyone Who Enjoys Sarcasm And Humor Laugh And Leave A Lasting Impression!</p>
+        </div>
+        <div class="buy-group">
+            <button class="btn btn-cart" onclick="addToCart('p1')">Add to Cart - $19.99</button>
+        </div>
+    </div>
+
+    <!-- Product 2 Detail -->
+    <div class="product-modal" id="p2">
+        <h2 class="modal-title">New Premium Product</h2>
+        <p class="modal-asin">ASIN: XXXXXXXXXX</p>
+        <div class="modal-gallery"><img src="https://picsum.photos/800/800"></div>
+        <div class="modal-desc">Product description coming soon.</div>
+        <div class="buy-group">
+            <button class="btn btn-cart" onclick="addToCart('p2')">Add to Cart - $19.99</button>
+        </div>
     </div>
 </div>
+
+<!-- Copyright -->
+<section class="copyright-banner" id="copyright">
+    <div class="copyright-box">
+        <h3>Official U.S. Copyright Protection Statement</h3>
+        <p>1. All product images, designs, text, and intellectual property on <strong>Yopcuvi.com</strong> are the SOLE & EXCLUSIVE original copyrighted works of Yopcuvi.</p>
+        <p>2. First Publication Date: 2026-04-25 — Legally archived for Amazon Brand Registry and infringement complaints.</p>
+        <p>3. Any unauthorized use, copying, scraping, or reselling of our content on Amazon or other platforms is a VIOLATION of U.S. Copyright Law.</p>
+        <p>4. This website is the OFFICIAL LEGAL PROOF for all Amazon copyright complaints and brand verification.</p>
+        <p>5. We reserve all rights to report infringing listings to Amazon and pursue legal action.</p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="contact">
+    <h3>Yopcuvi © 2026 All Rights Reserved</h3>
+    <p>Official Website: yopcuvi.com | U.S. Copyright Protected Brand | Amazon US Partner</p>
+    <p>Email: kangbozhao3@gmail.com</p>
+    <p>Address: 1217, 12th Floor, No.1 Commercial Building, No.55 Hongkang Road, Jinshui District, Zhengzhou City, Henan Province, China</p>
+</footer>
 
 <script>
-// --- 数据初始化 ---
-let storeData = JSON.parse(localStorage.getItem('storeData')) || {
-    products: [
-        {
-            id:"p1", name:"Middle Finger Crochet Positive Birdie",
-            images:["https://picsum.photos/800/800","https://picsum.photos/800/801","https://picsum.photos/800/802"],
-            price:19.99, stock:99, asin:"B0GWMB9J8J", status:1, rating:5.0, sales:120,
-            specs:{color:["Pink","Blue"], size:["S","M"]},
-            desc:"High quality handmade emotional support gift.",
-            reviews:[{user:"John", time:"2025-10-01", rating:5, content:"Amazing quality!"}]
-        }
-    ],
-    settings: {
-        heroTitle: "Yopcuvi Official Gift Store",
-        heroDesc: "Original Designs | U.S. Copyright Protected | Premium Emotional Support Gifts",
-        email: "kangbozhao3@gmail.com",
-        copyright: "All designs on Yopcuvi.com are SOLE & EXCLUSIVE original copyrighted works."
-    }
+// Cart Core (100% Stable)
+let cart = JSON.parse(localStorage.getItem('yopcuviCart')) || [];
+const productData = {
+    p1: {id:'p1',name:'Middle Finger Crochet Doll',img:'https://i.imgur.com/6qmk4kY.jpeg',asin:'B0GWMB9J8J',price:19.99},
+    p2: {id:'p2',name:'New Premium Product',img:'https://picsum.photos/800/800',asin:'XXXXXXXXXX',price:19.99}
 };
 
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-let adminStatus = localStorage.getItem('adminStatus') === 'true';
+// Render Cart
+function renderCart(){
+    const cartItems = document.getElementById('cartItems');
+    const count = document.getElementById('cartCount');
+    const total = document.getElementById('cartTotal');
+    let sum = 0;
 
-const saveData = () => localStorage.setItem('storeData', JSON.stringify(storeData));
-
-// --- 前台渲染逻辑 ---
-function renderFrontend() {
-    document.getElementById('heroTitle').innerText = storeData.settings.heroTitle;
-    document.getElementById('heroDesc').innerText = storeData.settings.heroDesc;
-    document.getElementById('copyrightText').innerText = storeData.settings.copyright;
-    document.getElementById('copyrightEmail').innerText = "Email: " + storeData.settings.email;
-
-    const list = storeData.products.filter(p => p.status == 1);
-    document.getElementById('productList').innerHTML = list.map(p => `
-        <div class="product-card" style="background:#fff; border-radius:16px; overflow:hidden; box-shadow:var(--shadow); cursor:pointer;" onclick="openProductDetail('${p.id}')">
-            <img src="${p.images[0]}" style="width:100%; height:320px; object-fit:cover;">
-            <div style="padding:1.5rem;">
-                <h3 style="margin-bottom:0.5rem; height:3rem; overflow:hidden;">${p.name}</h3>
-                <div class="d-flex justify-between align-center">
-                    <span style="font-size:1.5rem; color:var(--primary); font-weight:800;">$${p.price.toFixed(2)}</span>
-                    <button class="btn btn-dark btn-sm" onclick="event.stopPropagation(); addToCart('${p.id}')">Add +</button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-    updateCartUI();
-}
-
-// --- 详情页逻辑 (10张图支持) ---
-function openProductDetail(id) {
-    const p = storeData.products.find(x => x.id === id);
-    if(!p) return;
+    count.textContent = cart.reduce((a,b)=>a+b.qty,0);
+    if(cart.length===0){cartItems.innerHTML='<div class="cart-empty">Your cart is empty</div>';total.textContent='$0.00';return;}
     
-    document.getElementById('productDetail').innerHTML = `
-        <div class="d-flex" style="gap:3rem; flex-wrap:wrap;">
-            <div class="detail-gallery">
-                <img src="${p.images[0]}" id="mainDetailImg" class="detail-main-img">
-                <div class="thumbnails">
-                    ${p.images.map((img, i) => `<img src="${img}" class="thumb-img ${i==0?'active':''}" onclick="switchDetailImg(this, '${img}')">`).join('')}
+    cartItems.innerHTML = cart.map((item,i)=>{
+        sum+=item.price*item.qty;
+        return `<div class="cart-item">
+            <img src="${item.img}">
+            <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-asin">ASIN: ${item.asin}</div>
+                <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                <div class="cart-qty">
+                    <button class="qty-btn" onclick="updateQty(${i},-1)">-</button>
+                    <span>${item.qty}</span>
+                    <button class="qty-btn" onclick="updateQty(${i},1)">+</button>
                 </div>
+                <div class="cart-delete" onclick="removeItem(${i})">Remove</div>
             </div>
-            <div class="detail-info">
-                <h1 style="font-size:2rem;">${p.name}</h1>
-                <div class="product-tags mt-1"><span class="tag tag-hot">Amazon Hot</span><span class="tag tag-sale">Copyrighted</span></div>
-                <h2 style="color:var(--primary); font-size:2.5rem; margin:1rem 0;">$${p.price.toFixed(2)}</h2>
-                <div style="border-top:1px solid #eee; padding:1rem 0;">
-                    <p><strong>ASIN:</strong> ${p.asin}</p>
-                    <p><strong>Stock:</strong> In Stock</p>
-                </div>
-                <div class="detail-section mt-2">
-                    <h4 style="margin-bottom:0.5rem;">Product Description</h4>
-                    <p style="color:var(--gray)">${p.desc}</p>
-                </div>
-                <button class="btn btn-primary btn-lg w-100 mt-3" onclick="addToCart('${p.id}')">🛒 ADD TO SHOPPING BAG</button>
-            </div>
-        </div>
-    `;
-    document.getElementById('detailModal').classList.add('active');
+        </div>`;
+    }).join('');
+    total.textContent = `$${sum.toFixed(2)}`;
 }
 
-function switchDetailImg(el, src) {
-    document.getElementById('mainDetailImg').src = src;
-    document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
+// Cart Functions
+function toggleCart(){document.getElementById('cartSidebar').classList.toggle('active');document.querySelector('.overlay').classList.toggle('active');}
+function addToCart(id){
+    const p = productData[id];
+    const find = cart.find(i=>i.id===id);
+    find?find.qty++:cart.push({...p,qty:1});
+    localStorage.setItem('yopcuviCart',JSON.stringify(cart));
+    renderCart();
+    alert('Added to cart successfully!');
 }
+function updateQty(i,num){cart[i].qty+=num;cart[i].qty<1&&cart.splice(i,1);localStorage.setItem('yopcuviCart',JSON.stringify(cart));renderCart();}
+function removeItem(i){cart.splice(i,1);localStorage.setItem('yopcuviCart',JSON.stringify(cart));renderCart();}
+function clearCart(){cart=[];localStorage.setItem('yopcuviCart',JSON.stringify(cart));renderCart();}
+function checkout(){cart.length===0?alert('Cart is empty!'):alert('Redirecting to PayPal/Stripe Checkout...');toggleCart();}
 
-// --- 后台核心逻辑 (补全数据管理) ---
-function switchMenu(menu) {
-    document.querySelectorAll('.menu-content').forEach(m => m.classList.add('hidden'));
-    document.querySelectorAll('.admin-menu li').forEach(l => l.classList.remove('active'));
-    document.getElementById(menu).classList.remove('hidden');
-    document.getElementById('menu-' + (menu == 'dashboard' ? 'dash' : menu.slice(0, 4))).classList.add('active');
-    renderAdmin();
-}
+// Product Modal
+function openModal(id){document.querySelectorAll('.product-modal').forEach(m=>m.classList.remove('show'));document.getElementById(id).classList.add('show');document.getElementById(id).scrollIntoView({behavior:'smooth'});}
 
-function renderAdmin() {
-    document.getElementById('statProduct').innerText = storeData.products.length;
-    document.getElementById('productTable').innerHTML = storeData.products.map(p => `
-        <tr>
-            <td><img src="${p.images[0]}"></td>
-            <td>${p.name}</td>
-            <td>$${p.price}</td>
-            <td>${p.asin}</td>
-            <td>
-                <button class="btn btn-sm btn-light" onclick="editProductFunc('${p.id}')">Edit</button>
-                <button class="btn btn-sm btn-red" onclick="deleteProduct('${p.id}')">Delete</button>
-            </td>
-        </tr>
-    `).join('');
-    
-    document.getElementById('heroTitleInput').value = storeData.settings.heroTitle;
-    document.getElementById('heroDescInput').value = storeData.settings.heroDesc;
-    document.getElementById('storeCopyright').value = storeData.settings.copyright;
-}
-
-function openAddProduct() {
-    document.getElementById('productModalTitle').innerText = "Add New Product";
-    document.getElementById('editProductId').value = '';
-    document.getElementById('productName').value = '';
-    document.getElementById('productPrice').value = '';
-    document.getElementById('productAsin').value = '';
-    document.getElementById('productImagesArea').value = '';
-    document.getElementById('productDesc').value = '';
-    document.getElementById('productModal').classList.add('active');
-}
-
-function editProductFunc(id) {
-    const p = storeData.products.find(x => x.id === id);
-    document.getElementById('productModalTitle').innerText = "Edit Product";
-    document.getElementById('editProductId').value = p.id;
-    document.getElementById('productName').value = p.name;
-    document.getElementById('productPrice').value = p.price;
-    document.getElementById('productAsin').value = p.asin;
-    document.getElementById('productImagesArea').value = p.images.join('\n');
-    document.getElementById('productDesc').value = p.desc;
-    document.getElementById('productModal').classList.add('active');
-}
-
-function saveProductFunc() {
-    const id = document.getElementById('editProductId').value;
-    const urls = document.getElementById('productImagesArea').value.split('\n').filter(u => u.trim() != '');
-    const data = {
-        id: id || 'p' + Date.now(),
-        name: document.getElementById('productName').value,
-        price: parseFloat(document.getElementById('productPrice').value),
-        asin: document.getElementById('productAsin').value,
-        images: urls.length ? urls : ["https://via.placeholder.com/800"],
-        desc: document.getElementById('productDesc').value,
-        status: 1
-    };
-
-    if(id) {
-        const idx = storeData.products.findIndex(p => p.id === id);
-        storeData.products[idx] = data;
-    } else {
-        storeData.products.push(data);
-    }
-    saveData();
-    closeProductModal();
-    renderAdmin();
-    renderFrontend();
-}
-
-function saveSettings() {
-    storeData.settings.heroTitle = document.getElementById('heroTitleInput').value;
-    storeData.settings.heroDesc = document.getElementById('heroDescInput').value;
-    storeData.settings.copyright = document.getElementById('storeCopyright').value;
-    saveData();
-    alert("Settings Saved!");
-    renderFrontend();
-}
-
-// --- 基础辅助功能 ---
-function toggleCart() {
-    document.getElementById('cartSidebar').classList.toggle('active');
-    document.querySelector('.overlay').classList.toggle('active');
-}
-
-function addToCart(id) {
-    const p = storeData.products.find(x => x.id === id);
-    const item = cart.find(x => x.id === id);
-    item ? item.qty++ : cart.push({...p, qty: 1});
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartUI();
-    if(!document.getElementById('cartSidebar').classList.contains('active')) toggleCart();
-}
-
-function updateCartUI() {
-    const count = cart.reduce((s, i) => s + i.qty, 0);
-    const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-    document.getElementById('cartCount').innerText = count;
-    document.getElementById('cartTotal').innerText = "$" + total.toFixed(2);
-    document.getElementById('cartItems').innerHTML = cart.map(i => `
-        <div style="display:flex; gap:1rem; padding:1rem 0; border-bottom:1px solid #eee;">
-            <img src="${i.images[0]}" style="width:60px; height:60px; object-fit:cover; border-radius:8px;">
-            <div style="flex:1">
-                <div style="font-weight:bold; font-size:0.9rem">${i.name}</div>
-                <div class="d-flex justify-between mt-1">
-                    <span>${i.qty} x $${i.price}</span>
-                    <span style="color:red; cursor:pointer" onclick="removeFromCart('${i.id}')">Remove</span>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function removeFromCart(id) {
-    cart = cart.filter(i => i.id !== id);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartUI();
-}
-
-function closeModal() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
-function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
-function backToFront() { document.getElementById('admin').classList.add('hidden'); document.getElementById('frontend').classList.remove('hidden'); }
-function adminLogout() { localStorage.removeItem('adminStatus'); location.reload(); }
-function openAdminLogin() { const p = prompt("Password:"); if(p==="admin123") { localStorage.setItem('adminStatus','true'); location.reload(); } }
-function backupData() {
-    const blob = new Blob([JSON.stringify(storeData, null, 2)], {type: 'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'store_backup.json'; a.click();
-}
-
-// --- 初始化执行 ---
-window.onload = () => {
-    if(adminStatus) {
-        document.getElementById('frontend').classList.add('hidden');
-        document.getElementById('admin').classList.remove('hidden');
-        switchMenu('dashboard');
-    } else {
-        renderFrontend();
-    }
-};
+// Init
+renderCart();
 </script>
 </body>
 </html>
