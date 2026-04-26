@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* 样式保持不变，此处省略以节省篇幅，请保留你原代码中的所有 <style> 内容 */
+        /* --- 核心基础样式 --- */
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif;}
         :root{--primary:#2563eb;--dark:#111827;--gray:#6b7280;--red:#dc2626;--light:#f9fafb;--white:#fff;--border:#e5e7eb;--shadow:0 8px 30px rgba(0,0,0,0.08);}
         html{scroll-behavior:smooth;}
@@ -16,101 +16,87 @@
         .hidden{display:none !important;}
         .d-flex{display:flex;}
         .justify-between{justify-content:space-between;}
-        .justify-center{justify-content:center;}
         .align-center{align-items:center;}
         .text-center{text-align:center;}
-        .mt-1{margin-top:0.5rem;}
-        .mt-2{margin-top:1rem;}
-        .mt-3{margin-top:1.5rem;}
-        .mb-2{margin-bottom:1rem;}
-        .gap-1{gap:0.5rem;}
-        .gap-2{gap:1rem;}
+        .mt-1{margin-top:0.5rem;} .mt-2{margin-top:1rem;} .mt-3{margin-top:1.5rem;}
+        .mb-1{margin-bottom:0.5rem;} .mb-2{margin-bottom:1rem;}
         .w-100{width:100%;}
-        .stars{display:flex;gap:0.2rem;color:#f59e0b;font-size:1.2rem;}
-        .star-empty{color:var(--border);}
-        .review-item{padding:1rem;border-bottom:1px solid var(--border);}
-        .review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;}
-        .review-name{font-weight:600;}
-        .review-time{color:var(--gray);font-size:0.9rem;}
-        .review-content{margin-top:0.5rem;line-height:1.8;}
-        .spec-group{margin:1rem 0;}
-        .spec-title{font-weight:600;margin-bottom:0.8rem;}
-        .spec-options{display:flex;gap:0.8rem;flex-wrap:wrap;}
-        .spec-btn{padding:0.6rem 1.2rem;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:0.2s;background:#fff;}
-        .spec-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
-        .spec-btn:hover{border-color:var(--primary);}
-        .product-tags{display:flex;gap:0.5rem;margin:1rem 0;}
-        .tag{padding:0.3rem 0.8rem;border-radius:4px;font-size:0.8rem;font-weight:600;}
-        .tag-hot{background:#fee2e2;color:var(--red);}
-        .tag-new{background:#d1fae5;color:#065f46;}
-        .tag-sale{background:#fef3c7;color:#92400e;}
-        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:none;align-items:center;justify-content:center;}
-        .modal-overlay.active{display:flex;}
-        .modal-box{background:#fff;border-radius:12px;width:100%;max-width:95vw;max-height:95vh;overflow-y:auto;padding:2.5rem;position:relative;}
-        .modal-close{position:absolute;top:1.5rem;right:1.5rem;font-size:2rem;cursor:pointer;color:var(--gray);z-index:10;}
-        .modal-close:hover{color:var(--red);}
-        .btn{padding:0.7rem 1.2rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:0.2s;}
+        
+        /* --- 按钮与表单 --- */
+        .btn{padding:0.7rem 1.2rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:0.2s;display:inline-block;text-align:center;text-decoration:none;}
         .btn-primary{background:var(--primary);color:#fff;}
         .btn-dark{background:var(--dark);color:#fff;}
         .btn-red{background:var(--red);color:#fff;}
         .btn-light{background:var(--light);color:var(--dark);}
-        .btn-sm{padding:0.4rem 0.8rem;font-size:0.9rem;}
-        .btn-lg{padding:1.2rem 2rem;font-size:1.1rem;}
-        .btn:hover{opacity:0.9;transform:translateY(-2px);}
+        .btn-sm{padding:0.4rem 0.8rem;font-size:0.85rem;}
+        .btn:hover{opacity:0.9;transform:translateY(-1px);}
         .form-group{margin-bottom:1rem;}
-        .form-group label{display:block;margin-bottom:0.5rem;font-weight:600;}
-        .form-control{width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;font-size:1rem;}
-        header{position:fixed;top:0;left:0;width:100%;background:var(--dark);padding:1rem 5%;z-index:998;}
+        .form-group label{display:block;margin-bottom:0.5rem;font-weight:600;font-size:0.9rem;}
+        .form-control{width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;font-size:1rem;outline:none;}
+        .form-control:focus{border-color:var(--primary);}
+
+        /* --- 导航栏 --- */
+        header{position:fixed;top:0;left:0;width:100%;background:var(--dark);padding:1rem 5%;z-index:1000;}
         .nav{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
         .logo{color:#fff;font-size:1.5rem;font-weight:800;text-decoration:none;}
         .nav-links{display:flex;align-items:center;gap:1.5rem;}
-        .nav-links a,.nav-links button{color:#fff;text-decoration:none;font-weight:600;background:none;border:none;cursor:pointer;}
-        .cart-icon{position:relative;color:#fff;font-size:1.2rem;}
-        .cart-count{position:absolute;top:-8px;right:-8px;background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;font-size:12px;display:flex;align-items:center;justify-content:center;}
-        .cart-sidebar{position:fixed;top:0;right:-420px;width:420px;height:100vh;background:#fff;z-index:997;transition:0.3s ease;padding:2rem;box-shadow:-5px 0 15px rgba(0,0,0,0.1);}
-        .cart-sidebar.active{right:0;}
-        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:996;display:none;}
+        .nav-links a{color:#fff;text-decoration:none;font-weight:500;font-size:0.95rem;}
+        .nav-links button{background:none;border:none;color:#fff;cursor:pointer;font-weight:500;}
+        .cart-icon{position:relative;cursor:pointer;font-size:1.4rem;}
+        .cart-count{position:absolute;top:-8px;right:-10px;background:var(--red);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:bold;}
+
+        /* --- 侧边购物车 --- */
+        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:1001;display:none;}
         .overlay.active{display:block;}
-        .cart-item{padding:0.8rem 0;border-bottom:1px solid var(--border);}
-        .cart-total{font-size:1.2rem;font-weight:700;text-align:right;padding:1rem 0;}
-        .hero{height:500px;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;margin-top:60px;background-size:cover;background-position:center;}
-        .hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1;}
-        .hero-content{position:relative;z-index:2;color:#fff;}
-        .wrapper{max-width:1200px;margin:0 auto;padding:2rem 5%;}
-        .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2rem;margin-top:2rem;}
-        .product-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:0.3s;}
+        .cart-sidebar{position:fixed;top:0;right:-400px;width:100%;max-width:400px;height:100vh;background:#fff;z-index:1002;transition:0.3s;padding:1.5rem;display:flex;flex-direction:column;}
+        .cart-sidebar.active{right:0;}
+        #cartItems{flex:1;overflow-y:auto;margin:1rem 0;}
+        .cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);}
+        .cart-item img{width:70px;height:70px;object-fit:cover;border-radius:8px;}
+
+        /* --- 产品列表 --- */
+        .hero{height:450px;margin-top:60px;background:#111827;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:0 10%;}
+        .wrapper{max-width:1300px;margin:0 auto;padding:3rem 5%;}
+        .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2rem;}
+        .product-card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:0.3s;cursor:pointer;}
         .product-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);}
-        .product-card img{width:100%;height:220px;object-fit:cover;}
-        .product-info{padding:1rem;}
-        .product-title{font-weight:600;margin-bottom:0.5rem;}
-        .product-price{color:var(--primary);font-weight:700;}
-        .detail-gallery{flex:1.2;min-width:350px;}
-        .detail-main-img{width:100%;height:500px;object-fit:cover;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1rem;cursor:pointer;}
-        .thumbnails{display:grid;grid-template-columns:repeat(5,1fr);gap:0.8rem;margin-top:1rem;}
-        .thumb-img{width:100%;height:80px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:0.2s;}
-        .thumb-img.active{border-color:var(--primary);}
-        .detail-info{flex:1;min-width:350px;}
-        .detail-section{padding:1.5rem;border-radius:12px;background:var(--light);margin:1.5rem 0;}
-        #admin{background:#f8f9fa;min-height:100vh;}
-        .admin-body{display:flex;margin-top:60px;}
-        .admin-sidebar{width:250px;background:var(--dark);color:#fff;height:calc(100vh - 60px);position:fixed;padding:1.5rem 0;}
-        .admin-main{flex:1;margin-left:250px;padding:2rem;}
-        .admin-menu{list-style:none;}
-        .admin-menu li{padding:1rem 1.5rem;cursor:pointer;transition:0.2s;}
-        .admin-menu li:hover{background:var(--primary);}
-        .admin-menu li.active{background:var(--primary);}
-        .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-bottom:2rem;}
-        .stat-card{background:#fff;padding:1.5rem;border-radius:12px;box-shadow:var(--shadow);}
-        .stat-card h4{color:var(--gray);font-size:0.9rem;margin-bottom:0.5rem;}
-        .stat-card .num{font-size:1.8rem;font-weight:800;color:var(--dark);}
-        .table-container{background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
-        .table{width:100%;border-collapse:collapse;}
-        .table th{background:var(--light);padding:1rem;text-align:left;font-weight:700;}
-        .table td{padding:1rem;border-bottom:1px solid var(--border);}
-        .table img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
-        .badge{padding:0.3rem 0.6rem;border-radius:4px;font-size:0.8rem;font-weight:600;}
-        .badge-success{background:#d1fae5;color:#065f46;}
-        .badge-danger{background:#fee2e2;color:#991b1b;}
+        .product-card img{width:100%;height:280px;object-fit:cover;}
+        .product-info{padding:1.2rem;}
+        .product-title{font-weight:700;font-size:1.1rem;margin-bottom:0.5rem;height:2.8rem;overflow:hidden;}
+        .product-price{color:var(--primary);font-size:1.3rem;font-weight:800;}
+
+        /* --- 弹窗样式 --- */
+        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:2000;display:none;align-items:center;justify-content:center;padding:1rem;}
+        .modal-overlay.active{display:flex;}
+        .modal-box{background:#fff;width:100%;max-width:1100px;max-height:90vh;border-radius:16px;overflow-y:auto;position:relative;padding:2rem;}
+        .modal-close{position:absolute;top:1rem;right:1rem;font-size:2rem;cursor:pointer;color:var(--gray);line-height:1;}
+
+        /* --- 详情页布局 --- */
+        .detail-container{display:flex;flex-wrap:wrap;gap:2.5rem;}
+        .detail-gallery{flex:1;min-width:300px;}
+        .main-img{width:100%;height:500px;object-fit:cover;border-radius:12px;background:var(--light);}
+        .thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:0.5rem;margin-top:1rem;}
+        .thumb{width:100%;height:70px;object-fit:cover;border-radius:6px;cursor:pointer;opacity:0.6;}
+        .thumb.active{opacity:1;border:2px solid var(--primary);}
+        .detail-content{flex:1;min-width:300px;}
+        .spec-group{margin:1.5rem 0;}
+        .spec-options{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;}
+        .spec-btn{padding:0.5rem 1rem;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:#fff;}
+        .spec-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+        /* --- 后台界面 --- */
+        #admin{background:#f3f4f6;min-height:100vh;}
+        .admin-layout{display:flex;padding-top:64px;}
+        .sidebar{width:260px;background:var(--dark);height:calc(100vh - 64px);position:fixed;color:#fff;padding:1.5rem 0;}
+        .sidebar-menu{list-style:none;}
+        .sidebar-menu li{padding:1rem 2rem;cursor:pointer;display:flex;align-items:center;gap:0.8rem;transition:0.2s;}
+        .sidebar-menu li:hover,.sidebar-menu li.active{background:var(--primary);}
+        .admin-content{margin-left:260px;flex:1;padding:2rem;}
+        .table-card{background:#fff;border-radius:12px;box-shadow:var(--shadow);overflow:hidden;}
+        .admin-table{width:100%;border-collapse:collapse;}
+        .admin-table th{background:var(--light);padding:1rem;text-align:left;font-weight:700;}
+        .admin-table td{padding:1rem;border-bottom:1px solid var(--border);}
+        .admin-table img{width:50px;height:50px;border-radius:6px;object-fit:cover;}
     </style>
 </head>
 <body>
@@ -118,406 +104,405 @@
 <div id="frontend">
     <header>
         <div class="nav">
-            <a href="#" class="logo">Yopcuvi</a>
+            <a href="#" class="logo" onclick="location.reload()">Yopcuvi</a>
             <div class="nav-links">
-                <a href="#home">Home</a>
                 <a href="#products">Products</a>
-                <a href="#copyright">Copyright</a>
-                <button onclick="openLoginModal()">User Login</button>
+                <button onclick="openModal('userModal')">Login</button>
                 <div class="cart-icon" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">0</span></div>
             </div>
         </div>
     </header>
 
-    <div class="overlay" onclick="toggleCart()"></div>
+    <div class="hero" id="home">
+        <div>
+            <h1 id="heroTitle">Loading...</h1>
+            <p class="mt-2" id="heroDesc"></p>
+        </div>
+    </div>
+
+    <div class="wrapper" id="products">
+        <h2 class="mb-2">Our Collection</h2>
+        <div class="products-grid" id="productList"></div>
+    </div>
+
+    <div class="overlay" id="cartOverlay" onclick="toggleCart()"></div>
     <div class="cart-sidebar" id="cartSidebar">
-        <div class="d-flex justify-between align-center mb-2">
-            <h3>Shopping Cart</h3>
-            <span class="modal-close" onclick="toggleCart()">&times;</span>
+        <div class="d-flex justify-between align-center">
+            <h3>Your Cart</h3>
+            <span style="cursor:pointer;font-size:1.5rem" onclick="toggleCart()">&times;</span>
         </div>
         <div id="cartItems"></div>
-        <div class="cart-total">Total: <span id="cartTotal">$0.00</span></div>
-        <button class="btn btn-primary w-100" onclick="goCheckout()">Checkout Now</button>
+        <div class="mt-2">
+            <div class="d-flex justify-between mb-2"><strong>Total:</strong><span id="cartTotal">$0.00</span></div>
+            <button class="btn btn-primary w-100" onclick="goCheckout()">Checkout</button>
+        </div>
     </div>
 
     <div class="modal-overlay" id="detailModal">
         <div class="modal-box">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <div id="productDetail"></div>
+            <span class="modal-close" onclick="closeAllModals()">&times;</span>
+            <div id="detailContent"></div>
         </div>
     </div>
 
     <div class="modal-overlay" id="userModal">
-        <div class="modal-box">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div class="modal-box" style="max-width:400px;">
+            <span class="modal-close" onclick="closeAllModals()">&times;</span>
             <div id="loginForm">
-                <h3 class="text-center mb-2">User Login</h3>
-                <div class="form-group"><label>Email</label><input type="email" class="form-control" id="loginEmail"></div>
-                <div class="form-group"><label>Password</label><input type="password" class="form-control" id="loginPwd"></div>
-                <button class="btn btn-primary w-100 mt-2" onclick="userLogin()">Login</button>
-                <p class="text-center mt-2">No Account? <span onclick="switchToRegister()" style="color:var(--primary);cursor:pointer;">Register Now</span></p>
+                <h3 class="mb-2">User Login</h3>
+                <div class="form-group"><label>Email</label><input type="text" class="form-control" id="logEmail"></div>
+                <div class="form-group"><label>Password</label><input type="password" class="form-control" id="logPwd"></div>
+                <button class="btn btn-primary w-100" onclick="userLogin()">Login</button>
+                <p class="mt-2 text-center" onclick="toggleSignForm()" style="cursor:pointer;color:var(--primary)">No account? Register</p>
             </div>
-            <div id="registerForm" class="hidden">
-                <h3 class="text-center mb-2">User Register</h3>
-                <div class="form-group"><label>Full Name</label><input type="text" class="form-control" id="regName"></div>
-                <div class="form-group"><label>Email</label><input type="email" class="form-control" id="regEmail"></div>
+            <div id="regForm" class="hidden">
+                <h3 class="mb-2">Create Account</h3>
+                <div class="form-group"><label>Name</label><input type="text" class="form-control" id="regName"></div>
+                <div class="form-group"><label>Email</label><input type="text" class="form-control" id="regEmail"></div>
                 <div class="form-group"><label>Password</label><input type="password" class="form-control" id="regPwd"></div>
-                <button class="btn btn-primary w-100 mt-2" onclick="userRegister()">Register</button>
-                <p class="text-center mt-2">Have Account? <span onclick="switchToLogin()" style="color:var(--primary);cursor:pointer;">Login Now</span></p>
+                <button class="btn btn-primary w-100" onclick="userReg()">Sign Up</button>
+                <p class="mt-2 text-center" onclick="toggleSignForm()" style="cursor:pointer;color:var(--primary)">Have account? Login</p>
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="checkoutModal">
-        <div class="modal-box">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <h3 class="text-center mb-2">Checkout</h3>
-            <div class="form-group"><label>Shipping Address</label><textarea class="form-control" id="address"></textarea></div>
-            <div class="form-group"><label>Payment Method</label><select class="form-control" id="payMethod"><option>Credit Card</option><option>PayPal</option></select></div>
-            <div class="cart-total">Total: <span id="checkoutTotal">$0.00</span></div>
-            <button class="btn btn-primary w-100 mt-2" onclick="submitOrder()">Submit Order</button>
-        </div>
-    </div>
-
-    <section class="hero" id="home">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1 id="heroTitle"></h1>
-            <p class="mt-2" id="heroDesc"></p>
-        </div>
-    </section>
-
-    <div class="wrapper" id="products">
-        <h2 class="text-center">All Products</h2>
-        <div class="products" id="productList"></div>
-    </div>
-
-    <div class="wrapper" id="copyright">
-        <div class="copyright-box">
-            <h3>Official U.S. Copyright Statement</h3>
-            <p class="mt-2" id="copyrightText"></p>
-            <p class="mt-1" id="copyrightEmail"></p>
-            <p class="mt-1" id="copyrightAddress"></p>
-        </div>
-    </div>
-
-    <footer class="wrapper text-center mt-3" style="background:var(--dark);color:#fff;padding:2rem;">
-        <p onclick="openAdminLogin()" style="cursor:pointer;">Yopcuvi © 2026 All Rights Reserved</p>
+    <footer class="text-center" style="padding:4rem 0; background:var(--light);">
+        <p>© 2026 Yopcuvi Official Store</p>
+        <p onclick="openAdminLogin()" style="cursor:pointer;margin-top:1rem;font-size:0.8rem;color:var(--gray)">Admin Login</p>
     </footer>
 </div>
 
 <div id="admin" class="hidden">
     <header>
         <div class="nav">
-            <span class="logo">Yopcuvi Admin Panel</span>
+            <span class="logo">Admin Management</span>
             <div class="nav-links">
-                <button onclick="backToFront()">Back to Store</button>
-                <button onclick="adminLogout()" class="btn-red">Logout</button>
+                <button onclick="exitAdmin()">Exit</button>
+                <button onclick="adminLogout()" class="btn-red btn-sm">Logout</button>
             </div>
         </div>
     </header>
-    <div class="admin-body">
-        <div class="admin-sidebar">
-            <ul class="admin-menu">
-                <li id="menu-dashboard" onclick="switchMenu('dashboard')">📊 Dashboard</li>
-                <li id="menu-products" onclick="switchMenu('products')">🛍️ Products</li>
-                <li id="menu-orders" onclick="switchMenu('orders')">📦 Orders</li>
-                <li id="menu-users" onclick="switchMenu('users')">👥 Users</li>
-                <li id="menu-settings" onclick="switchMenu('settings')">⚙️ Website Settings</li>
-                <li id="menu-adminpwd" onclick="switchMenu('adminpwd')">🔑 Admin Password</li>
-                <li id="menu-data" onclick="switchMenu('data')">💾 Data Manage</li>
+    <div class="admin-layout">
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li id="m-dash" onclick="switchAdmin('dash')">📊 Dashboard</li>
+                <li id="m-prod" onclick="switchAdmin('prod')">🛍️ Products</li>
+                <li id="m-set" onclick="switchAdmin('set')">⚙️ Settings</li>
+                <li id="m-data" onclick="switchAdmin('data')">💾 Data</li>
             </ul>
         </div>
-        <div class="admin-main">
-            <div id="dashboard" class="menu-content">
-                <h2 class="mb-2">Data Dashboard</h2>
-                <div class="stat-grid">
-                    <div class="stat-card"><h4>Total Users</h4><div id="statUser" class="num">0</div></div>
-                    <div class="stat-card"><h4>Total Orders</h4><div id="statOrder" class="num">0</div></div>
-                    <div class="stat-card"><h4>Total Sales</h4><div id="statSales" class="num">$0</div></div>
-                    <div class="stat-card"><h4>Total Products</h4><div id="statProduct" class="num">0</div></div>
+        <div class="admin-content">
+            <div id="v-dash" class="admin-view">
+                <h2 class="mb-2">Overview</h2>
+                <div class="d-flex" style="gap:1.5rem;">
+                    <div class="table-card" style="padding:1.5rem;flex:1;"><h4>Products</h4><h2 id="st-p">0</h2></div>
+                    <div class="table-card" style="padding:1.5rem;flex:1;"><h4>Users</h4><h2 id="st-u">0</h2></div>
+                    <div class="table-card" style="padding:1.5rem;flex:1;"><h4>Orders</h4><h2 id="st-o">0</h2></div>
                 </div>
             </div>
-            <div id="products-content" class="menu-content hidden">
-                <div class="d-flex justify-between align-center mb-2">
-                    <h2>Product Management</h2>
-                    <button class="btn btn-primary" onclick="openAddProduct()">Add Product</button>
+            <div id="v-prod" class="admin-view hidden">
+                <div class="d-flex justify-between mb-2">
+                    <h2>Products</h2>
+                    <button class="btn btn-primary" onclick="openProdEdit()">+ Add New</button>
                 </div>
-                <div class="table-container">
-                    <table class="table">
-                        <thead><tr><th>Image</th><th>Name</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead>
-                        <tbody id="productTable"></tbody>
+                <div class="table-card">
+                    <table class="admin-table">
+                        <thead><tr><th>Img</th><th>Name</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead>
+                        <tbody id="adminProdList"></tbody>
                     </table>
                 </div>
             </div>
-            <div id="orders-content" class="menu-content hidden">
-                <h2>Order Management</h2>
-                <div class="table-container mt-2">
-                    <table class="table">
-                        <thead><tr><th>Order No</th><th>User</th><th>Total</th><th>Status</th><th>Time</th></tr></thead>
-                        <tbody id="orderTable"></tbody>
-                    </table>
-                </div>
-            </div>
-            <div id="users-content" class="menu-content hidden">
-                <h2>User Management</h2>
-                <div class="table-container mt-2">
-                    <table class="table">
-                        <thead><tr><th>Name</th><th>Email</th><th>Time</th><th>Status</th></tr></thead>
-                        <tbody id="userTable"></tbody>
-                    </table>
-                </div>
-            </div>
-            <div id="settings-content" class="menu-content hidden">
+            <div id="v-set" class="admin-view hidden">
                 <h2>Website Settings</h2>
-                <div class="form-group mt-2"><label>Store Name</label><input type="text" class="form-control" id="storeName"></div>
-                <div class="form-group"><label>Hero Title</label><input type="text" class="form-control" id="heroTitleInput"></div>
-                <div class="form-group"><label>Hero Desc</label><textarea class="form-control" id="heroDescInput"></textarea></div>
-                <button class="btn btn-primary w-100" onclick="saveSettings()">Save Settings</button>
+                <div class="table-card" style="padding:2rem;margin-top:1rem;">
+                    <div class="form-group"><label>Hero Title</label><input type="text" class="form-control" id="setHeroT"></div>
+                    <div class="form-group"><label>Hero Subtitle</label><textarea class="form-control" id="setHeroD"></textarea></div>
+                    <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
+                </div>
             </div>
-            <div id="adminpwd-content" class="menu-content hidden">
-                <h2>Admin Password</h2>
-                <div class="form-group mt-2"><label>New Password</label><input type="password" class="form-control" id="newPwd"></div>
-                <button class="btn btn-primary w-100" onclick="updateAdminPwd()">Update Password</button>
-            </div>
-            <div id="data-content" class="menu-content hidden">
-                <h2>Data Management</h2>
-                <button class="btn btn-dark w-100 mt-2" onclick="backupData()">Backup JSON</button>
-                <button class="btn btn-red w-100 mt-2" onclick="clearData()">Clear All Data</button>
+            <div id="v-data" class="admin-view hidden">
+                <h2>Data Backup</h2>
+                <button class="btn btn-dark mt-2" onclick="downloadJSON()">Download JSON Backup</button>
+                <button class="btn btn-red mt-2" onclick="localStorage.clear();location.reload()">Factory Reset</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal-overlay" id="productModal">
+<div class="modal-overlay" id="editProdModal">
     <div class="modal-box">
-        <span class="modal-close" onclick="closeProductModal()">&times;</span>
-        <h3 id="productModalTitle">Product Info</h3>
-        <input type="hidden" id="editProductId">
-        <div class="form-group"><label>Name</label><input type="text" class="form-control" id="productName"></div>
-        <div class="form-group"><label>Price</label><input type="number" step="0.01" class="form-control" id="productPrice"></div>
-        <div class="form-group"><label>Stock</label><input type="number" class="form-control" id="productStock"></div>
-        <div class="form-group"><label>ASIN</label><input type="text" class="form-control" id="productAsin"></div>
-        <div class="form-group"><label>Images (1-10 URLs)</label>
-            <input type="text" class="form-control mb-1" id="img1" placeholder="Main Image">
-            <input type="text" class="form-control mb-1" id="img2">
-            <input type="text" class="form-control mb-1" id="img3">
-            <input type="text" class="form-control mb-1" id="img4">
-            <input type="text" class="form-control mb-1" id="img5">
-            <input type="text" class="form-control mb-1" id="img6">
-            <input type="text" class="form-control mb-1" id="img7">
-            <input type="text" class="form-control mb-1" id="img8">
-            <input type="text" class="form-control mb-1" id="img9">
-            <input type="text" class="form-control mb-1" id="img10">
+        <span class="modal-close" onclick="closeAllModals()">&times;</span>
+        <h3>Edit Product</h3>
+        <input type="hidden" id="editId">
+        <div class="d-flex mt-2" style="gap:2rem;flex-wrap:wrap;">
+            <div style="flex:1;min-width:300px;">
+                <div class="form-group"><label>Name</label><input type="text" class="form-control" id="epName"></div>
+                <div class="form-group"><label>Price</label><input type="number" class="form-control" id="epPrice"></div>
+                <div class="form-group"><label>Stock</label><input type="number" class="form-control" id="epStock"></div>
+                <div class="form-group"><label>ASIN</label><input type="text" class="form-control" id="epAsin"></div>
+                <div class="form-group"><label>Description</label><textarea class="form-control" id="epDesc" style="height:100px;"></textarea></div>
+            </div>
+            <div style="flex:1;min-width:300px;">
+                <label style="font-weight:bold;margin-bottom:0.5rem;display:block;">Image URLs (Up to 10)</label>
+                <div id="urlInputs"></div>
+            </div>
         </div>
-        <div class="form-group"><label>Description</label><textarea class="form-control" id="productDesc"></textarea></div>
-        <div class="form-group">
-            <label>Status</label>
-            <select id="productStatus" class="form-control"><option value="1">On Sale</option><option value="0">Off Shelf</option></select>
-        </div>
-        <button class="btn btn-primary w-100" onclick="saveProductFunc()">Save Product</button>
+        <button class="btn btn-primary w-100 mt-2" onclick="saveProd()">Save Product</button>
     </div>
 </div>
 
 <script>
 // --- 初始化数据 ---
-let adminAccount = JSON.parse(localStorage.getItem('adminAccount')) || { account: "admin", pwd: "admin123" };
-let storeData = JSON.parse(localStorage.getItem('storeData')) || {
+let db = JSON.parse(localStorage.getItem('yop_db')) || {
     products: [
-        {
-            id:"p1",name:"Middle Finger Crochet Animals",
-            images:["https://picsum.photos/800/800"],
-            price:19.99,stock:99,asin:"B0GWMB9J8J",status:1,rating:5,sales:100,favorites:50,
-            specs:{color:["Red","Blue"],size:["One Size"]},
-            desc:"Handmade gift.",reviews:[],publishTime:new Date().toLocaleString()
-        }
+        {id:'p1', name:'Middle Finger Crochet Birdie', price:25.99, stock:100, images:['https://picsum.photos/id/237/600/600'], desc:'Original handmade gift for emotional support.', asin:'B0XXXXXXXX', status:1}
     ],
-    users: [], orders: [],
-    settings: {
-        name:"Yopcuvi",heroTitle:"Official Gift Store",heroDesc:"Original Design Protection",
-        heroBg:"",email:"admin@yopcuvi.com",address:"China",copyright:"All rights reserved."
-    }
+    settings: { heroTitle: 'Yopcuvi Official Gift Store', heroDesc: 'Original Designs & High Quality Gifts for Every Occasion.' },
+    orders: [], users: []
 };
 
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-let adminStatus = localStorage.getItem('adminStatus') === 'true';
+let cart = JSON.parse(localStorage.getItem('yop_cart')) || [];
+let isAdmin = localStorage.getItem('yop_admin') === 'true';
 
-function saveData() { localStorage.setItem('storeData', JSON.stringify(storeData)); }
+const saveDB = () => localStorage.setItem('yop_db', JSON.stringify(db));
+const saveCart = () => localStorage.setItem('yop_cart', JSON.stringify(cart));
 
-// --- 核心修复：菜单切换函数 ---
-function switchMenu(menu) {
-    // 1. 隐藏所有后台内容板块
-    document.querySelectorAll('.menu-content').forEach(el => el.classList.add('hidden'));
+// --- 后台切换逻辑 (修复点击不显示问题) ---
+function switchAdmin(view) {
+    // 隐藏所有板块
+    document.querySelectorAll('.admin-view').forEach(v => v.classList.add('hidden'));
+    // 移除所有菜单激活态
+    document.querySelectorAll('.sidebar-menu li').forEach(l => l.classList.remove('active'));
     
-    // 2. 移除所有菜单激活样式
-    document.querySelectorAll('.admin-menu li').forEach(li => li.classList.remove('active'));
+    // 显示目标板块
+    document.getElementById('v-' + view).classList.remove('hidden');
+    document.getElementById('m-' + view).classList.add('active');
     
-    // 3. 显示目标板块 (注意ID对应关系)
-    const targetId = (menu === 'dashboard') ? 'dashboard' : menu + '-content';
-    const targetContent = document.getElementById(targetId);
-    if (targetContent) {
-        targetContent.classList.remove('hidden');
-    } else {
-        console.error("Content ID not found: " + targetId);
-    }
-    
-    // 4. 激活当前菜单按钮
-    const activeBtn = document.getElementById('menu-' + menu);
-    if (activeBtn) activeBtn.classList.add('active');
-
-    // 5. 渲染板块内数据
     renderAdmin();
 }
 
-// --- 后台渲染逻辑 ---
+// --- 后台渲染 ---
 function renderAdmin() {
-    // 仪表盘
-    document.getElementById('statUser').innerText = storeData.users.length;
-    document.getElementById('statOrder').innerText = storeData.orders.length;
-    document.getElementById('statSales').innerText = '$' + storeData.orders.reduce((s,o)=>s+o.total,0).toFixed(2);
-    document.getElementById('statProduct').innerText = storeData.products.length;
+    document.getElementById('st-p').innerText = db.products.length;
+    document.getElementById('st-u').innerText = db.users.length;
+    document.getElementById('st-o').innerText = db.orders.length;
 
-    // 产品表格
-    const pTable = document.getElementById('productTable');
-    if(pTable) pTable.innerHTML = storeData.products.map(p => `
+    document.getElementById('adminProdList').innerHTML = db.products.map(p => `
         <tr>
             <td><img src="${p.images[0]}"></td>
             <td>${p.name}</td>
             <td>$${p.price}</td>
             <td>${p.stock}</td>
-            <td><span class="badge ${p.status==1?'badge-success':'badge-danger'}">${p.status==1?'On Sale':'Off'}</span></td>
             <td>
-                <button class="btn btn-sm btn-primary" onclick="editProductFunc('${p.id}')">Edit</button>
-                <button class="btn btn-sm btn-red" onclick="deleteProductFunc('${p.id}')">Delete</button>
+                <button class="btn btn-sm btn-light" onclick="openProdEdit('${p.id}')">Edit</button>
+                <button class="btn btn-sm btn-red" onclick="deleteProd('${p.id}')">Delete</button>
             </td>
         </tr>
     `).join('');
-
-    // 设置回填
-    const sName = document.getElementById('storeName');
-    if(sName) {
-        sName.value = storeData.settings.name;
-        document.getElementById('heroTitleInput').value = storeData.settings.heroTitle;
-        document.getElementById('heroDescInput').value = storeData.settings.heroDesc;
-    }
+    
+    document.getElementById('setHeroT').value = db.settings.heroTitle;
+    document.getElementById('setHeroD').value = db.settings.heroDesc;
 }
 
-// --- 产品管理逻辑 ---
-function openAddProduct() {
-    document.getElementById('productModalTitle').innerText = 'Add Product';
-    document.getElementById('editProductId').value = '';
-    for(let i=1;i<=10;i++) document.getElementById('img'+i).value = '';
-    document.getElementById('productName').value = '';
-    document.getElementById('productModal').classList.add('active');
-}
+// --- 前台渲染 ---
+function renderFrontend() {
+    document.getElementById('heroTitle').innerText = db.settings.heroTitle;
+    document.getElementById('heroDesc').innerText = db.settings.heroDesc;
 
-function editProductFunc(id) {
-    const p = storeData.products.find(x => x.id === id);
-    if(!p) return;
-    document.getElementById('productModalTitle').innerText = 'Edit Product';
-    document.getElementById('editProductId').value = p.id;
-    document.getElementById('productName').value = p.name;
-    document.getElementById('productPrice').value = p.price;
-    document.getElementById('productStock').value = p.stock;
-    document.getElementById('productAsin').value = p.asin || '';
-    document.getElementById('productDesc').value = p.desc;
-    document.getElementById('productStatus').value = p.status;
-    for(let i=1;i<=10;i++) {
-        document.getElementById('img'+i).value = p.images[i-1] || '';
-    }
-    document.getElementById('productModal').classList.add('active');
-}
-
-function saveProductFunc() {
-    const id = document.getElementById('editProductId').value;
-    let imgs = [];
-    for(let i=1;i<=10;i++){
-        let val = document.getElementById('img'+i).value;
-        if(val) imgs.push(val);
-    }
-    const pObj = {
-        id: id || 'p' + Date.now(),
-        name: document.getElementById('productName').value,
-        price: parseFloat(document.getElementById('productPrice').value),
-        stock: parseInt(document.getElementById('productStock').value),
-        asin: document.getElementById('productAsin').value,
-        images: imgs,
-        desc: document.getElementById('productDesc').value,
-        status: parseInt(document.getElementById('productStatus').value),
-        rating:5, sales:0, favorites:0, specs:{color:[],size:[]}, reviews:[]
-    };
-    if(id) {
-        const idx = storeData.products.findIndex(x=>x.id===id);
-        storeData.products[idx] = {...storeData.products[idx], ...pObj};
-    } else {
-        storeData.products.push(pObj);
-    }
-    saveData();
-    closeProductModal();
-    renderAdmin();
-    renderProducts();
-}
-
-function deleteProductFunc(id) {
-    if(confirm('Delete this?')) {
-        storeData.products = storeData.products.filter(x=>x.id!==id);
-        saveData(); renderAdmin(); renderProducts();
-    }
-}
-
-// --- 前台渲染逻辑 ---
-function renderProducts() {
-    const list = document.getElementById('productList');
-    if(!list) return;
-    list.innerHTML = storeData.products.filter(p=>p.status==1).map(p => `
+    document.getElementById('productList').innerHTML = db.products.map(p => `
         <div class="product-card" onclick="openProductDetail('${p.id}')">
             <img src="${p.images[0]}">
             <div class="product-info">
                 <div class="product-title">${p.name}</div>
-                <div class="product-price">$${p.price.toFixed(2)}</div>
-                <button class="btn btn-primary w-100 mt-2" onclick="event.stopPropagation();addToCart('${p.id}')">Add to Cart</button>
+                <div class="d-flex justify-between align-center">
+                    <span class="product-price">$${p.price.toFixed(2)}</span>
+                    <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();addToCart('${p.id}')">Add +</button>
+                </div>
             </div>
         </div>
     `).join('');
-    renderHero();
+    updateCartUI();
 }
 
-function renderHero() {
-    document.getElementById('heroTitle').innerText = storeData.settings.heroTitle;
-    document.getElementById('heroDesc').innerText = storeData.settings.heroDesc;
+// --- 商品详情页核心功能 ---
+function openProductDetail(id) {
+    const p = db.products.find(i => i.id === id);
+    if(!p) return;
+    
+    let html = `
+        <div class="detail-container">
+            <div class="detail-gallery">
+                <img src="${p.images[0]}" class="main-img" id="mainImg">
+                <div class="thumbs">
+                    ${p.images.map((img, i) => `<img src="${img}" class="thumb ${i==0?'active':''}" onclick="changeImg(this, '${img}')">`).join('')}
+                </div>
+            </div>
+            <div class="detail-content">
+                <h1>${p.name}</h1>
+                <p class="product-price mt-1">$${p.price.toFixed(2)}</p>
+                <div class="spec-group">
+                    <p><strong>Stock:</strong> ${p.stock} units available</p>
+                    <p class="mt-1"><strong>ASIN:</strong> ${p.asin || 'N/A'}</p>
+                </div>
+                <div class="mt-2" style="border-top:1px solid #eee; padding-top:1rem;">
+                    <h3>Description</h3>
+                    <p class="mt-1">${p.desc}</p>
+                </div>
+                <button class="btn btn-dark w-100 btn-lg mt-3" onclick="addToCart('${p.id}')">ADD TO SHOPPING BAG</button>
+            </div>
+        </div>
+    `;
+    document.getElementById('detailContent').innerHTML = html;
+    openModal('detailModal');
 }
 
-// --- 弹窗控制 ---
-function closeModal() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
-function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
-
-// --- 登录系统 ---
-function openAdminLogin() {
-    const acc = prompt('Account:');
-    const pwd = prompt('Password:');
-    if(acc === adminAccount.account && pwd === adminAccount.pwd) {
-        adminStatus = true; localStorage.setItem('adminStatus', 'true');
-        location.reload();
-    } else { alert('Error!'); }
-}
-function adminLogout() { adminStatus = false; localStorage.removeItem('adminStatus'); location.reload(); }
-function backToFront() { 
-    document.getElementById('admin').classList.add('hidden'); 
-    document.getElementById('frontend').classList.remove('hidden'); 
+function changeImg(el, src) {
+    document.getElementById('mainImg').src = src;
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
 }
 
-// --- 初始化入口 ---
-function init() {
-    if(adminStatus) {
-        document.getElementById('frontend').classList.add('hidden');
-        document.getElementById('admin').classList.remove('hidden');
-        switchMenu('dashboard');
+// --- 购物车功能 ---
+function toggleCart() {
+    document.getElementById('cartSidebar').classList.toggle('active');
+    document.getElementById('cartOverlay').classList.toggle('active');
+}
+
+function addToCart(id) {
+    const p = db.products.find(i => i.id === id);
+    const exist = cart.find(i => i.id === id);
+    if(exist) { exist.qty++; } else { cart.push({...p, qty: 1}); }
+    saveCart();
+    updateCartUI();
+    if(!document.getElementById('cartSidebar').classList.contains('active')) toggleCart();
+}
+
+function updateCartUI() {
+    document.getElementById('cartCount').innerText = cart.reduce((s, i) => s + i.qty, 0);
+    document.getElementById('cartItems').innerHTML = cart.map(i => `
+        <div class="cart-item">
+            <img src="${i.images[0]}">
+            <div style="flex:1">
+                <div style="font-weight:bold; font-size:0.9rem">${i.name}</div>
+                <div class="d-flex justify-between mt-1">
+                    <span>${i.qty} x $${i.price}</span>
+                    <span style="color:red; cursor:pointer" onclick="removeItem('${i.id}')">Remove</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    document.getElementById('cartTotal').innerText = '$' + cart.reduce((s, i) => s + (i.price * i.qty), 0).toFixed(2);
+}
+
+function removeItem(id) {
+    cart = cart.filter(i => i.id !== id);
+    saveCart();
+    updateCartUI();
+}
+
+// --- 弹窗通用控制 ---
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeAllModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
+
+// --- 商品编辑逻辑 ---
+function openProdEdit(id = null) {
+    const p = id ? db.products.find(i => i.id === id) : null;
+    document.getElementById('editId').value = id || '';
+    document.getElementById('epName').value = p ? p.name : '';
+    document.getElementById('epPrice').value = p ? p.price : '';
+    document.getElementById('epStock').value = p ? p.stock : '';
+    document.getElementById('epAsin').value = p ? p.asin : '';
+    document.getElementById('epDesc').value = p ? p.desc : '';
+    
+    let urlHtml = '';
+    for(let i=0; i<10; i++) {
+        urlHtml += `<input type="text" class="form-control mb-1" placeholder="Image ${i+1}" value="${(p && p.images[i]) ? p.images[i] : ''}">`;
+    }
+    document.getElementById('urlInputs').innerHTML = urlHtml;
+    openModal('editProdModal');
+}
+
+function saveProd() {
+    const id = document.getElementById('editId').value;
+    const imgs = Array.from(document.getElementById('urlInputs').querySelectorAll('input')).map(i => i.value).filter(v => v !== '');
+    const data = {
+        id: id || 'p' + Date.now(),
+        name: document.getElementById('epName').value,
+        price: parseFloat(document.getElementById('epPrice').value),
+        stock: parseInt(document.getElementById('epStock').value),
+        asin: document.getElementById('epAsin').value,
+        desc: document.getElementById('epDesc').value,
+        images: imgs.length ? imgs : ['https://picsum.photos/600/600'],
+        status: 1
+    };
+    
+    if(id) {
+        const idx = db.products.findIndex(i => i.id === id);
+        db.products[idx] = data;
     } else {
-        renderProducts();
+        db.products.push(data);
+    }
+    saveDB();
+    closeAllModals();
+    renderAdmin();
+    renderFrontend();
+}
+
+function deleteProd(id) {
+    if(confirm('Delete this product?')) {
+        db.products = db.products.filter(i => i.id !== id);
+        saveDB(); renderAdmin(); renderFrontend();
     }
 }
-init();
+
+function saveSettings() {
+    db.settings.heroTitle = document.getElementById('setHeroT').value;
+    db.settings.heroDesc = document.getElementById('setHeroD').value;
+    saveDB();
+    alert('Settings Saved!');
+    renderFrontend();
+}
+
+// --- 权限管理 ---
+function openAdminLogin() {
+    const p = prompt('Enter Admin Password:');
+    if(p === 'admin123') {
+        localStorage.setItem('yop_admin', 'true');
+        location.reload();
+    } else { alert('Wrong Password'); }
+}
+function adminLogout() {
+    localStorage.removeItem('yop_admin');
+    location.reload();
+}
+function exitAdmin() {
+    document.getElementById('admin').classList.add('hidden');
+    document.getElementById('frontend').classList.remove('hidden');
+}
+
+// --- 初始化 ---
+window.onload = () => {
+    if(isAdmin) {
+        document.getElementById('frontend').classList.add('hidden');
+        document.getElementById('admin').classList.remove('hidden');
+        switchAdmin('dash');
+    } else {
+        renderFrontend();
+    }
+};
+
+function toggleSignForm() {
+    document.getElementById('loginForm').classList.toggle('hidden');
+    document.getElementById('regForm').classList.toggle('hidden');
+}
+
+function downloadJSON() {
+    const blob = new Blob([JSON.stringify(db, null, 2)], {type : 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'backup.json';
+    a.click();
+}
 </script>
 </body>
 </html>
