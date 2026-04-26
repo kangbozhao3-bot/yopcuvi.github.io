@@ -3,277 +3,823 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yopcuvi | Official Premium Gift Store</title>
+    <title>Yopcuvi | Official Gift Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif;}
-        :root{--primary:#2563eb;--dark:#111827;--gray:#6b7280;--red:#dc2626;--light:#f9fafb;--white:#fff;}
+        :root{--primary:#2563eb;--dark:#111827;--gray:#6b7280;--red:#dc2626;--light:#f9fafb;--white:#fff;--border:#e5e7eb;--shadow:0 8px 30px rgba(0,0,0,0.08);}
         html{scroll-behavior:smooth;}
-        body{background:#fff;color:var(--dark);line-height:1.5;}
+        body{background:#fff;color:var(--dark);line-height:1.6;}
+        .hidden{display:none !important;}
+        .d-flex{display:flex;}
+        .justify-between{justify-content:space-between;}
+        .align-center{align-items:center;}
+        .text-center{text-align:center;}
+        .mt-1{margin-top:0.5rem;}
+        .mt-2{margin-top:1rem;}
+        .mt-3{margin-top:1.5rem;}
+        .mb-2{margin-bottom:1rem;}
+        .gap-1{gap:0.5rem;}
+        .gap-2{gap:1rem;}
+        .w-100{width:100%;}
 
-        /* Navigation */
-        header{position:fixed;top:0;left:0;width:100%;background:var(--dark);padding:1rem 5%;z-index:999;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;display:none;align-items:center;justify-content:center;}
+        .modal-overlay.active{display:flex;}
+        .modal-box{background:#fff;border-radius:12px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;padding:2rem;position:relative;}
+        .modal-close{position:absolute;top:1rem;right:1rem;font-size:1.5rem;cursor:pointer;color:var(--gray);}
+        .modal-close:hover{color:var(--red);}
+
+        .btn{padding:0.7rem 1.2rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:0.2s;}
+        .btn-primary{background:var(--primary);color:#fff;}
+        .btn-dark{background:var(--dark);color:#fff;}
+        .btn-red{background:var(--red);color:#fff;}
+        .btn-light{background:var(--light);color:var(--dark);}
+        .btn-sm{padding:0.4rem 0.8rem;font-size:0.9rem;}
+        .btn:hover{opacity:0.9;transform:translateY(-1px);}
+
+        .form-group{margin-bottom:1rem;}
+        .form-group label{display:block;margin-bottom:0.5rem;font-weight:600;}
+        .form-control{width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;font-size:1rem;}
+        select.form-control{appearance:none;}
+        textarea.form-control{resize:vertical;min-height:80px;}
+
+        header{position:fixed;top:0;left:0;width:100%;background:var(--dark);padding:1rem 5%;z-index:998;}
         .nav{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
-        .logo{color:#fff;font-size:1.8rem;font-weight:800;text-decoration:none;}
-        .nav-links{display:flex;align-items:center;gap:2rem;}
-        .nav-links a{color:#e5e7eb;text-decoration:none;font-weight:600;transition:0.3s;}
-        .nav-links a:hover{color:var(--primary);}
+        .logo{color:#fff;font-size:1.5rem;font-weight:800;text-decoration:none;}
+        .nav-links{display:flex;align-items:center;gap:1.5rem;}
+        .nav-links a,.nav-links button{color:#fff;text-decoration:none;font-weight:600;background:none;border:none;cursor:pointer;}
+        .nav-links a:hover,.nav-links button:hover{color:var(--primary);}
 
-        /* Cart Icon */
-        .cart-icon{position:relative;cursor:pointer;color:#fff;font-size:1.4rem;}
-        .cart-count{position:absolute;top:-8px;right:-8px;background:var(--red);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:bold;}
-
-        /* Cart Sidebar */
-        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:999;display:none;}
-        .overlay.active{display:block;}
-        .cart-sidebar{position:fixed;top:0;right:-400px;width:400px;height:100vh;background:#fff;box-shadow:-5px 0 15px rgba(0,0,0,0.1);z-index:1000;transition:0.4s ease;padding:2rem;display:flex;flex-direction:center;flex-direction:column;}
+        .cart-icon{position:relative;color:#fff;font-size:1.2rem;}
+        .cart-count{position:absolute;top:-8px;right:-8px;background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;font-size:12px;display:flex;align-items:center;justify-content:center;}
+        .cart-sidebar{position:fixed;top:0;right:-420px;width:420px;height:100vh;background:#fff;z-index:997;transition:0.3s ease;padding:2rem;box-shadow:-5px 0 15px rgba(0,0,0,0.1);}
         .cart-sidebar.active{right:0;}
-        .cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
-        .cart-close{font-size:1.5rem;cursor:pointer;}
-        .cart-items{flex:1;overflow-y:auto;margin-bottom:1rem;}
-        .cart-empty{text-align:center;color:var(--gray);padding:2rem 0;}
-        .cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid #eee;align-items:center;}
-        .cart-item img{width:60px;height:60px;object-fit:cover;border-radius:8px;}
-        .cart-item-info{flex:1;}
-        .cart-item-name{font-size:14px;margin-bottom:4px;}
-        .cart-item-asin{font-size:12px;color:var(--primary);}
-        .cart-item-price{font-weight:600;margin:4px 0;}
-        .cart-qty{display:flex;align-items:center;gap:8px;}
-        .qty-btn{width:26px;height:26px;border:none;background:var(--light);border-radius:4px;cursor:pointer;}
-        .cart-delete{color:var(--red);cursor:pointer;font-size:12px;margin-top:4px;}
-        .cart-footer{border-top:1px solid #eee;padding-top:1rem;}
-        .cart-total{display:flex;justify-content:space-between;font-weight:700;font-size:1.2rem;margin-bottom:1rem;}
-        .cart-btns{display:flex;gap:1rem;}
-        .btn{padding:0.8rem 1.5rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:0.3s;flex:1;text-align:center;}
-        .btn:hover{opacity:0.9;}
-        .btn-clear{background:var(--light);color:var(--dark);}
-        .btn-checkout{background:var(--primary);color:#fff;}
-        .btn-cart{background:var(--dark);color:#fff;margin-top:1rem;}
+        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:996;display:none;}
+        .overlay.active{display:block;}
+        .cart-item{padding:0.8rem 0;border-bottom:1px solid var(--border);}
+        .cart-total{font-size:1.2rem;font-weight:700;text-align:right;padding:1rem 0;}
 
-        /* Hero Section */
-        .hero{height:550px;background:linear-gradient(135deg,#1f2937,#111827);display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;margin-top:70px;padding:0 20px;}
-        .hero-box h1{font-size:3rem;margin-bottom:1rem;}
-        .hero-box p{font-size:1.2rem;color:#d1d5db;max-width:700px;margin:0 auto;}
+        .hero{
+            height:500px;
+            position:relative;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+            margin-top:60px;
+            background-size:cover;
+            background-position:center;
+            background-repeat:no-repeat;
+        }
+        .hero-overlay{
+            position:absolute;
+            top:0;left:0;
+            width:100%;height:100%;
+            background:rgba(0,0,0,0.6);
+            z-index:1;
+        }
+        .hero-content{
+            position:relative;
+            z-index:2;
+            color:#fff;
+        }
 
-        /* Products */
-        .wrapper{max-width:1400px;margin:4rem auto;padding:0 5%;}
-        .section-head{text-align:center;margin-bottom:3rem;}
-        .section-head h2{font-size:2.2rem;margin-bottom:0.5rem;}
-        .section-head p{color:var(--gray);}
-        .products-layout{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2rem;}
-        .product-item{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.06);transition:0.3s;cursor:pointer;}
-        .product-item:hover{transform:translateY(-8px);}
-        .product-img{width:100%;height:280px;object-fit:cover;}
-        .product-text{padding:1.5rem;}
-        .product-text h3{font-size:1rem;color:var(--dark);margin-bottom:0.5rem;line-height:1.4;}
-        .asin-tag{font-size:0.85rem;color:var(--primary);font-weight:600;}
+        .wrapper{max-width:1200px;margin:0 auto;padding:2rem 5%;}
+        .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2rem;margin-top:2rem;}
+        .product-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:0.3s;}
+        .product-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);}
+        .product-card img{width:100%;height:220px;object-fit:cover;}
+        .product-info{padding:1rem;}
+        .product-title{font-weight:600;margin-bottom:0.5rem;}
+        .product-price{color:var(--primary);font-weight:700;}
+        .product-asin{color:var(--gray);font-size:0.9rem;margin-top:0.3rem;}
+        .product-publish{color:var(--gray);font-size:0.9rem;margin-top:0.2rem;}
+        .copyright-box{background:var(--light);padding:2rem;border-radius:12px;margin-top:2rem;}
 
-        /* Product Modal */
-        .product-modal{background:#fff;border-radius:20px;padding:3rem;box-shadow:0 10px 40px rgba(0,0,0,0.1);margin:3rem 0;display:none;}
-        .product-modal.show{display:block;}
-        .modal-title{font-size:1.5rem;margin-bottom:1rem;}
-        .modal-asin{color:var(--primary);font-weight:600;margin-bottom:2rem;}
-        .modal-gallery{display:flex;gap:1rem;overflow-x:auto;padding:1rem 0;margin-bottom:2rem;}
-        .modal-gallery img{height:300px;border-radius:12px;flex-shrink:0;}
-        .modal-desc{line-height:1.9;color:#374151;margin-bottom:2rem;}
-        .buy-group{display:flex;justify-content:center;}
+        #admin{background:#f8f9fa;min-height:100vh;}
+        .admin-body{display:flex;margin-top:60px;}
+        .admin-sidebar{width:250px;background:var(--dark);color:#fff;height:calc(100vh - 60px);position:fixed;padding:1.5rem 0;}
+        .admin-main{flex:1;margin-left:250px;padding:2rem;}
+        .admin-menu{list-style:none;}
+        .admin-menu li{padding:1rem 1.5rem;cursor:pointer;transition:0.2s;}
+        .admin-menu li:hover{background:var(--primary);}
+        .admin-menu li.active{background:var(--primary);}
 
-        /* Copyright */
-        .copyright-banner{background:var(--light);padding:4rem 5%;border-top:3px solid var(--red);}
-        .copyright-box{max-width:900px;margin:auto;background:#fff;padding:2.5rem;border-radius:16px;}
-        .copyright-box h3{color:var(--red);margin-bottom:1rem;}
-        .copyright-box p{line-height:1.8;margin-bottom:0.8rem;}
+        .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-bottom:2rem;}
+        .stat-card{background:#fff;padding:1.5rem;border-radius:12px;box-shadow:var(--shadow);}
+        .stat-card h4{color:var(--gray);font-size:0.9rem;margin-bottom:0.5rem;}
+        .stat-card .num{font-size:1.8rem;font-weight:800;color:var(--dark);}
 
-        /* Footer */
-        footer{background:var(--dark);color:#fff;padding:3rem 5%;text-align:center;}
-        footer p{color:#9ca3af;margin-top:0.8rem;}
+        .table-container{background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+        .table{width:100%;border-collapse:collapse;}
+        .table th{background:var(--light);padding:1rem;text-align:left;font-weight:700;}
+        .table td{padding:1rem;border-bottom:1px solid var(--border);}
+        .table img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
+        .badge{padding:0.3rem 0.6rem;border-radius:4px;font-size:0.8rem;font-weight:600;}
+        .badge-success{background:#d1fae5;color:#065f46;}
+        .badge-danger{background:#fee2e2;color:#991b1b;}
+        .badge-warning{background:#fef3c7;color:#92400e;}
 
-        /* Scrollbar */
-        ::-webkit-scrollbar{width:8px;height:6px;}
-        ::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:10px;}
+        .search-bar{display:flex;gap:1rem;margin-bottom:1rem;}
+        .search-bar input{flex:1;}
     </style>
 </head>
 <body>
 
-<!-- Navigation & Cart -->
-<header>
-    <div class="nav">
-        <a href="#" class="logo">Yopcuvi</a>
-        <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#products">Products</a>
-            <a href="#copyright">Copyright</a>
-            <a href="#contact">Contact</a>
-            <div class="cart-icon" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">0</span></div>
+<div id="frontend">
+    <header>
+        <div class="nav">
+            <a href="#" class="logo">Yopcuvi</a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#products">Products</a>
+                <a href="#copyright">Copyright</a>
+                <button onclick="openLoginModal()">User Login</button>
+                <div class="cart-icon" onclick="toggleCart()">🛒<span class="cart-count" id="cartCount">0</span></div>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<!-- Cart Sidebar -->
-<div class="overlay" onclick="toggleCart()"></div>
-<div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-        <h2>Your Cart</h2>
-        <span class="cart-close" onclick="toggleCart()">✕</span>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer">
+    <div class="overlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="d-flex justify-between align-center mb-2">
+            <h3>Shopping Cart</h3>
+            <span class="modal-close" onclick="toggleCart()">&times;</span>
+        </div>
+        <div id="cartItems"></div>
         <div class="cart-total">Total: <span id="cartTotal">$0.00</span></div>
-        <div class="cart-btns">
-            <button class="btn btn-clear" onclick="clearCart()">Clear Cart</button>
-            <button class="btn btn-checkout" onclick="checkout()">Checkout</button>
+        <button class="btn btn-primary w-100" onclick="goCheckout()">Checkout Now</button>
+    </div>
+
+    <div class="modal-overlay" id="userModal">
+        <div class="modal-box">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="loginForm">
+                <h3 class="text-center mb-2">User Login</h3>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control" id="loginEmail">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" id="loginPwd">
+                </div>
+                <button class="btn btn-primary w-100 mt-2" onclick="userLogin()">Login</button>
+                <p class="text-center mt-2">No Account? <span onclick="switchToRegister()" style="color:var(--primary);cursor:pointer;">Register Now</span></p>
+            </div>
+            <div id="registerForm" class="hidden">
+                <h3 class="text-center mb-2">User Register</h3>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" class="form-control" id="regName">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control" id="regEmail">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" id="regPwd">
+                </div>
+                <button class="btn btn-primary w-100 mt-2" onclick="userRegister()">Register</button>
+                <p class="text-center mt-2">Have Account? <span onclick="switchToLogin()" style="color:var(--primary);cursor:pointer;">Login Now</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-box">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h3 class="text-center mb-2">Checkout</h3>
+            <div class="form-group">
+                <label>Shipping Address</label>
+                <textarea class="form-control" id="address"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Payment Method</label>
+                <select class="form-control" id="payMethod">
+                    <option>Credit Card</option>
+                    <option>PayPal</option>
+                    <option>Stripe</option>
+                </select>
+            </div>
+            <div class="cart-total">Total: <span id="checkoutTotal">$0.00</span></div>
+            <button class="btn btn-primary w-100 mt-2" onclick="submitOrder()">Submit Order</button>
+        </div>
+    </div>
+
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 id="heroTitle"></h1>
+            <p class="mt-2" id="heroDesc"></p>
+        </div>
+    </section>
+
+    <div class="wrapper" id="products">
+        <h2 class="text-center">All Products</h2>
+        <p class="text-center text-gray mt-1">Unique Handmade Gifts | Premium Quality | Fast Shipping | Perfect Gift for Your Loved Ones</p>
+        <div class="products" id="productList"></div>
+    </div>
+
+    <div class="wrapper" id="copyright">
+        <div class="copyright-box">
+            <h3>Official U.S. Copyright Protection Statement</h3>
+            <p class="mt-2" id="copyrightText"></p>
+            <p class="mt-1" id="copyrightEmail"></p>
+            <p class="mt-1" id="copyrightAddress"></p>
+        </div>
+    </div>
+
+    <footer class="wrapper text-center mt-3" style="background:var(--dark);color:#fff;padding:2rem;">
+        <p onclick="openAdminLogin()" style="cursor:pointer;">Yopcuvi © 2026 All Rights Reserved | U.S. Copyright Protected Brand</p>
+    </footer>
+</div>
+
+<div id="admin" class="hidden">
+    <header>
+        <div class="nav">
+            <span class="logo">Yopcuvi Admin Panel</span>
+            <div class="nav-links">
+                <button onclick="backToFront()">Back to Store</button>
+                <button onclick="adminLogout()" class="btn-red">Logout</button>
+            </div>
+        </div>
+    </header>
+    <div class="admin-body">
+        <div class="admin-sidebar">
+            <ul class="admin-menu">
+                <li class="active" onclick="switchMenu('dashboard')">📊 Dashboard</li>
+                <li onclick="switchMenu('products')">🛍️ Products</li>
+                <li onclick="switchMenu('orders')">📦 Orders</li>
+                <li onclick="switchMenu('users')">👥 Users</li>
+                <li onclick="switchMenu('settings')">⚙️ Website Settings</li>
+                <li onclick="switchMenu('adminpwd')">🔑 Admin Password</li>
+                <li onclick="switchMenu('data')">💾 Data Manage</li>
+            </ul>
+        </div>
+        <div class="admin-main">
+            <div id="dashboard" class="menu-content">
+                <h2 class="mb-2">Data Dashboard</h2>
+                <div class="stat-grid">
+                    <div class="stat-card"><h4>Total Users</h4><div id="statUser" class="num">0</div></div>
+                    <div class="stat-card"><h4>Total Orders</h4><div id="statOrder" class="num">0</div></div>
+                    <div class="stat-card"><h4>Total Sales</h4><div id="statSales" class="num">$0</div></div>
+                    <div class="stat-card"><h4>Total Products</h4><div id="statProduct" class="num">0</div></div>
+                </div>
+            </div>
+
+            <div id="products" class="menu-content hidden">
+                <div class="d-flex justify-between align-center mb-2">
+                    <h2>Product Management</h2>
+                    <button class="btn btn-primary" onclick="openAddProduct()">Add Product</button>
+                </div>
+                <div class="search-bar">
+                    <input type="text" class="form-control" placeholder="Search product name/ASIN" id="searchProduct">
+                    <button class="btn btn-dark" onclick="searchProduct()">Search</button>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead><tr><th>Image</th><th>Name</th><th>Price</th><th>Stock</th><th>ASIN</th><th>Publish Time</th><th>Status</th><th>Action</th></tr></thead>
+                        <tbody id="productTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="orders" class="menu-content hidden">
+                <div class="d-flex justify-between align-center mb-2">
+                    <h2>Order Management</h2>
+                </div>
+                <div class="search-bar">
+                    <input type="text" class="form-control" placeholder="Search order number/user email" id="searchOrder">
+                    <button class="btn btn-dark" onclick="searchOrder()">Search</button>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead><tr><th>Order No</th><th>User</th><th>Total</th><th>Status</th><th>Time</th><th>Action</th></tr></thead>
+                        <tbody id="orderTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="users" class="menu-content hidden">
+                <h2 class="mb-2">User Management</h2>
+                <div class="table-container">
+                    <table class="table">
+                        <thead><tr><th>Name</th><th>Email</th><th>Register Time</th><th>Status</th><th>Action</th></tr></thead>
+                        <tbody id="userTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="settings" class="menu-content hidden">
+                <h2 class="mb-2">Website Settings</h2>
+                <div class="modal-box w-100" style="box-shadow:none;">
+                    <div class="form-group">
+                        <label>Store Name</label>
+                        <input type="text" class="form-control" id="storeName">
+                    </div>
+                    <div class="form-group">
+                        <label>Home Hero Title</label>
+                        <input type="text" class="form-control" id="heroTitleInput">
+                    </div>
+                    <div class="form-group">
+                        <label>Home Hero Description</label>
+                        <input type="text" class="form-control" id="heroDescInput">
+                    </div>
+                    <div class="form-group">
+                        <label>Home Hero Background Image URL</label>
+                        <input type="text" class="form-control" id="heroBgInput" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Email</label>
+                        <input type="email" class="form-control" id="storeEmail">
+                    </div>
+                    <div class="form-group">
+                        <label>Store Address</label>
+                        <textarea class="form-control" id="storeAddress"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Copyright Statement</label>
+                        <textarea class="form-control" id="storeCopyright" rows="5"></textarea>
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="saveSettings()">Save Settings</button>
+                </div>
+            </div>
+
+            <div id="adminpwd" class="menu-content hidden">
+                <h2 class="mb-2">Modify Admin Password</h2>
+                <div class="modal-box w-100" style="box-shadow:none;">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" class="form-control" id="oldPwd">
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" class="form-control" id="newPwd">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirmPwd">
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="updateAdminPwd()">Save New Password</button>
+                    <p class="mt-2 text-red" style="color:var(--red);font-size:0.9rem;">⚠️ Please remember your new password!</p>
+                </div>
+            </div>
+
+            <div id="data" class="menu-content hidden">
+                <h2 class="mb-2">Data Management</h2>
+                <div class="modal-box w-100" style="box-shadow:none;">
+                    <button class="btn btn-primary w-100 mb-2" onclick="backupData()">Backup All Data (JSON)</button>
+                    <button class="btn btn-dark w-100 mb-2" onclick="clearData()">Clear All Data</button>
+                    <p style="color:var(--red);font-size:0.9rem;">⚠️ Clear data will reset all products/orders/users!</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Hero -->
-<section class="hero" id="home">
-    <div class="hero-box">
-        <h1>Yopcuvi Official Gift Store</h1>
-        <p>Original Designs | U.S. Copyright Protected | Premium Emotional Support Gifts</p>
-    </div>
-</section>
-
-<!-- Products -->
-<div class="wrapper" id="products">
-    <div class="section-head">
-        <h2>All Products</h2>
-        <p>First Published: 2026-04-25 | Amazon US Official Brand</p>
-    </div>
-
-    <div class="products-layout">
-        <!-- Product 1 -->
-        <div class="product-item" onclick="openModal('p1')">
-            <img src="p1.jpg" alt="Middle Finger Crochet Gifts" class="product-img" style="max-width: 100%; height: auto;">
-            <div class="product-text">
-                <h3>Middle Finger Crochet Positive Animals Gifts</h3>
-                <p class="asin-tag">ASIN: B0GWMB9J8J</p>
-            </div>
+<div class="modal-overlay" id="productModal">
+    <div class="modal-box">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <h3 class="text-center mb-2" id="productModalTitle">Add Product</h3>
+        <input type="hidden" id="editProductId">
+        <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" class="form-control" id="productName">
         </div>
-        <!-- Product Template -->
-        <div class="product-item" onclick="openModal('p2')">
-            <img src="https://picsum.photos/800/800" class="product-img">
-            <div class="product-text">
-                <h3>New Premium Product</h3>
-                <p class="asin-tag">ASIN: XXXXXXXXXX</p>
-            </div>
+        <div class="form-group">
+            <label>Main Image URL</label>
+            <input type="text" class="form-control" id="productImg">
         </div>
-    </div>
-
-    <!-- Product 1 Detail -->
-    <div class="product-modal" id="p1">
-        <h2 class="modal-title">Middle Finger Crochet Positive Animals Gifts, Sarcastic Gag Gift for Adults for Women Men, Friend Coworkers Inner Care Emotional Well-Being</h2>
-        <p class="modal-asin">ASIN: B0GWMB9J8J</p>
-        <div class="modal-gallery">
-           <img src="p1.jpg" alt="product" style="max-width: 100%; height: auto;">
-<img src="p2.jpg" alt="product" style="max-width: 100%; height: auto;">
-<img src="p3.jpg" alt="product" style="max-width: 100%; height: auto;">
-<img src="p4.jpg" alt="product" style="max-width: 100%; height: auto;">
-<img src="p5.JPG" alt="product" style="max-width: 100%; height: auto;">
-<img src="p6.JPG" alt="product" style="max-width: 100%; height: auto;">
-<img src="p7.JPG" alt="product" style="max-width: 100%; height: auto;">
+        <div class="form-group">
+            <label>Price ($)</label>
+            <input type="number" step="0.01" class="form-control" id="productPrice">
         </div>
-        <div class="modal-desc">
-            <p>Fun And emotional well-being: When You're Facing Difficulties, This "Positive Energy flying friend" Middle Finger Plush Toy Will "Always Be There For You." Its Adorable Design, With A Touch Of Adult Irony And Humor, Will Instantly Bring A Smile To Your Face And Relieve Stress.</p>
-            <p>Crocheted Design: This Crocheted Middle Finger Doll, Meticulously Woven From High-Quality Soft Yarn, Features Cute Eyes And A Smiling Face; It Makes A Beautiful Desktop Ornament Or Car Decoration; Its Quirky And Fun Design Is Sure To Stand Out And Bring A Smile To The Recipient's Face.</p>
-            <p>Perfect Size: This Personalized Men's Desktop Ornament Is Approximately 4.5 Inches Tall And 3.8 Inches Wide (Hand-Crocheted Dimensions May Vary Slightly), Adding A Touch Of Humor To Any Workspace. It's An eye-Catching Office Decoration Suitable For Both Men And Women.</p>
-            <p>Humorous Message Card: The Card Reads, "Has Your Little flying friend Flown Away? Don't Worry, I'll Always Be By Your Side," Cleverly Blending Positive Energy With The Playful Tone Of A Middle Finger Gesture.</p>
-            <p>Adult Prank Gift: This Hilarious Gift Is Perfect For Christmas, Birthdays, Or Other Holidays, Or Simply To Make Someone Laugh. A Great Gift For Men Or Women, It's Sure To Make Anyone Who Enjoys Sarcasm And Humor Laugh And Leave A Lasting Impression!</p>
+        <div class="form-group">
+            <label>Stock</label>
+            <input type="number" class="form-control" id="productStock" value="99">
         </div>
-        <div class="buy-group">
-            <button class="btn btn-cart" onclick="addToCart('p1')">Add to Cart - $19.99</button>
+        <div class="form-group">
+            <label>ASIN</label>
+            <input type="text" class="form-control" id="productAsin">
         </div>
-    </div>
-
-    <!-- Product 2 Detail -->
-    <div class="product-modal" id="p2">
-        <h2 class="modal-title">New Premium Product</h2>
-        <p class="modal-asin">ASIN: XXXXXXXXXX</p>
-        <div class="modal-gallery"><img src="https://picsum.photos/800/800"></div>
-        <div class="modal-desc">Product description coming soon.</div>
-        <div class="buy-group">
-            <button class="btn btn-cart" onclick="addToCart('p2')">Add to Cart - $19.99</button>
+        <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" id="productStatus">
+                <option value="1">On Sale</option>
+                <option value="0">Off Shelf</option>
+            </select>
         </div>
+        <button class="btn btn-primary w-100 mt-2" onclick="saveProduct()">Save Product</button>
     </div>
 </div>
-
-<!-- Copyright -->
-<section class="copyright-banner" id="copyright">
-    <div class="copyright-box">
-        <h3>Official U.S. Copyright Protection Statement</h3>
-        <p>1. All product images, designs, text, and intellectual property on <strong>Yopcuvi.com</strong> are the SOLE & EXCLUSIVE original copyrighted works of Yopcuvi.</p>
-        <p>2. First Publication Date: 2026-04-25 — Legally archived for Amazon Brand Registry and infringement complaints.</p>
-        <p>3. Any unauthorized use, copying, scraping, or reselling of our content on Amazon or other platforms is a VIOLATION of U.S. Copyright Law.</p>
-        <p>4. This website is the OFFICIAL LEGAL PROOF for all Amazon copyright complaints and brand verification.</p>
-        <p>5. We reserve all rights to report infringing listings to Amazon and pursue legal action.</p>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer id="contact">
-    <h3>Yopcuvi © 2026 All Rights Reserved</h3>
-    <p>Official Website: yopcuvi.com | U.S. Copyright Protected Brand | Amazon US Partner</p>
-    <p>Email: kangbozhao3@gmail.com</p>
-    <p>Address: 1217, 12th Floor, No.1 Commercial Building, No.55 Hongkang Road, Jinshui District, Zhengzhou City, Henan Province, China</p>
-</footer>
 
 <script>
-// Cart Core (100% Stable)
-let cart = JSON.parse(localStorage.getItem('yopcuviCart')) || [];
-const productData = {
-    p1: {id:'p1',name:'Middle Finger Crochet Doll',img:'https://i.imgur.com/6qmk4kY.jpeg',asin:'B0GWMB9J8J',price:19.99},
-    p2: {id:'p2',name:'New Premium Product',img:'https://picsum.photos/800/800',asin:'XXXXXXXXXX',price:19.99}
+// 管理员配置
+let adminAccount = JSON.parse(localStorage.getItem('adminAccount')) || { account: "admin", pwd: "admin123" };
+let currentMenu = "dashboard";
+
+// 格式化时间函数
+function formatTime(time = new Date()) {
+    const d = new Date(time);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const h = String(d.getHours()).padStart(2, '0');
+    const m = String(d.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day} ${h}:${m}`;
+}
+
+// 核心数据
+let storeData = JSON.parse(localStorage.getItem('storeData')) || {
+    products: [
+        {id:"p1",name:"Middle Finger Crochet Positive Animals Gifts",img:"https://picsum.photos/800/800",price:19.99,stock:99,asin:"B0GWMB9J8J",status:1,publishTime:formatTime()},
+        {id:"p2",name:"New Premium Gift Product",img:"https://picsum.photos/800/801",price:24.99,stock:99,asin:"B0XXXXXX11",status:1,publishTime:formatTime()}
+    ],
+    users: [],
+    orders: [],
+    settings: {
+        name:"Yopcuvi",
+        heroTitle:"Yopcuvi Official Gift Store",
+        heroDesc:"Original Designs | U.S. Copyright Protected | Premium Emotional Support Gifts",
+        heroBg:"",
+        email:"kangbozhao3@gmail.com",
+        address:"1217, 12th Floor, No.1 Commercial Building, No.55 Hongkang Road, Jinshui District, Zhengzhou City, Henan Province, China",
+        copyright:"All product images, designs, text, and intellectual property on Yopcuvi.com are the SOLE & EXCLUSIVE original copyrighted works of Yopcuvi."
+    }
 };
 
-// Render Cart
-function renderCart(){
-    const cartItems = document.getElementById('cartItems');
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+let adminStatus = localStorage.getItem('adminStatus') === 'true';
+
+// 前台渲染 - 无登录限制，所有人可浏览
+function renderProducts() {
+    const list = storeData.products.filter(p => p.status == 1);
+    document.getElementById('productList').innerHTML = list.map(p => `
+        <div class="product-card">
+            <img src="${p.img}" alt="${p.name}">
+            <div class="product-info">
+                <div class="product-title">${p.name}</div>
+                <div class="product-price">$${p.price.toFixed(2)}</div>
+                <div class="product-asin">ASIN: ${p.asin}</div>
+                <div class="product-publish">Published: ${p.publishTime}</div>
+                <button class="btn btn-primary w-100 mt-2" onclick="addToCart('${p.id}')">Add to Cart</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 购物车
+function toggleCart() {
+    document.getElementById('cartSidebar').classList.toggle('active');
+    document.querySelector('.overlay').classList.toggle('active');
+    renderCart();
+}
+function renderCart() {
+    const dom = document.getElementById('cartItems');
     const count = document.getElementById('cartCount');
     const total = document.getElementById('cartTotal');
-    let sum = 0;
-
-    count.textContent = cart.reduce((a,b)=>a+b.qty,0);
-    if(cart.length===0){cartItems.innerHTML='<div class="cart-empty">Your cart is empty</div>';total.textContent='$0.00';return;}
-    
-    cartItems.innerHTML = cart.map((item,i)=>{
-        sum+=item.price*item.qty;
-        return `<div class="cart-item">
-            <img src="${item.img}">
-            <div class="cart-item-info">
-                <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-asin">ASIN: ${item.asin}</div>
-                <div class="cart-item-price">$${item.price.toFixed(2)}</div>
-                <div class="cart-qty">
-                    <button class="qty-btn" onclick="updateQty(${i},-1)">-</button>
-                    <span>${item.qty}</span>
-                    <button class="qty-btn" onclick="updateQty(${i},1)">+</button>
-                </div>
-                <div class="cart-delete" onclick="removeItem(${i})">Remove</div>
-            </div>
-        </div>`;
-    }).join('');
+    let sum = 0, num = 0;
+    cart.forEach(i => { sum += i.price * i.qty; num += i.qty; });
+    count.textContent = num;
     total.textContent = `$${sum.toFixed(2)}`;
+    document.getElementById('checkoutTotal').textContent = `$${sum.toFixed(2)}`;
+    dom.innerHTML = cart.length === 0 ? '<p class="text-center mt-2">Cart Empty</p>' : cart.map(i => `
+        <div class="cart-item d-flex justify-between align-center">
+            <div>${i.name} x${i.qty}</div>
+            <div>$${(i.price * i.qty).toFixed(2)}</div>
+        </div>
+    `).join('');
 }
-
-// Cart Functions
-function toggleCart(){document.getElementById('cartSidebar').classList.toggle('active');document.querySelector('.overlay').classList.toggle('active');}
-function addToCart(id){
-    const p = productData[id];
-    const find = cart.find(i=>i.id===id);
-    find?find.qty++:cart.push({...p,qty:1});
-    localStorage.setItem('yopcuviCart',JSON.stringify(cart));
+// 仅加入购物车需要登录，浏览完全免费
+function addToCart(id) {
+    if (!currentUser) { alert('Please Login First!'); openLoginModal(); return; }
+    const p = storeData.products.find(x => x.id === id);
+    const item = cart.find(x => x.id === id);
+    item ? item.qty++ : cart.push({ ...p, qty: 1 });
+    localStorage.setItem('cart', JSON.stringify(cart));
     renderCart();
-    alert('Added to cart successfully!');
+    alert('Added to Cart Successfully!');
 }
-function updateQty(i,num){cart[i].qty+=num;cart[i].qty<1&&cart.splice(i,1);localStorage.setItem('yopcuviCart',JSON.stringify(cart));renderCart();}
-function removeItem(i){cart.splice(i,1);localStorage.setItem('yopcuviCart',JSON.stringify(cart));renderCart();}
-function clearCart(){cart=[];localStorage.setItem('yopcuviCart',JSON.stringify(cart));renderCart();}
-function checkout(){cart.length===0?alert('Cart is empty!'):alert('Redirecting to PayPal/Stripe Checkout...');toggleCart();}
 
-// Product Modal
-function openModal(id){document.querySelectorAll('.product-modal').forEach(m=>m.classList.remove('show'));document.getElementById(id).classList.add('show');document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+// 结算
+function goCheckout() {
+    if (cart.length === 0) { alert('Cart Empty!'); return; }
+    closeModal();
+    document.getElementById('checkoutModal').classList.add('active');
+}
+function submitOrder() {
+    const address = document.getElementById('address').value;
+    const method = document.getElementById('payMethod').value;
+    if (!address) { alert('Please Enter Shipping Address!'); return; }
+    const order = {
+        no: "YOP" + new Date().getTime(),
+        user: currentUser.email,
+        items: [...cart],
+        total: cart.reduce((s, i) => s + i.price * i.qty, 0),
+        address, method,
+        time: new Date().toLocaleString(),
+        status: "Paid"
+    };
+    storeData.orders.unshift(order);
+    saveData();
+    cart = [];
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+    closeModal();
+    alert(`Order Success!\nOrder Number: ${order.no}`);
+}
 
-// Init
-renderCart();
+// 用户登录注册
+function openLoginModal() { document.getElementById('userModal').classList.add('active'); }
+function switchToRegister() { document.getElementById('loginForm').classList.add('hidden'); document.getElementById('registerForm').classList.remove('hidden'); }
+function switchToLogin() { document.getElementById('registerForm').classList.add('hidden'); document.getElementById('loginForm').classList.remove('hidden'); }
+function closeModal() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
+function userRegister() {
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const pwd = document.getElementById('regPwd').value;
+    if (!name || !email || !pwd) { alert('Please Fill All Fields!'); return; }
+    if (storeData.users.find(u => u.email === email)) { alert('Email Already Registered!'); return; }
+    storeData.users.push({ name, email, pwd, time: new Date().toLocaleString(), status: 1 });
+    saveData();
+    alert('Register Success!');
+    switchToLogin();
+}
+function userLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const pwd = document.getElementById('loginPwd').value;
+    const user = storeData.users.find(u => u.email === email && u.pwd === pwd && u.status == 1);
+    if (!user) { alert('Email/Password Error Or Account Disabled!'); return; }
+    currentUser = user;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    closeModal();
+    alert('Login Success!');
+}
+
+// 管理员功能
+function openAdminLogin() {
+    const account = prompt('Admin Account:');
+    const pwd = prompt('Admin Password:');
+    if (account === adminAccount.account && pwd === adminAccount.pwd) {
+        adminStatus = true;
+        localStorage.setItem('adminStatus', 'true');
+        document.getElementById('frontend').classList.add('hidden');
+        document.getElementById('admin').classList.remove('hidden');
+        renderAdmin();
+    } else {
+        alert('Account Or Password Error!');
+    }
+}
+function backToFront() {
+    document.getElementById('admin').classList.add('hidden');
+    document.getElementById('frontend').classList.remove('hidden');
+}
+function adminLogout() {
+    adminStatus = false;
+    localStorage.removeItem('adminStatus');
+    backToFront();
+}
+function switchMenu(menu) {
+    currentMenu = menu;
+    document.querySelectorAll('.menu-content').forEach(m => m.classList.add('hidden'));
+    document.querySelectorAll('.admin-menu li').forEach(i => i.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(menu).classList.remove('hidden');
+    renderAdmin();
+}
+function renderAdmin() {
+    renderDashboard();
+    renderProductTable();
+    renderOrderTable();
+    renderUserTable();
+    loadSettings();
+}
+function renderDashboard() {
+    document.getElementById('statUser').textContent = storeData.users.length;
+    document.getElementById('statOrder').textContent = storeData.orders.length;
+    document.getElementById('statSales').textContent = `$${storeData.orders.reduce((s, o) => s + o.total, 0).toFixed(2)}`;
+    document.getElementById('statProduct').textContent = storeData.products.length;
+}
+
+// 管理员改密
+function updateAdminPwd(){
+    const old = document.getElementById('oldPwd').value;
+    const n = document.getElementById('newPwd').value;
+    const c = document.getElementById('confirmPwd').value;
+    if(old !== adminAccount.pwd){ alert('Current Password Error!'); return; }
+    if(n !== c){ alert('Two passwords do not match!'); return; }
+    if(n.length < 6){ alert('Password length at least 6 digits!'); return; }
+    adminAccount.pwd = n;
+    localStorage.setItem('adminAccount', JSON.stringify(adminAccount));
+    alert('Password modified successfully!');
+    document.getElementById('oldPwd').value = '';
+    document.getElementById('newPwd').value = '';
+    document.getElementById('confirmPwd').value = '';
+}
+
+// 产品管理
+function openAddProduct() {
+    document.getElementById('productModalTitle').textContent = 'Add Product';
+    document.getElementById('editProductId').value = '';
+    document.querySelectorAll('#productModal input,#productModal select').forEach(i => i.value = '');
+    document.getElementById('productStock').value = 99;
+    document.getElementById('productModal').classList.add('active');
+}
+function saveProduct() {
+    const id = document.getElementById('editProductId').value || 'p' + new Date().getTime();
+    const name = document.getElementById('productName').value;
+    const img = document.getElementById('productImg').value;
+    const price = parseFloat(document.getElementById('productPrice').value);
+    const stock = parseInt(document.getElementById('productStock').value);
+    const asin = document.getElementById('productAsin').value;
+    const status = document.getElementById('productStatus').value;
+    
+    if (!name || !img || !price) { alert('Please Fill Required Fields!'); return; }
+
+    const index = storeData.products.findIndex(p => p.id === id);
+    if (index > -1) {
+        const oldPublishTime = storeData.products[index].publishTime;
+        storeData.products[index] = { id, name, img, price, stock, asin, status, publishTime: oldPublishTime };
+    } else {
+        storeData.products.push({ id, name, img, price, stock, asin, status, publishTime: formatTime() });
+    }
+    saveData();
+    closeModal();
+    renderProductTable();
+    renderProducts();
+    alert('Save Product Success!');
+}
+function renderProductTable() {
+    document.getElementById('productTable').innerHTML = storeData.products.map(p => `
+        <tr>
+            <td><img src="${p.img}"></td>
+            <td>${p.name}</td>
+            <td>$${p.price.toFixed(2)}</td>
+            <td>${p.stock}</td>
+            <td>${p.asin}</td>
+            <td>${p.publishTime}</td>
+            <td><span class="badge ${p.status == 1 ? 'badge-success' : 'badge-danger'}">${p.status == 1 ? 'On Sale' : 'Off Shelf'}</span></td>
+            <td>
+                <button class="btn btn-sm btn-primary" onclick="editProduct('${p.id}')">Edit</button>
+                <button class="btn btn-sm btn-red" onclick="deleteProduct('${p.id}')">Delete</button>
+            </td>
+        </tr>
+    `).join('');
+}
+function editProduct(id) {
+    const p = storeData.products.find(x => x.id === id);
+    document.getElementById('productModalTitle').textContent = 'Edit Product';
+    document.getElementById('editProductId').value = p.id;
+    document.getElementById('productName').value = p.name;
+    document.getElementById('productImg').value = p.img;
+    document.getElementById('productPrice').value = p.price;
+    document.getElementById('productStock').value = p.stock;
+    document.getElementById('productAsin').value = p.asin;
+    document.getElementById('productStatus').value = p.status;
+    document.getElementById('productModal').classList.add('active');
+}
+function deleteProduct(id) {
+    if (!confirm('Confirm Delete?')) return;
+    storeData.products = storeData.products.filter(p => p.id !== id);
+    saveData();
+    renderProductTable();
+    renderProducts();
+}
+function searchProduct() {
+    const keyword = document.getElementById('searchProduct').value.toLowerCase();
+    const list = storeData.products.filter(p => p.name.toLowerCase().includes(keyword) || p.asin.toLowerCase().includes(keyword));
+    document.getElementById('productTable').innerHTML = list.map(p => `
+        <tr><td><img src="${p.img}"></td><td>${p.name}</td><td>$${p.price.toFixed(2)}</td><td>${p.stock}</td><td>${p.asin}</td>
+        <td>${p.publishTime}</td>
+        <td><span class="badge ${p.status ==1 ? 'badge-success' : 'badge-danger'}">${p.status ==1 ? 'On Sale' : 'Off Shelf'}</span></td>
+        <td><button class="btn btn-sm btn-primary" onclick="editProduct('${p.id}')">Edit</button><button class="btn btn-sm btn-red" onclick="deleteProduct('${p.id}')">Delete</button></td></tr>
+    `).join('');
+}
+
+// 订单/用户管理
+function renderOrderTable() {
+    document.getElementById('orderTable').innerHTML = storeData.orders.map(o => `
+        <tr><td>${o.no}</td><td>${o.user}</td><td>$${o.total.toFixed(2)}</td>
+        <td><span class="badge badge-success">${o.status}</span></td><td>${o.time}</td>
+        <td><button class="btn btn-sm btn-primary" onclick="updateOrderStatus('${o.no}')">Change Status</button></td></tr>
+    `).join('');
+}
+function updateOrderStatus(no) {
+    const status = prompt('Enter New Status:\nPaid/Shipped/Completed/Cancelled');
+    if (!status) return;
+    const order = storeData.orders.find(o => o.no === no);
+    if (order) order.status = status;
+    saveData();
+    renderOrderTable();
+}
+function searchOrder() {
+    const keyword = document.getElementById('searchOrder').value.toLowerCase();
+    const list = storeData.orders.filter(o => o.no.toLowerCase().includes(keyword) || o.user.toLowerCase().includes(keyword));
+    document.getElementById('orderTable').innerHTML = list.map(o => `
+        <tr><td>${o.no}</td><td>${o.user}</td><td>$${o.total.toFixed(2)}</td><td><span class="badge badge-success">${o.status}</span></td><td>${o.time}</td>
+        <td><button class="btn btn-sm btn-primary" onclick="updateOrderStatus('${o.no}')">Change Status</button></td></tr>
+    `).join('');
+}
+function renderUserTable() {
+    document.getElementById('userTable').innerHTML = storeData.users.map(u => `
+        <tr><td>${u.name}</td><td>${u.email}</td><td>${u.time}</td>
+        <td><span class="badge ${u.status ==1 ? 'badge-success' : 'badge-danger'}">${u.status ==1 ? 'Normal' : 'Disabled'}</span></td>
+        <td><button class="btn btn-sm btn-warning" onclick="toggleUserStatus('${u.email}')">${u.status ==1 ? 'Disable' : 'Enable'}</button></td></tr>
+    `).join('');
+}
+function toggleUserStatus(email) {
+    const user = storeData.users.find(u => u.email === email);
+    user.status = user.status ==1 ? 0 : 1;
+    saveData();
+    renderUserTable();
+}
+
+// 网站设置 + 背景图
+function loadSettings() {
+    document.getElementById('storeName').value = storeData.settings.name;
+    document.getElementById('heroTitleInput').value = storeData.settings.heroTitle;
+    document.getElementById('heroDescInput').value = storeData.settings.heroDesc;
+    document.getElementById('heroBgInput').value = storeData.settings.heroBg;
+    document.getElementById('storeEmail').value = storeData.settings.email;
+    document.getElementById('storeAddress').value = storeData.settings.address;
+    document.getElementById('storeCopyright').value = storeData.settings.copyright;
+}
+function saveSettings() {
+    storeData.settings = {
+        name: document.getElementById('storeName').value,
+        heroTitle: document.getElementById('heroTitleInput').value,
+        heroDesc: document.getElementById('heroDescInput').value,
+        heroBg: document.getElementById('heroBgInput').value,
+        email: document.getElementById('storeEmail').value,
+        address: document.getElementById('storeAddress').value,
+        copyright: document.getElementById('storeCopyright').value
+    };
+    saveData();
+    alert('Save Settings Success!');
+    renderAll();
+}
+
+// 数据管理
+function backupData() {
+    const data = JSON.stringify(storeData);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'yopcuvi_backup.json';
+    a.click();
+}
+function clearData() {
+    if (!confirm('⚠️ Confirm Clear All Data?')) return;
+    storeData = { products: [], users: [], orders: [], settings: storeData.settings };
+    saveData();
+    renderAdmin();
+    renderProducts();
+    alert('Clear Data Success!');
+}
+function saveData() {
+    localStorage.setItem('storeData', JSON.stringify(storeData));
+}
+
+// 全局渲染
+function renderAll(){
+    renderHeroText();
+    renderCopyright();
+    renderProducts();
+}
+function renderHeroText(){
+    document.getElementById('heroTitle').innerText = storeData.settings.heroTitle;
+    document.getElementById('heroDesc').innerText = storeData.settings.heroDesc;
+    const hero = document.getElementById('home');
+    if(storeData.settings.heroBg){
+        hero.style.backgroundImage = `url(${storeData.settings.heroBg})`;
+    } else {
+        hero.style.backgroundImage = 'none';
+        hero.style.backgroundColor = '#111827';
+    }
+}
+function renderCopyright() {
+    document.getElementById('copyrightText').innerHTML = storeData.settings.copyright;
+    document.getElementById('copyrightEmail').innerText = `Email: ${storeData.settings.email}`;
+    document.getElementById('copyrightAddress').innerText = `Address: ${storeData.settings.address}`;
+}
+
+// 初始化
+function init() {
+    renderAll();
+    renderCart();
+    if (adminStatus) {
+        document.getElementById('frontend').classList.add('hidden');
+        document.getElementById('admin').classList.remove('hidden');
+        renderAdmin();
+    }
+}
+init();
 </script>
 </body>
 </html>
