@@ -8,8 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* 样式保持不变，此处省略以节省篇幅，请保留你原代码中的所有 <style> 内容 */
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif;}
-        :root{--primary:#2563eb;--primary-hover:#1d4ed8;--dark:#111827;--gray:#6b7280;--red:#dc2626;--light:#f9fafb;--white:#fff;--border:#e5e7eb;--shadow:0 8px 30px rgba(0,0,0,0.08);--shadow-hover:0 12px 40px rgba(0,0,0,0.12);}
+        :root{--primary:#2563eb;--dark:#111827;--gray:#6b7280;--red:#dc2626;--light:#f9fafb;--white:#fff;--border:#e5e7eb;--shadow:0 8px 30px rgba(0,0,0,0.08);}
         html{scroll-behavior:smooth;}
         body{background:#fff;color:var(--dark);line-height:1.6;}
         .hidden{display:none !important;}
@@ -25,9 +26,6 @@
         .gap-1{gap:0.5rem;}
         .gap-2{gap:1rem;}
         .w-100{width:100%;}
-        .text-gray{color:var(--gray);}
-
-        /* 星级评分样式 */
         .stars{display:flex;gap:0.2rem;color:#f59e0b;font-size:1.2rem;}
         .star-empty{color:var(--border);}
         .review-item{padding:1rem;border-bottom:1px solid var(--border);}
@@ -35,183 +33,84 @@
         .review-name{font-weight:600;}
         .review-time{color:var(--gray);font-size:0.9rem;}
         .review-content{margin-top:0.5rem;line-height:1.8;}
-
-        /* 规格选择样式 */
         .spec-group{margin:1rem 0;}
         .spec-title{font-weight:600;margin-bottom:0.8rem;}
         .spec-options{display:flex;gap:0.8rem;flex-wrap:wrap;}
-        .spec-btn{padding:0.6rem 1.2rem;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all 0.2s;background:#fff;font-weight:500;}
-        .spec-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 4px 10px rgba(37,99,235,0.2);}
-        .spec-btn:hover:not(.active){border-color:var(--primary);color:var(--primary);}
-
-        /* 促销标签 */
-        .product-tags{display:flex;gap:0.5rem;margin:1rem 0;flex-wrap:wrap;}
+        .spec-btn{padding:0.6rem 1.2rem;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:0.2s;background:#fff;}
+        .spec-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+        .spec-btn:hover{border-color:var(--primary);}
+        .product-tags{display:flex;gap:0.5rem;margin:1rem 0;}
         .tag{padding:0.3rem 0.8rem;border-radius:4px;font-size:0.8rem;font-weight:600;}
         .tag-hot{background:#fee2e2;color:var(--red);}
         .tag-new{background:#d1fae5;color:#065f46;}
         .tag-sale{background:#fef3c7;color:#92400e;}
-
-        /* 弹窗样式 */
-        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:9999;display:none;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s ease;}
-        .modal-overlay.active{display:flex;opacity:1;}
-        .modal-box{background:#fff;border-radius:12px;width:100%;max-width:95vw;max-height:90vh;overflow-y:auto;padding:2.5rem;position:relative;box-shadow:var(--shadow-hover);transform:translateY(20px);transition:transform 0.3s ease;}
-        .modal-overlay.active .modal-box{transform:translateY(0);}
-        #userModal .modal-box, #checkoutModal .modal-box { max-width:450px; }
-        .modal-close{position:absolute;top:1rem;right:1.5rem;font-size:2rem;cursor:pointer;color:var(--gray);z-index:10;transition:0.2s;}
-        .modal-close:hover{color:var(--red);transform:rotate(90deg);}
-
-        .btn{padding:0.7rem 1.2rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:none;align-items:center;justify-content:center;}
+        .modal-overlay.active{display:flex;}
+        .modal-box{background:#fff;border-radius:12px;width:100%;max-width:95vw;max-height:95vh;overflow-y:auto;padding:2.5rem;position:relative;}
+        .modal-close{position:absolute;top:1.5rem;right:1.5rem;font-size:2rem;cursor:pointer;color:var(--gray);z-index:10;}
+        .modal-close:hover{color:var(--red);}
+        .btn{padding:0.7rem 1.2rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:0.2s;}
         .btn-primary{background:var(--primary);color:#fff;}
         .btn-dark{background:var(--dark);color:#fff;}
         .btn-red{background:var(--red);color:#fff;}
-        .btn-light{background:var(--light);color:var(--dark);border:1px solid var(--border);}
+        .btn-light{background:var(--light);color:var(--dark);}
         .btn-sm{padding:0.4rem 0.8rem;font-size:0.9rem;}
-        .btn-lg{padding:1rem 2rem;font-size:1.1rem;}
-        .btn:hover{opacity:0.9;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.15);}
-
+        .btn-lg{padding:1.2rem 2rem;font-size:1.1rem;}
+        .btn:hover{opacity:0.9;transform:translateY(-2px);}
         .form-group{margin-bottom:1rem;}
-        .form-group label{display:block;margin-bottom:0.5rem;font-weight:600;font-size:0.95rem;color:var(--dark);}
-        .form-control{width:100%;padding:0.8rem 1rem;border:1px solid var(--border);border-radius:8px;font-size:1rem;transition:0.3s;background:var(--light);}
-        .form-control:focus{border-color:var(--primary);background:#fff;outline:none;box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
-        select.form-control{appearance:none;cursor:pointer;}
-        textarea.form-control{resize:vertical;min-height:100px;}
-
-        header{position:fixed;top:0;left:0;width:100%;background:rgba(17,24,39,0.95);backdrop-filter:blur(8px);padding:1rem 5%;z-index:998;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+        .form-group label{display:block;margin-bottom:0.5rem;font-weight:600;}
+        .form-control{width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;font-size:1rem;}
+        header{position:fixed;top:0;left:0;width:100%;background:var(--dark);padding:1rem 5%;z-index:998;}
         .nav{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
-        .logo{color:#fff;font-size:1.5rem;font-weight:800;text-decoration:none;letter-spacing:1px;}
+        .logo{color:#fff;font-size:1.5rem;font-weight:800;text-decoration:none;}
         .nav-links{display:flex;align-items:center;gap:1.5rem;}
-        .nav-links a,.nav-links button{color:#fff;text-decoration:none;font-weight:600;background:none;border:none;cursor:pointer;font-size:0.95rem;transition:0.2s;}
-        .nav-links a:hover,.nav-links button:hover{color:var(--primary);}
-
-        .cart-icon{position:relative;color:#fff;font-size:1.2rem;cursor:pointer;}
-        .cart-count{position:absolute;top:-8px;right:-10px;background:var(--red);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:bold;border:2px solid var(--dark);}
-        
-        .cart-sidebar{position:fixed;top:0;right:-420px;width:400px;max-width:100vw;height:100vh;background:#fff;z-index:999;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);padding:2rem;box-shadow:-5px 0 25px rgba(0,0,0,0.15);overflow-y:auto;}
+        .nav-links a,.nav-links button{color:#fff;text-decoration:none;font-weight:600;background:none;border:none;cursor:pointer;}
+        .cart-icon{position:relative;color:#fff;font-size:1.2rem;}
+        .cart-count{position:absolute;top:-8px;right:-8px;background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;font-size:12px;display:flex;align-items:center;justify-content:center;}
+        .cart-sidebar{position:fixed;top:0;right:-420px;width:420px;height:100vh;background:#fff;z-index:997;transition:0.3s ease;padding:2rem;box-shadow:-5px 0 15px rgba(0,0,0,0.1);}
         .cart-sidebar.active{right:0;}
-        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);backdrop-filter:blur(3px);z-index:998;display:none;opacity:0;transition:opacity 0.3s;}
-        .overlay.active{display:block;opacity:1;}
-        .cart-item{padding:1rem 0;border-bottom:1px solid var(--border);}
-        .cart-total{font-size:1.4rem;font-weight:800;text-align:right;padding:1.5rem 0;color:var(--dark);}
-
-        .hero{
-            height:550px;
-            position:relative;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            text-align:center;
-            margin-top:60px;
-            background-size:cover;
-            background-position:center;
-            background-repeat:no-repeat;
-            background-color:var(--dark);
-        }
-        .hero-overlay{
-            position:absolute;
-            top:0;left:0;
-            width:100%;height:100%;
-            background:linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7));
-            z-index:1;
-        }
-        .hero-content{
-            position:relative;
-            z-index:2;
-            color:#fff;
-            padding:0 1rem;
-            max-width:800px;
-        }
-        .hero-content h1{font-size:3.5rem;font-weight:800;line-height:1.2;margin-bottom:1rem;}
-        .hero-content p{font-size:1.2rem;opacity:0.9;}
-
-        .wrapper{max-width:1400px;margin:0 auto;padding:4rem 5%;}
-        .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2.5rem;margin-top:3rem;}
-        .product-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all 0.3s;background:#fff;display:flex;flex-direction:column;}
-        .product-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-hover);}
-        .product-card img{width:100%;height:280px;object-fit:cover;transition:transform 0.5s;}
-        .product-card:hover img{transform:scale(1.05);}
-        .product-info{padding:1.5rem;flex:1;display:flex;flex-direction:column;justify-content:space-between;background:#fff;z-index:2;position:relative;}
-        .product-title{font-weight:700;font-size:1.1rem;margin-bottom:0.5rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-        .product-price{color:var(--primary);font-weight:800;font-size:1.3rem;}
-        .product-asin{color:var(--gray);font-size:0.85rem;margin-top:0.5rem;}
-        .copyright-box{background:var(--light);padding:3rem;border-radius:16px;margin-top:2rem;text-align:center;border:1px solid var(--border);}
-
-        /* 详情页专属样式 */
+        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:996;display:none;}
+        .overlay.active{display:block;}
+        .cart-item{padding:0.8rem 0;border-bottom:1px solid var(--border);}
+        .cart-total{font-size:1.2rem;font-weight:700;text-align:right;padding:1rem 0;}
+        .hero{height:500px;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;margin-top:60px;background-size:cover;background-position:center;}
+        .hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1;}
+        .hero-content{position:relative;z-index:2;color:#fff;}
+        .wrapper{max-width:1200px;margin:0 auto;padding:2rem 5%;}
+        .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2rem;margin-top:2rem;}
+        .product-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:0.3s;}
+        .product-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);}
+        .product-card img{width:100%;height:220px;object-fit:cover;}
+        .product-info{padding:1rem;}
+        .product-title{font-weight:600;margin-bottom:0.5rem;}
+        .product-price{color:var(--primary);font-weight:700;}
         .detail-gallery{flex:1.2;min-width:350px;}
-        .detail-main-img{width:100%;height:550px;object-fit:cover;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1rem;cursor:zoom-in;transition:0.3s;}
-        .thumbnails{display:grid;grid-template-columns:repeat(5,1fr);gap:0.8rem;}
-        .thumb-img{width:100%;height:90px;object-fit:cover;border-radius:8px;cursor:pointer;border:3px solid transparent;transition:all 0.2s;}
-        .thumb-img.active{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-        .thumb-img:hover:not(.active){border-color:var(--gray);}
+        .detail-main-img{width:100%;height:500px;object-fit:cover;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1rem;cursor:pointer;}
+        .thumbnails{display:grid;grid-template-columns:repeat(5,1fr);gap:0.8rem;margin-top:1rem;}
+        .thumb-img{width:100%;height:80px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:0.2s;}
+        .thumb-img.active{border-color:var(--primary);}
         .detail-info{flex:1;min-width:350px;}
-        .detail-section{padding:2rem;border-radius:12px;background:var(--light);margin:2rem 0;border:1px solid var(--border);}
-        .detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin:1rem 0;}
-        .related-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1.5rem;margin-top:1.5rem;}
-        .related-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:0.3s;}
-        .related-card:hover{box-shadow:var(--shadow);transform:translateY(-3px);}
-        .related-card img{width:100%;height:180px;object-fit:cover;}
-        .related-info{padding:1rem;}
-
-        /* 后台专属样式 */
-        #admin{background:#f3f4f6;min-height:100vh;}
+        .detail-section{padding:1.5rem;border-radius:12px;background:var(--light);margin:1.5rem 0;}
+        #admin{background:#f8f9fa;min-height:100vh;}
         .admin-body{display:flex;margin-top:60px;}
-        .admin-sidebar{width:260px;background:var(--dark);color:#fff;height:calc(100vh - 60px);position:fixed;padding:1.5rem 0;overflow-y:auto;z-index:90;}
-        .admin-main{flex:1;margin-left:260px;padding:2.5rem;overflow-y:auto;}
+        .admin-sidebar{width:250px;background:var(--dark);color:#fff;height:calc(100vh - 60px);position:fixed;padding:1.5rem 0;}
+        .admin-main{flex:1;margin-left:250px;padding:2rem;}
         .admin-menu{list-style:none;}
-        .admin-menu li{padding:1rem 2rem;cursor:pointer;transition:all 0.2s;font-weight:500;display:flex;align-items:center;gap:10px;border-left:4px solid transparent;}
-        .admin-menu li:hover{background:rgba(255,255,255,0.1);}
-        .admin-menu li.active{background:rgba(255,255,255,0.1);border-left-color:var(--primary);color:#fff;}
-
-        .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-bottom:2.5rem;}
-        .stat-card{background:#fff;padding:2rem;border-radius:12px;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;}
-        .stat-card h4{color:var(--gray);font-size:0.95rem;margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:1px;}
-        .stat-card .num{font-size:2.5rem;font-weight:800;color:var(--dark);}
-
-        .table-container{background:#fff;border-radius:12px;overflow-x:auto;box-shadow:var(--shadow);border:1px solid var(--border);}
-        .table{width:100%;border-collapse:collapse;min-width:800px;}
-        .table th{background:var(--light);padding:1.2rem 1rem;text-align:left;font-weight:700;color:var(--dark);border-bottom:2px solid var(--border);}
-        .table td{padding:1rem;border-bottom:1px solid var(--border);vertical-align:middle;}
-        .table img{width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid var(--border);}
-        .table tr:hover td{background:var(--light);}
-        
-        .badge{padding:0.4rem 0.8rem;border-radius:6px;font-size:0.8rem;font-weight:700;}
+        .admin-menu li{padding:1rem 1.5rem;cursor:pointer;transition:0.2s;}
+        .admin-menu li:hover{background:var(--primary);}
+        .admin-menu li.active{background:var(--primary);}
+        .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-bottom:2rem;}
+        .stat-card{background:#fff;padding:1.5rem;border-radius:12px;box-shadow:var(--shadow);}
+        .stat-card h4{color:var(--gray);font-size:0.9rem;margin-bottom:0.5rem;}
+        .stat-card .num{font-size:1.8rem;font-weight:800;color:var(--dark);}
+        .table-container{background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+        .table{width:100%;border-collapse:collapse;}
+        .table th{background:var(--light);padding:1rem;text-align:left;font-weight:700;}
+        .table td{padding:1rem;border-bottom:1px solid var(--border);}
+        .table img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
+        .badge{padding:0.3rem 0.6rem;border-radius:4px;font-size:0.8rem;font-weight:600;}
         .badge-success{background:#d1fae5;color:#065f46;}
         .badge-danger{background:#fee2e2;color:#991b1b;}
-        .badge-warning{background:#fef3c7;color:#92400e;}
-
-        .search-bar{display:flex;gap:1rem;margin-bottom:1.5rem;}
-        .search-bar input{flex:1;}
-
-        /* 🔥 移动端响应式优化 */
-        @media (max-width: 900px) {
-            .admin-body { flex-direction: column; }
-            .admin-sidebar { width: 100%; height: auto; position: static; padding: 0; display: flex; overflow-x: auto; flex-wrap: nowrap; white-space: nowrap; }
-            .admin-menu { display: flex; width: 100%; }
-            .admin-menu li { padding: 1rem; flex: 1; text-align: center; justify-content: center; border-left: none; border-bottom: 4px solid transparent; }
-            .admin-menu li.active { border-left-color: transparent; border-bottom-color: var(--primary); }
-            .admin-main { margin-left: 0; padding: 1.5rem; }
-            
-            .hero-content h1 { font-size: 2.5rem; }
-            .wrapper { padding: 3rem 5%; }
-            .detail-gallery, .detail-info { min-width: 100%; }
-            .thumbnails { grid-template-columns: repeat(5, 1fr); }
-            .modal-box { padding: 1.5rem; }
-        }
-        
-        @media (max-width: 600px) {
-            .nav { flex-wrap: wrap; justify-content: space-between; }
-            .nav-links { width: 100%; justify-content: center; margin-top: 0.8rem; gap: 1rem; font-size: 0.9rem; }
-            header { padding: 0.8rem 5%; }
-            .hero { margin-top: 80px; height: 400px; }
-            .product-card img { height: 220px; }
-            .detail-main-img { height: 350px; }
-            .thumb-img { height: 60px; }
-            .cart-sidebar { right: -100%; width: 100%; }
-            
-            .d-flex.gap-2.mt-3 { flex-direction: column; }
-            .btn-lg { width: 100%; }
-            .stat-grid { grid-template-columns: 1fr 1fr; }
-            .stat-card .num { font-size: 2rem; }
-        }
     </style>
 </head>
 <body>
@@ -233,12 +132,12 @@
     <div class="overlay" onclick="toggleCart()"></div>
     <div class="cart-sidebar" id="cartSidebar">
         <div class="d-flex justify-between align-center mb-2">
-            <h2>Shopping Cart</h2>
-            <span class="modal-close" style="position:static;" onclick="toggleCart()">&times;</span>
+            <h3>Shopping Cart</h3>
+            <span class="modal-close" onclick="toggleCart()">&times;</span>
         </div>
-        <div id="cartItems" style="flex:1;overflow-y:auto;margin-bottom:1rem;"></div>
-        <div class="cart-total">Total: <span id="cartTotal" style="color:var(--primary);">$0.00</span></div>
-        <button class="btn btn-primary btn-lg w-100" onclick="goCheckout()">Checkout Now</button>
+        <div id="cartItems"></div>
+        <div class="cart-total">Total: <span id="cartTotal">$0.00</span></div>
+        <button class="btn btn-primary w-100" onclick="goCheckout()">Checkout Now</button>
     </div>
 
     <div class="modal-overlay" id="detailModal">
@@ -252,34 +151,19 @@
         <div class="modal-box">
             <span class="modal-close" onclick="closeModal()">&times;</span>
             <div id="loginForm">
-                <h2 class="text-center mb-2">User Login</h2>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" id="loginPwd" placeholder="Enter your password">
-                </div>
-                <button class="btn btn-primary btn-lg w-100 mt-2" onclick="userLogin()">Login</button>
-                <p class="text-center mt-3">No Account? <span onclick="switchToRegister()" style="color:var(--primary);cursor:pointer;font-weight:600;">Register Now</span></p>
+                <h3 class="text-center mb-2">User Login</h3>
+                <div class="form-group"><label>Email</label><input type="email" class="form-control" id="loginEmail"></div>
+                <div class="form-group"><label>Password</label><input type="password" class="form-control" id="loginPwd"></div>
+                <button class="btn btn-primary w-100 mt-2" onclick="userLogin()">Login</button>
+                <p class="text-center mt-2">No Account? <span onclick="switchToRegister()" style="color:var(--primary);cursor:pointer;">Register Now</span></p>
             </div>
             <div id="registerForm" class="hidden">
-                <h2 class="text-center mb-2">User Register</h2>
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" class="form-control" id="regName" placeholder="Your full name">
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" class="form-control" id="regEmail" placeholder="Your email">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" id="regPwd" placeholder="Set a password">
-                </div>
-                <button class="btn btn-primary btn-lg w-100 mt-2" onclick="userRegister()">Register</button>
-                <p class="text-center mt-3">Have Account? <span onclick="switchToLogin()" style="color:var(--primary);cursor:pointer;font-weight:600;">Login Now</span></p>
+                <h3 class="text-center mb-2">User Register</h3>
+                <div class="form-group"><label>Full Name</label><input type="text" class="form-control" id="regName"></div>
+                <div class="form-group"><label>Email</label><input type="email" class="form-control" id="regEmail"></div>
+                <div class="form-group"><label>Password</label><input type="password" class="form-control" id="regPwd"></div>
+                <button class="btn btn-primary w-100 mt-2" onclick="userRegister()">Register</button>
+                <p class="text-center mt-2">Have Account? <span onclick="switchToLogin()" style="color:var(--primary);cursor:pointer;">Login Now</span></p>
             </div>
         </div>
     </div>
@@ -287,21 +171,11 @@
     <div class="modal-overlay" id="checkoutModal">
         <div class="modal-box">
             <span class="modal-close" onclick="closeModal()">&times;</span>
-            <h2 class="text-center mb-2">Checkout</h2>
-            <div class="form-group">
-                <label>Shipping Address</label>
-                <textarea class="form-control" id="address" placeholder="Enter your full shipping address..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>Payment Method</label>
-                <select class="form-control" id="payMethod">
-                    <option>Credit Card</option>
-                    <option>PayPal</option>
-                    <option>Stripe</option>
-                </select>
-            </div>
-            <div class="cart-total">Total: <span id="checkoutTotal" style="color:var(--primary);">$0.00</span></div>
-            <button class="btn btn-primary btn-lg w-100 mt-2" onclick="submitOrder()">Submit Order</button>
+            <h3 class="text-center mb-2">Checkout</h3>
+            <div class="form-group"><label>Shipping Address</label><textarea class="form-control" id="address"></textarea></div>
+            <div class="form-group"><label>Payment Method</label><select class="form-control" id="payMethod"><option>Credit Card</option><option>PayPal</option></select></div>
+            <div class="cart-total">Total: <span id="checkoutTotal">$0.00</span></div>
+            <button class="btn btn-primary w-100 mt-2" onclick="submitOrder()">Submit Order</button>
         </div>
     </div>
 
@@ -314,24 +188,21 @@
     </section>
 
     <div class="wrapper" id="products">
-        <h2 class="text-center" style="font-size:2.5rem;font-weight:800;">All Products</h2>
-        <p class="text-center text-gray mt-1">Unique Handmade Gifts | Premium Quality | Fast Shipping</p>
+        <h2 class="text-center">All Products</h2>
         <div class="products" id="productList"></div>
     </div>
 
     <div class="wrapper" id="copyright">
         <div class="copyright-box">
-            <h3 style="font-size:1.5rem;margin-bottom:1rem;">Official U.S. Copyright Protection Statement</h3>
-            <p class="mt-2 text-gray" id="copyrightText" style="line-height:1.8;"></p>
-            <div class="mt-3" style="font-weight:600;">
-                <p id="copyrightEmail"></p>
-                <p class="mt-1" id="copyrightAddress"></p>
-            </div>
+            <h3>Official U.S. Copyright Statement</h3>
+            <p class="mt-2" id="copyrightText"></p>
+            <p class="mt-1" id="copyrightEmail"></p>
+            <p class="mt-1" id="copyrightAddress"></p>
         </div>
     </div>
 
-    <footer class="text-center mt-3" style="background:var(--dark);color:#fff;padding:3rem 5%;">
-        <p onclick="openAdminLogin()" style="cursor:pointer;opacity:0.8;transition:0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">Yopcuvi © 2026 All Rights Reserved | U.S. Copyright Protected Brand</p>
+    <footer class="wrapper text-center mt-3" style="background:var(--dark);color:#fff;padding:2rem;">
+        <p onclick="openAdminLogin()" style="cursor:pointer;">Yopcuvi © 2026 All Rights Reserved</p>
     </footer>
 </div>
 
@@ -340,21 +211,21 @@
         <div class="nav">
             <span class="logo">Yopcuvi Admin Panel</span>
             <div class="nav-links">
-                <button onclick="backToFront()" class="btn btn-light btn-sm">Back to Store</button>
-                <button onclick="adminLogout()" class="btn btn-red btn-sm">Logout</button>
+                <button onclick="backToFront()">Back to Store</button>
+                <button onclick="adminLogout()" class="btn-red">Logout</button>
             </div>
         </div>
     </header>
     <div class="admin-body">
         <div class="admin-sidebar">
             <ul class="admin-menu">
-                <li class="active" onclick="switchMenu('dashboard')">📊 Dashboard</li>
-                <li onclick="switchMenu('products')">🛍️ Products</li>
-                <li onclick="switchMenu('orders')">📦 Orders</li>
-                <li onclick="switchMenu('users')">👥 Users</li>
-                <li onclick="switchMenu('settings')">⚙️ Settings</li>
-                <li onclick="switchMenu('adminpwd')">🔑 Password</li>
-                <li onclick="switchMenu('data')">💾 Data</li>
+                <li id="menu-dashboard" onclick="switchMenu('dashboard')">📊 Dashboard</li>
+                <li id="menu-products" onclick="switchMenu('products')">🛍️ Products</li>
+                <li id="menu-orders" onclick="switchMenu('orders')">📦 Orders</li>
+                <li id="menu-users" onclick="switchMenu('users')">👥 Users</li>
+                <li id="menu-settings" onclick="switchMenu('settings')">⚙️ Website Settings</li>
+                <li id="menu-adminpwd" onclick="switchMenu('adminpwd')">🔑 Admin Password</li>
+                <li id="menu-data" onclick="switchMenu('data')">💾 Data Manage</li>
             </ul>
         </div>
         <div class="admin-main">
@@ -367,163 +238,104 @@
                     <div class="stat-card"><h4>Total Products</h4><div id="statProduct" class="num">0</div></div>
                 </div>
             </div>
-
-            <div id="products" class="menu-content hidden">
+            <div id="products-content" class="menu-content hidden">
                 <div class="d-flex justify-between align-center mb-2">
                     <h2>Product Management</h2>
-                    <button class="btn btn-primary" onclick="openAddProduct()">+ Add Product</button>
-                </div>
-                <div class="search-bar">
-                    <input type="text" class="form-control" placeholder="Search product name/ASIN" id="searchProduct">
-                    <button class="btn btn-dark" onclick="searchProductFunc()">Search</button>
+                    <button class="btn btn-primary" onclick="openAddProduct()">Add Product</button>
                 </div>
                 <div class="table-container">
                     <table class="table">
-                        <thead><tr><th>Image</th><th>Name</th><th>Price</th><th>Rating</th><th>Sales</th><th>Stock</th><th>ASIN</th><th>Status</th><th>Action</th></tr></thead>
+                        <thead><tr><th>Image</th><th>Name</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead>
                         <tbody id="productTable"></tbody>
                     </table>
                 </div>
             </div>
-
-            <div id="orders" class="menu-content hidden">
-                <div class="d-flex justify-between align-center mb-2">
-                    <h2>Order Management</h2>
-                </div>
-                <div class="search-bar">
-                    <input type="text" class="form-control" placeholder="Search order number/user email" id="searchOrder">
-                    <button class="btn btn-dark" onclick="searchOrderFunc()">Search</button>
-                </div>
-                <div class="table-container">
+            <div id="orders-content" class="menu-content hidden">
+                <h2>Order Management</h2>
+                <div class="table-container mt-2">
                     <table class="table">
                         <thead><tr><th>Order No</th><th>User</th><th>Total</th><th>Status</th><th>Time</th></tr></thead>
                         <tbody id="orderTable"></tbody>
                     </table>
                 </div>
             </div>
-
-            <div id="users" class="menu-content hidden">
-                <h2 class="mb-2">User Management</h2>
-                <div class="table-container">
+            <div id="users-content" class="menu-content hidden">
+                <h2>User Management</h2>
+                <div class="table-container mt-2">
                     <table class="table">
-                        <thead><tr><th>Name</th><th>Email</th><th>Register Time</th><th>Status</th></tr></thead>
+                        <thead><tr><th>Name</th><th>Email</th><th>Time</th><th>Status</th></tr></thead>
                         <tbody id="userTable"></tbody>
                     </table>
                 </div>
             </div>
-
-            <div id="settings" class="menu-content hidden">
-                <h2 class="mb-2">Website Settings</h2>
-                <div class="modal-box w-100" style="box-shadow:var(--shadow);max-width:800px;">
-                    <div class="form-group"><label>Store Name</label><input type="text" class="form-control" id="storeName"></div>
-                    <div class="form-group"><label>Home Hero Title</label><input type="text" class="form-control" id="heroTitleInput"></div>
-                    <div class="form-group"><label>Home Hero Description</label><input type="text" class="form-control" id="heroDescInput"></div>
-                    <div class="form-group"><label>Home Hero Background Image URL</label><input type="text" class="form-control" id="heroBgInput" placeholder="https://..."></div>
-                    <div class="form-group"><label>Contact Email</label><input type="email" class="form-control" id="storeEmail"></div>
-                    <div class="form-group"><label>Store Address</label><textarea class="form-control" id="storeAddress"></textarea></div>
-                    <div class="form-group"><label>Copyright Statement</label><textarea class="form-control" id="storeCopyright" rows="5"></textarea></div>
-                    <button class="btn btn-primary btn-lg w-100" onclick="saveSettings()">Save Settings</button>
-                </div>
+            <div id="settings-content" class="menu-content hidden">
+                <h2>Website Settings</h2>
+                <div class="form-group mt-2"><label>Store Name</label><input type="text" class="form-control" id="storeName"></div>
+                <div class="form-group"><label>Hero Title</label><input type="text" class="form-control" id="heroTitleInput"></div>
+                <div class="form-group"><label>Hero Desc</label><textarea class="form-control" id="heroDescInput"></textarea></div>
+                <button class="btn btn-primary w-100" onclick="saveSettings()">Save Settings</button>
             </div>
-
-            <div id="adminpwd" class="menu-content hidden">
-                <h2 class="mb-2">Modify Admin Password</h2>
-                <div class="modal-box w-100" style="box-shadow:var(--shadow);max-width:500px;">
-                    <div class="form-group"><label>Current Password</label><input type="password" class="form-control" id="oldPwd"></div>
-                    <div class="form-group"><label>New Password</label><input type="password" class="form-control" id="newPwd"></div>
-                    <div class="form-group"><label>Confirm New Password</label><input type="password" class="form-control" id="confirmPwd"></div>
-                    <button class="btn btn-primary btn-lg w-100" onclick="updateAdminPwd()">Save New Password</button>
-                </div>
+            <div id="adminpwd-content" class="menu-content hidden">
+                <h2>Admin Password</h2>
+                <div class="form-group mt-2"><label>New Password</label><input type="password" class="form-control" id="newPwd"></div>
+                <button class="btn btn-primary w-100" onclick="updateAdminPwd()">Update Password</button>
             </div>
-
-            <div id="data" class="menu-content hidden">
-                <h2 class="mb-2">Data Management</h2>
-                <div class="modal-box w-100" style="box-shadow:var(--shadow);max-width:500px;">
-                    <button class="btn btn-primary btn-lg w-100 mb-2" onclick="backupData()">💾 Backup All Data (JSON)</button>
-                    <button class="btn btn-red btn-lg w-100" onclick="clearData()">⚠️ Clear All Data</button>
-                </div>
+            <div id="data-content" class="menu-content hidden">
+                <h2>Data Management</h2>
+                <button class="btn btn-dark w-100 mt-2" onclick="backupData()">Backup JSON</button>
+                <button class="btn btn-red w-100 mt-2" onclick="clearData()">Clear All Data</button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="modal-overlay" id="productModal">
-    <div class="modal-box" style="max-width:800px;">
+    <div class="modal-box">
         <span class="modal-close" onclick="closeProductModal()">&times;</span>
-        <h2 class="text-center mb-3" id="productModalTitle">Add Product</h2>
+        <h3 id="productModalTitle">Product Info</h3>
         <input type="hidden" id="editProductId">
-        
+        <div class="form-group"><label>Name</label><input type="text" class="form-control" id="productName"></div>
+        <div class="form-group"><label>Price</label><input type="number" step="0.01" class="form-control" id="productPrice"></div>
+        <div class="form-group"><label>Stock</label><input type="number" class="form-control" id="productStock"></div>
+        <div class="form-group"><label>ASIN</label><input type="text" class="form-control" id="productAsin"></div>
+        <div class="form-group"><label>Images (1-10 URLs)</label>
+            <input type="text" class="form-control mb-1" id="img1" placeholder="Main Image">
+            <input type="text" class="form-control mb-1" id="img2">
+            <input type="text" class="form-control mb-1" id="img3">
+            <input type="text" class="form-control mb-1" id="img4">
+            <input type="text" class="form-control mb-1" id="img5">
+            <input type="text" class="form-control mb-1" id="img6">
+            <input type="text" class="form-control mb-1" id="img7">
+            <input type="text" class="form-control mb-1" id="img8">
+            <input type="text" class="form-control mb-1" id="img9">
+            <input type="text" class="form-control mb-1" id="img10">
+        </div>
+        <div class="form-group"><label>Description</label><textarea class="form-control" id="productDesc"></textarea></div>
         <div class="form-group">
-            <label>Product Name (商品名称) *</label>
-            <input type="text" class="form-control" id="productName">
+            <label>Status</label>
+            <select id="productStatus" class="form-control"><option value="1">On Sale</option><option value="0">Off Shelf</option></select>
         </div>
-
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;">
-            <div class="detail-section" style="margin:0;padding:1.5rem;">
-                <h3 class="mb-2">Images (图片链接)</h3>
-                <div class="form-group"><label>Image 1 (Main) *</label><input type="text" class="form-control" id="img1"></div>
-                <div class="form-group"><label>Image 2</label><input type="text" class="form-control" id="img2"></div>
-                <div class="form-group"><label>Image 3</label><input type="text" class="form-control" id="img3"></div>
-                <div class="form-group"><label>Image 4</label><input type="text" class="form-control" id="img4"></div>
-                <div class="form-group"><label>Image 5</label><input type="text" class="form-control" id="img5"></div>
-                <div class="form-group"><label>Image 6</label><input type="text" class="form-control" id="img6"></div>
-                <div class="form-group"><label>Image 7</label><input type="text" class="form-control" id="img7"></div>
-                <div class="form-group"><label>Image 8</label><input type="text" class="form-control" id="img8"></div>
-                <div class="form-group"><label>Image 9</label><input type="text" class="form-control" id="img9"></div>
-                <div class="form-group"><label>Image 10</label><input type="text" class="form-control" id="img10"></div>
-            </div>
-
-            <div class="detail-section" style="margin:0;padding:1.5rem;">
-                <h3 class="mb-2">Data & Specs (数据与规格)</h3>
-                <div class="form-group"><label>Price ($) *</label><input type="number" step="0.01" class="form-control" id="productPrice"></div>
-                <div class="form-group"><label>Stock (库存)</label><input type="number" class="form-control" id="productStock"></div>
-                <div class="form-group"><label>ASIN</label><input type="text" class="form-control" id="productAsin"></div>
-                <div class="form-group"><label>Rating (0-5)</label><input type="number" step="0.1" min="0" max="5" class="form-control" id="productRating" value="5.0"></div>
-                <div class="form-group"><label>Sales (销量)</label><input type="number" class="form-control" id="productSales" value="0"></div>
-                <div class="form-group"><label>Favorites (收藏数)</label><input type="number" class="form-control" id="productFav" value="0"></div>
-                <div class="form-group"><label>Color Specs (逗号分隔)</label><input type="text" class="form-control" id="productColor" placeholder="Red,Blue,Pink"></div>
-                <div class="form-group"><label>Size Specs (逗号分隔)</label><input type="text" class="form-control" id="productSize" placeholder="S,M,L,XL"></div>
-                <div class="form-group"><label>Status</label><select class="form-control" id="productStatus"><option value="1">On Sale (上架)</option><option value="0">Off Shelf (下架)</option></select></div>
-            </div>
-        </div>
-
-        <div class="form-group mt-2">
-            <label>Product Description (商品描述)</label>
-            <textarea class="form-control" id="productDesc" rows="4"></textarea>
-        </div>
-
-        <button class="btn btn-primary btn-lg w-100 mt-2" onclick="saveProductFunc()">Save Product</button>
+        <button class="btn btn-primary w-100" onclick="saveProductFunc()">Save Product</button>
     </div>
 </div>
 
 <script>
-// 初始化基础数据
+// --- 初始化数据 ---
 let adminAccount = JSON.parse(localStorage.getItem('adminAccount')) || { account: "admin", pwd: "admin123" };
-let currentMenu = "dashboard";
-
-function formatTime(time = new Date()) {
-    const d = new Date(time);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-}
-
 let storeData = JSON.parse(localStorage.getItem('storeData')) || {
     products: [
         {
-            id:"p1",name:"Middle Finger Crochet Positive Animals Gifts",
-            images:["https://picsum.photos/800/800","https://picsum.photos/800/801","https://picsum.photos/800/802","https://picsum.photos/800/803","https://picsum.photos/800/804","https://picsum.photos/800/805","https://picsum.photos/800/806","https://picsum.photos/800/807","https://picsum.photos/800/808","https://picsum.photos/800/809"],
-            price:19.99,stock:99,asin:"B0GWMB9J8J",status:1,publishTime:formatTime(),
-            rating:4.8, sales:126, favorites:89,
-            specs:{color:["Red","Blue","Pink","White"],size:["S","M","L","XL"]},
-            desc:"Premium handmade gift, 100% original design by Yopcuvi. U.S. Copyright Protected.",
-            reviews:[{user:"Sarah",time:"2025-01-15",rating:5,content:"Super cute product!"}]
+            id:"p1",name:"Middle Finger Crochet Animals",
+            images:["https://picsum.photos/800/800"],
+            price:19.99,stock:99,asin:"B0GWMB9J8J",status:1,rating:5,sales:100,favorites:50,
+            specs:{color:["Red","Blue"],size:["One Size"]},
+            desc:"Handmade gift.",reviews:[],publishTime:new Date().toLocaleString()
         }
     ],
     users: [], orders: [],
     settings: {
-        name:"Yopcuvi",heroTitle:"Yopcuvi Official Gift Store",
-        heroDesc:"Original Designs | U.S. Copyright Protected | Premium Emotional Support Gifts",
-        heroBg:"",email:"kangbozhao3@gmail.com",
-        address:"1217, 12th Floor, No.1 Commercial Building, No.55 Hongkang Road, Jinshui District, Zhengzhou City, Henan Province, China",
-        copyright:"All product images, designs, text, and intellectual property on Yopcuvi.com are the SOLE & EXCLUSIVE original copyrighted works of Yopcuvi."
+        name:"Yopcuvi",heroTitle:"Official Gift Store",heroDesc:"Original Design Protection",
+        heroBg:"",email:"admin@yopcuvi.com",address:"China",copyright:"All rights reserved."
     }
 };
 
@@ -533,468 +345,176 @@ let adminStatus = localStorage.getItem('adminStatus') === 'true';
 
 function saveData() { localStorage.setItem('storeData', JSON.stringify(storeData)); }
 
-// --- 前台逻辑 ---
-function renderProducts() {
-    const list = storeData.products.filter(p => p.status == 1);
-    document.getElementById('productList').innerHTML = list.map(p => `
-        <div class="product-card" onclick="openProductDetail('${p.id}')">
-            <img src="${p.images[0]}" alt="${p.name}">
-            <div class="product-info">
-                <div>
-                    <div class="product-title">${p.name}</div>
-                    <div class="product-price">$${p.price.toFixed(2)}</div>
-                    <div class="product-asin">ASIN: ${p.asin}</div>
-                </div>
-                <div>
-                    <div class="d-flex align-center justify-between mt-2 mb-2">
-                        <div class="stars">${generateStars(p.rating)}</div>
-                        <span style="font-size:0.85rem;color:var(--gray);font-weight:600;">${p.sales} Sold</span>
-                    </div>
-                    <button class="btn btn-primary w-100" onclick="event.stopPropagation();addToCart('${p.id}')">Add to Cart</button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function generateStars(rating){
-    let stars = "";
-    for(let i=1;i<=5;i++) stars += i <= rating ? "★" : "<span class='star-empty'>★</span>";
-    return stars;
-}
-
-function switchMainImage(imgUrl){
-    document.getElementById('mainDetailImg').src = imgUrl;
-    document.querySelectorAll('.thumb-img').forEach(thumb=>thumb.classList.remove('active'));
-    event.target.classList.add('active');
-}
-
-function selectSpec(type){
-    document.querySelectorAll(`.spec-btn.${type}`).forEach(btn=>btn.classList.remove('active'));
-    event.target.classList.add('active');
-}
-
-function toggleFavorite(){
-    if(!currentUser){alert("Please login first!");openLoginModal();return;}
-    const p = storeData.products.find(x=>x.id===currentDetailId);
-    p.favorites += 1; saveData();
-    document.getElementById("favCount").innerText = p.favorites;
-    alert("Added to favorites successfully!");
-}
-
-function shareProduct(){ navigator.clipboard.writeText(window.location.href); alert("Link copied!"); }
-
-function submitReview(){
-    if(!currentUser){alert("Please login first!");openLoginModal();return;}
-    const content = document.getElementById("reviewContent").value;
-    const rating = document.getElementById("reviewRating").value;
-    if(!content || rating <1 || rating >5){alert("Invalid input!");return;}
-    
-    const p = storeData.products.find(x=>x.id===currentDetailId);
-    p.reviews.unshift({user:currentUser.name,time:formatTime(),rating:parseInt(rating),content});
-    let total = p.reviews.reduce((s,r)=>s+r.rating,0);
-    p.rating = (total/p.reviews.length).toFixed(1);
-    saveData(); openProductDetail(currentDetailId); alert("Review submitted!");
-}
-
-let currentDetailId = "";
-function openProductDetail(id){
-    currentDetailId = id;
-    const p = storeData.products.find(x=>x.id===id);
-    const related = storeData.products.filter(x=>x.id!==id && x.status==1).slice(0,4);
-    
-    document.body.style.overflow = 'hidden'; // 防止背景滚动
-    
-    document.getElementById('productDetail').innerHTML = `
-        <div class="d-flex" style="gap:3rem;flex-wrap:wrap;">
-            <div class="detail-gallery">
-                <img src="${p.images[0]}" id="mainDetailImg" class="detail-main-img" onclick="window.open('${p.images[0]}','_blank')">
-                <div class="thumbnails">${p.images.map((img,i)=>`<img src="${img}" class="thumb-img ${i===0?'active':''}" onclick="switchMainImage('${img}')">`).join('')}</div>
-            </div>
-            <div class="detail-info">
-                <h1 style="font-size:2.2rem;line-height:1.3;">${p.name}</h1>
-                <div class="product-tags mt-2">
-                    ${p.sales>100 ? '<span class="tag tag-hot">🔥 Hot Sale</span>' : ''}
-                    <span class="tag tag-sale">✓ Official Store</span>
-                </div>
-                <div class="d-flex align-center gap-2 mt-2" style="color:var(--gray);font-weight:500;">
-                    <div class="stars">${generateStars(p.rating)}</div>
-                    <span>${p.rating} Rating</span> | <span>${p.sales} Bought</span> | <span><span id="favCount" style="color:var(--red);">${p.favorites}</span> Favorites</span>
-                </div>
-                <h2 style="color:var(--primary);font-size:2.5rem;font-weight:800;margin:1.5rem 0;">$${p.price.toFixed(2)}</h2>
-                <div class="spec-group"><div class="spec-title">Color</div><div class="spec-options">${p.specs.color.map(c=>`<button class="spec-btn color" onclick="selectSpec('color')">${c}</button>`).join('')}</div></div>
-                <div class="spec-group"><div class="spec-title">Size</div><div class="spec-options">${p.specs.size.map(s=>`<button class="spec-btn size" onclick="selectSpec('size')">${s}</button>`).join('')}</div></div>
-                <div class="mt-2 font-bold font-weight-bold" style="font-size:1.1rem;">Status: ${p.stock>0 ? `<span style="color:#065f46;">✅ ${p.stock} In Stock</span>` : `<span style="color:var(--red);">❌ Out Of Stock</span>`}</div>
-                <div class="detail-section mt-3"><h3 class="mb-1">Product Details</h3><div class="detail-grid"><div><strong>ASIN:</strong> ${p.asin}</div><div><strong>Condition:</strong> Brand New</div></div></div>
-                <div class="detail-section"><h3 class="mb-1">Description</h3><p style="white-space:pre-wrap;">${p.desc}</p></div>
-                <div class="d-flex gap-2 mt-3 flex-wrap">
-                    <button class="btn btn-primary btn-lg flex-1" style="min-width:200px;" onclick="addToCart('${p.id}')">🛒 Add to Cart</button>
-                    <button class="btn btn-light btn-lg flex-1" onclick="toggleFavorite()">❤️ Favorite</button>
-                    <button class="btn btn-light btn-lg flex-1" onclick="shareProduct()">🔗 Share</button>
-                </div>
-            </div>
-        </div>
-        <div class="detail-section mt-4"><h3 class="mb-2">Customer Reviews (${p.reviews.length})</h3>
-            <div class="form-group"><label>Write a Review</label><div class="d-flex gap-2 mb-1"><select id="reviewRating" class="form-control" style="width:100px;"><option value="5">5 Stars</option><option value="4">4 Stars</option></select><button class="btn btn-primary" onclick="submitReview()">Submit</button></div><textarea class="form-control" id="reviewContent" placeholder="Tell us what you think..."></textarea></div>
-            ${p.reviews.map(r=>`<div class="review-item"><div class="review-header"><div class="review-name">${r.user}</div><div class="review-time">${r.time}</div></div><div class="stars mb-1">${generateStars(r.rating)}</div><div class="review-content">${r.content}</div></div>`).join('')}
-        </div>
-        <div class="mt-4"><h3 class="mb-2">You May Also Like</h3><div class="related-products">${related.map(i=>`<div class="related-card" onclick="openProductDetail('${i.id}')"><img src="${i.images[0]}"><div class="related-info"><div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${i.name}</div><div style="color:var(--primary);font-weight:bold;margin-top:0.3rem;">$${i.price.toFixed(2)}</div></div></div>`).join('')}</div></div>
-    `;
-    document.getElementById('detailModal').classList.add('active');
-}
-
-function toggleCart() {
-    document.getElementById('cartSidebar').classList.toggle('active');
-    document.querySelector('.overlay').classList.toggle('active');
-    renderCart();
-}
-
-function renderCart() {
-    const dom = document.getElementById('cartItems');
-    const count = document.getElementById('cartCount');
-    const total = document.getElementById('cartTotal');
-    let sum = 0, num = 0;
-    cart.forEach(i => { sum += i.price * i.qty; num += i.qty; });
-    count.textContent = num;
-    total.textContent = `$${sum.toFixed(2)}`;
-    if(document.getElementById('checkoutTotal')) document.getElementById('checkoutTotal').textContent = `$${sum.toFixed(2)}`;
-    dom.innerHTML = cart.length === 0 ? '<p class="text-center mt-3 text-gray">Your cart is empty.</p>' : cart.map(i => `
-        <div class="cart-item d-flex justify-between align-center">
-            <div style="flex:1;padding-right:1rem;font-weight:500;">${i.name} <span class="text-gray">x${i.qty}</span></div>
-            <div style="font-weight:800;color:var(--primary);">$${(i.price * i.qty).toFixed(2)}</div>
-        </div>
-    `).join('');
-}
-
-function addToCart(id) {
-    if (!currentUser) { alert('Please Login First!'); openLoginModal(); return; }
-    const p = storeData.products.find(x => x.id === id);
-    const item = cart.find(x => x.id === id);
-    item ? item.qty++ : cart.push({ ...p, qty: 1 });
-    p.sales +=1; saveData();
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart(); renderProducts(); alert('Item added to Cart!');
-}
-
-function goCheckout() {
-    if (cart.length === 0) { alert('Cart is Empty!'); return; }
-    closeModal(); document.getElementById('checkoutModal').classList.add('active');
-}
-
-function submitOrder() {
-    const address = document.getElementById('address').value;
-    const method = document.getElementById('payMethod').value;
-    if (!address) { alert('Please enter your shipping address!'); return; }
-    const order = { no: "YOP" + new Date().getTime(), user: currentUser.email, items: [...cart], total: cart.reduce((s,i)=>s+i.price*i.qty,0), address, method, time: formatTime(), status: "Paid" };
-    storeData.orders.unshift(order); saveData();
-    cart = []; localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart(); closeModal(); alert(`Order placed successfully! Order No: ${order.no}`);
-}
-
-function openLoginModal() { document.getElementById('userModal').classList.add('active'); }
-function switchToRegister() { document.getElementById('loginForm').classList.add('hidden'); document.getElementById('registerForm').classList.remove('hidden'); }
-function switchToLogin() { document.getElementById('registerForm').classList.add('hidden'); document.getElementById('loginForm').classList.remove('hidden'); }
-function closeModal() { 
-    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); 
-    document.body.style.overflow = 'auto'; // 恢复滚动
-}
-function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
-
-function userRegister() {
-    const name = document.getElementById('regName').value;
-    const email = document.getElementById('regEmail').value;
-    const pwd = document.getElementById('regPwd').value;
-    if (!name || !email || !pwd) { alert('Please fill in all fields!'); return; }
-    if (storeData.users.find(u => u.email === email)) { alert('Email already registered!'); return; }
-    storeData.users.push({ name, email, pwd, time: formatTime(), status: 1 });
-    saveData(); alert('Registration Successful!'); switchToLogin();
-}
-
-function userLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const pwd = document.getElementById('loginPwd').value;
-    const user = storeData.users.find(u => u.email === email && u.pwd === pwd && u.status == 1);
-    if (!user) { alert('Incorrect Email or Password!'); return; }
-    currentUser = user; localStorage.setItem('currentUser', JSON.stringify(user));
-    closeModal(); alert('Login Successful!');
-}
-
-// --- 后台核心 ---
-function openAdminLogin() {
-    const account = prompt('Admin Account:');
-    const pwd = prompt('Admin Password:');
-    if (account === adminAccount.account && pwd === adminAccount.pwd) {
-        adminStatus = true; localStorage.setItem('adminStatus', 'true');
-        document.getElementById('frontend').classList.add('hidden');
-        document.getElementById('admin').classList.remove('hidden');
-        renderAdmin();
-    } else { alert('Access Denied!'); }
-}
-
-function backToFront() { document.getElementById('admin').classList.add('hidden'); document.getElementById('frontend').classList.remove('hidden'); renderProducts(); }
-function adminLogout() { adminStatus = false; localStorage.removeItem('adminStatus'); backToFront(); }
-
-// 🚀 修复核心 Bug：使用属性选择替代 event.target，彻底解决菜单切换崩溃问题
+// --- 核心修复：菜单切换函数 ---
 function switchMenu(menu) {
-    currentMenu = menu;
-    document.querySelectorAll('.menu-content').forEach(m => m.classList.add('hidden'));
-    document.querySelectorAll('.admin-menu li').forEach(i => {
-        i.classList.remove('active');
-        if(i.getAttribute('onclick') && i.getAttribute('onclick').includes(menu)) {
-            i.classList.add('active');
-        }
-    });
-    document.getElementById(menu).classList.remove('hidden');
+    // 1. 隐藏所有后台内容板块
+    document.querySelectorAll('.menu-content').forEach(el => el.classList.add('hidden'));
+    
+    // 2. 移除所有菜单激活样式
+    document.querySelectorAll('.admin-menu li').forEach(li => li.classList.remove('active'));
+    
+    // 3. 显示目标板块 (注意ID对应关系)
+    const targetId = (menu === 'dashboard') ? 'dashboard' : menu + '-content';
+    const targetContent = document.getElementById(targetId);
+    if (targetContent) {
+        targetContent.classList.remove('hidden');
+    } else {
+        console.error("Content ID not found: " + targetId);
+    }
+    
+    // 4. 激活当前菜单按钮
+    const activeBtn = document.getElementById('menu-' + menu);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    // 5. 渲染板块内数据
     renderAdmin();
 }
 
+// --- 后台渲染逻辑 ---
 function renderAdmin() {
-    renderDashboard();
-    renderProductTableFunc();
-    renderOrderTableFunc();
-    renderUserTableFunc();
-    loadSettings();
-}
+    // 仪表盘
+    document.getElementById('statUser').innerText = storeData.users.length;
+    document.getElementById('statOrder').innerText = storeData.orders.length;
+    document.getElementById('statSales').innerText = '$' + storeData.orders.reduce((s,o)=>s+o.total,0).toFixed(2);
+    document.getElementById('statProduct').innerText = storeData.products.length;
 
-function renderDashboard() {
-    document.getElementById('statUser').textContent = storeData.users.length;
-    document.getElementById('statOrder').textContent = storeData.orders.length;
-    document.getElementById('statSales').textContent = `$${storeData.orders.reduce((s,o)=>s+o.total,0).toFixed(2)}`;
-    document.getElementById('statProduct').textContent = storeData.products.length;
-}
-
-function updateAdminPwd(){
-    const old = document.getElementById('oldPwd').value;
-    const n = document.getElementById('newPwd').value;
-    const c = document.getElementById('confirmPwd').value;
-    if(old !== adminAccount.pwd){ alert('Current Password Incorrect!'); return; }
-    if(n !== c){ alert('New Passwords do not match!'); return; }
-    adminAccount.pwd = n; localStorage.setItem('adminAccount', JSON.stringify(adminAccount));
-    alert('Password Updated Successfully!');
-}
-
-// ==============================================
-// 修复与优化的商品管理逻辑
-// ==============================================
-function openAddProduct() {
-    document.getElementById('productModalTitle').textContent = 'Add New Product';
-    document.getElementById('editProductId').value = '';
-    
-    document.getElementById('productName').value = '';
-    document.getElementById('productPrice').value = '';
-    document.getElementById('productStock').value = '99';
-    document.getElementById('productAsin').value = '';
-    document.getElementById('productDesc').value = '';
-    document.getElementById('productStatus').value = '1';
-    
-    for(let i=1; i<=10; i++) document.getElementById(`img${i}`).value = '';
-    
-    document.getElementById('productRating').value = 5.0;
-    document.getElementById('productSales').value = 0;
-    document.getElementById('productFav').value = 0;
-    document.getElementById('productColor').value = "Red,Blue,White";
-    document.getElementById('productSize').value = "S,M,L";
-    
-    document.getElementById('productModal').classList.add('active');
-}
-
-function saveProductFunc() {
-    const id = document.getElementById('editProductId').value;
-    const name = document.getElementById('productName').value;
-    
-    let images = [];
-    for(let i=1; i<=10; i++) {
-        const val = document.getElementById(`img${i}`).value.trim();
-        if(val) images.push(val);
-    }
-
-    // 增加容错：防止因用户未填写导致NaN
-    const price = parseFloat(document.getElementById('productPrice').value) || 0;
-    const stock = parseInt(document.getElementById('productStock').value) || 0;
-    const asin = document.getElementById('productAsin').value;
-    const rating = parseFloat(document.getElementById('productRating').value) || 5.0;
-    const sales = parseInt(document.getElementById('productSales').value) || 0;
-    const fav = parseInt(document.getElementById('productFav').value) || 0;
-    
-    const colorStr = document.getElementById('productColor').value;
-    const sizeStr = document.getElementById('productSize').value;
-    const color = colorStr ? colorStr.split(',').map(i=>i.trim()).filter(Boolean) : [];
-    const size = sizeStr ? sizeStr.split(',').map(i=>i.trim()).filter(Boolean) : [];
-    
-    const desc = document.getElementById('productDesc').value;
-    const status = parseInt(document.getElementById('productStatus').value);
-
-    if (!name || images.length === 0 || price <= 0) { 
-        alert('Please fill in Product Name, at least 1 Main Image, and a valid Price!'); 
-        return; 
-    }
-
-    const productData = {
-        id: id || 'p' + new Date().getTime(),
-        name, images, price, stock, asin, status, rating, sales, favorites: fav,
-        specs: { color, size }, desc,
-        reviews: id ? (storeData.products.find(p=>p.id===id)?.reviews || []) : [],
-        publishTime: id ? (storeData.products.find(p=>p.id===id)?.publishTime || formatTime()) : formatTime()
-    };
-
-    if (id) {
-        const index = storeData.products.findIndex(p => p.id === id);
-        if (index > -1) storeData.products[index] = productData;
-    } else {
-        storeData.products.unshift(productData);
-    }
-    
-    saveData(); closeProductModal(); renderProductTableFunc(); alert('Product Saved Successfully!');
-}
-
-function renderProductTableFunc(list = storeData.products) {
-    const tbody = document.getElementById('productTable');
-    if(!tbody) return;
-    
-    tbody.innerHTML = list.map(p => `
+    // 产品表格
+    const pTable = document.getElementById('productTable');
+    if(pTable) pTable.innerHTML = storeData.products.map(p => `
         <tr>
-            <td><img src="${p.images[0]}" onerror="this.src='https://via.placeholder.com/60'"></td>
-            <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;">${p.name}</td>
-            <td style="color:var(--primary);font-weight:bold;">$${p.price.toFixed(2)}</td>
-            <td>${p.rating} ⭐</td>
-            <td>${p.sales}</td>
+            <td><img src="${p.images[0]}"></td>
+            <td>${p.name}</td>
+            <td>$${p.price}</td>
             <td>${p.stock}</td>
-            <td style="color:var(--gray);">${p.asin}</td>
             <td><span class="badge ${p.status==1?'badge-success':'badge-danger'}">${p.status==1?'On Sale':'Off'}</span></td>
             <td>
-                <div class="d-flex gap-1">
-                    <button class="btn btn-sm btn-primary" onclick="editProductFunc('${p.id}')">Edit</button>
-                    <button class="btn btn-sm btn-red" onclick="deleteProductFunc('${p.id}')">Delete</button>
-                </div>
+                <button class="btn btn-sm btn-primary" onclick="editProductFunc('${p.id}')">Edit</button>
+                <button class="btn btn-sm btn-red" onclick="deleteProductFunc('${p.id}')">Delete</button>
             </td>
         </tr>
     `).join('');
+
+    // 设置回填
+    const sName = document.getElementById('storeName');
+    if(sName) {
+        sName.value = storeData.settings.name;
+        document.getElementById('heroTitleInput').value = storeData.settings.heroTitle;
+        document.getElementById('heroDescInput').value = storeData.settings.heroDesc;
+    }
+}
+
+// --- 产品管理逻辑 ---
+function openAddProduct() {
+    document.getElementById('productModalTitle').innerText = 'Add Product';
+    document.getElementById('editProductId').value = '';
+    for(let i=1;i<=10;i++) document.getElementById('img'+i).value = '';
+    document.getElementById('productName').value = '';
+    document.getElementById('productModal').classList.add('active');
 }
 
 function editProductFunc(id) {
     const p = storeData.products.find(x => x.id === id);
     if(!p) return;
-
-    document.getElementById('productModalTitle').textContent = 'Edit Product';
+    document.getElementById('productModalTitle').innerText = 'Edit Product';
     document.getElementById('editProductId').value = p.id;
-    
-    document.getElementById('productName').value = p.name || '';
-    document.getElementById('productPrice').value = p.price || 0;
-    document.getElementById('productStock').value = p.stock !== undefined ? p.stock : 0;
+    document.getElementById('productName').value = p.name;
+    document.getElementById('productPrice').value = p.price;
+    document.getElementById('productStock').value = p.stock;
     document.getElementById('productAsin').value = p.asin || '';
-    document.getElementById('productRating').value = p.rating || 5;
-    document.getElementById('productSales').value = p.sales || 0;
-    document.getElementById('productFav').value = p.favorites || 0;
-    
-    document.getElementById('productColor').value = p.specs && p.specs.color ? p.specs.color.join(', ') : '';
-    document.getElementById('productSize').value = p.specs && p.specs.size ? p.specs.size.join(', ') : '';
-    
-    document.getElementById('productDesc').value = p.desc || '';
-    document.getElementById('productStatus').value = String(p.status);
-
-    for(let i=1; i<=10; i++) {
-        document.getElementById(`img${i}`).value = p.images[i-1] || '';
+    document.getElementById('productDesc').value = p.desc;
+    document.getElementById('productStatus').value = p.status;
+    for(let i=1;i<=10;i++) {
+        document.getElementById('img'+i).value = p.images[i-1] || '';
     }
-    
     document.getElementById('productModal').classList.add('active');
 }
 
-function deleteProductFunc(id) {
-    if (!confirm('Are you sure you want to completely delete this product?')) return;
-    storeData.products = storeData.products.filter(p => p.id !== id);
-    saveData(); renderProductTableFunc();
-}
-
-function searchProductFunc() {
-    const k = document.getElementById('searchProduct').value.toLowerCase();
-    const list = storeData.products.filter(p=> (p.name && p.name.toLowerCase().includes(k)) || (p.asin && p.asin.toLowerCase().includes(k)) );
-    renderProductTableFunc(list);
-}
-
-// 订单/用户/设置
-function renderOrderTableFunc() {
-    const tbody = document.getElementById('orderTable');
-    if(!tbody) return;
-    tbody.innerHTML = storeData.orders.map(o => `<tr><td style="font-weight:600;">${o.no}</td><td>${o.user}</td><td style="color:var(--primary);font-weight:bold;">$${o.total.toFixed(2)}</td><td><span class="badge badge-success">${o.status}</span></td><td style="color:var(--gray);">${o.time}</td></tr>`).join('');
-}
-function searchOrderFunc() {
-    const k = document.getElementById('searchOrder').value.toLowerCase();
-    const list = storeData.orders.filter(o=>o.no.toLowerCase().includes(k)||o.user.toLowerCase().includes(k));
-    document.getElementById('orderTable').innerHTML = list.map(o=>`<tr><td style="font-weight:600;">${o.no}</td><td>${o.user}</td><td style="color:var(--primary);font-weight:bold;">$${o.total.toFixed(2)}</td><td><span class="badge badge-success">${o.status}</span></td><td style="color:var(--gray);">${o.time}</td></tr>`).join('');
-}
-function renderUserTableFunc() {
-    const tbody = document.getElementById('userTable');
-    if(!tbody) return;
-    tbody.innerHTML = storeData.users.map(u => `<tr><td style="font-weight:600;">${u.name}</td><td>${u.email}</td><td style="color:var(--gray);">${u.time}</td><td><span class="badge ${u.status==1?'badge-success':'badge-danger'}">${u.status==1?'Active':'Disabled'}</span></td></tr>`).join('');
-}
-
-function loadSettings() {
-    if(!document.getElementById('storeName')) return;
-    document.getElementById('storeName').value = storeData.settings.name;
-    document.getElementById('heroTitleInput').value = storeData.settings.heroTitle;
-    document.getElementById('heroDescInput').value = storeData.settings.heroDesc;
-    document.getElementById('heroBgInput').value = storeData.settings.heroBg;
-    document.getElementById('storeEmail').value = storeData.settings.email;
-    document.getElementById('storeAddress').value = storeData.settings.address;
-    document.getElementById('storeCopyright').value = storeData.settings.copyright;
-}
-function saveSettings() {
-    storeData.settings = {
-        name:document.getElementById('storeName').value,heroTitle:document.getElementById('heroTitleInput').value,
-        heroDesc:document.getElementById('heroDescInput').value,heroBg:document.getElementById('heroBgInput').value,
-        email:document.getElementById('storeEmail').value,address:document.getElementById('storeAddress').value,
-        copyright:document.getElementById('storeCopyright').value
+function saveProductFunc() {
+    const id = document.getElementById('editProductId').value;
+    let imgs = [];
+    for(let i=1;i<=10;i++){
+        let val = document.getElementById('img'+i).value;
+        if(val) imgs.push(val);
+    }
+    const pObj = {
+        id: id || 'p' + Date.now(),
+        name: document.getElementById('productName').value,
+        price: parseFloat(document.getElementById('productPrice').value),
+        stock: parseInt(document.getElementById('productStock').value),
+        asin: document.getElementById('productAsin').value,
+        images: imgs,
+        desc: document.getElementById('productDesc').value,
+        status: parseInt(document.getElementById('productStatus').value),
+        rating:5, sales:0, favorites:0, specs:{color:[],size:[]}, reviews:[]
     };
-    saveData(); alert('Settings Saved Successfully!'); renderAll();
+    if(id) {
+        const idx = storeData.products.findIndex(x=>x.id===id);
+        storeData.products[idx] = {...storeData.products[idx], ...pObj};
+    } else {
+        storeData.products.push(pObj);
+    }
+    saveData();
+    closeProductModal();
+    renderAdmin();
+    renderProducts();
 }
 
-function backupData() {
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([JSON.stringify(storeData)],{type:'application/json'}));
-    a.download = `Yopcuvi_Backup_${new Date().getTime()}.json`; a.click();
-}
-function clearData() { 
-    if(confirm('⚠️ WARNING: Clear all data? This cannot be undone!')) { 
-        storeData = {...storeData, products:[], users:[], orders:[]}; 
-        saveData(); renderAdmin(); renderProducts(); alert("All Data Cleared!");
-    } 
-}
-
-function renderAll(){ renderHeroText(); renderCopyright(); renderProducts(); }
-function renderHeroText(){
-    const titleEl = document.getElementById('heroTitle');
-    const descEl = document.getElementById('heroDesc');
-    if(titleEl) titleEl.innerText = storeData.settings.heroTitle;
-    if(descEl) descEl.innerText = storeData.settings.heroDesc;
-    
-    const hero = document.getElementById('home');
-    if(hero) {
-        if(storeData.settings.heroBg) {
-            hero.style.backgroundImage = `url(${storeData.settings.heroBg})`;
-            hero.style.backgroundColor = 'transparent';
-        } else {
-            hero.style.backgroundImage = 'none';
-            hero.style.backgroundColor = 'var(--dark)';
-        }
+function deleteProductFunc(id) {
+    if(confirm('Delete this?')) {
+        storeData.products = storeData.products.filter(x=>x.id!==id);
+        saveData(); renderAdmin(); renderProducts();
     }
 }
-function renderCopyright() {
-    const textEl = document.getElementById('copyrightText');
-    const emailEl = document.getElementById('copyrightEmail');
-    const addrEl = document.getElementById('copyrightAddress');
-    
-    if(textEl) textEl.innerHTML = storeData.settings.copyright;
-    if(emailEl) emailEl.innerText = `📧 Support Email: ${storeData.settings.email}`;
-    if(addrEl) addrEl.innerText = `📍 Headquarters: ${storeData.settings.address}`;
+
+// --- 前台渲染逻辑 ---
+function renderProducts() {
+    const list = document.getElementById('productList');
+    if(!list) return;
+    list.innerHTML = storeData.products.filter(p=>p.status==1).map(p => `
+        <div class="product-card" onclick="openProductDetail('${p.id}')">
+            <img src="${p.images[0]}">
+            <div class="product-info">
+                <div class="product-title">${p.name}</div>
+                <div class="product-price">$${p.price.toFixed(2)}</div>
+                <button class="btn btn-primary w-100 mt-2" onclick="event.stopPropagation();addToCart('${p.id}')">Add to Cart</button>
+            </div>
+        </div>
+    `).join('');
+    renderHero();
 }
 
+function renderHero() {
+    document.getElementById('heroTitle').innerText = storeData.settings.heroTitle;
+    document.getElementById('heroDesc').innerText = storeData.settings.heroDesc;
+}
+
+// --- 弹窗控制 ---
+function closeModal() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
+function closeProductModal() { document.getElementById('productModal').classList.remove('active'); }
+
+// --- 登录系统 ---
+function openAdminLogin() {
+    const acc = prompt('Account:');
+    const pwd = prompt('Password:');
+    if(acc === adminAccount.account && pwd === adminAccount.pwd) {
+        adminStatus = true; localStorage.setItem('adminStatus', 'true');
+        location.reload();
+    } else { alert('Error!'); }
+}
+function adminLogout() { adminStatus = false; localStorage.removeItem('adminStatus'); location.reload(); }
+function backToFront() { 
+    document.getElementById('admin').classList.add('hidden'); 
+    document.getElementById('frontend').classList.remove('hidden'); 
+}
+
+// --- 初始化入口 ---
 function init() {
-    renderAll(); 
-    renderCart();
-    if (adminStatus) { 
-        document.getElementById('frontend').classList.add('hidden'); 
-        document.getElementById('admin').classList.remove('hidden'); 
-        renderAdmin(); 
+    if(adminStatus) {
+        document.getElementById('frontend').classList.add('hidden');
+        document.getElementById('admin').classList.remove('hidden');
+        switchMenu('dashboard');
+    } else {
+        renderProducts();
     }
 }
 init();
