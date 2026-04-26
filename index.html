@@ -6,7 +6,7 @@
     <title>Yopcuvi | Official Gift Store</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif;}
         :root{--primary:#2563eb;--dark:#111827;--gray:#6b7280;--red:#dc2626;--light:#f9fafb;--white:#fff;--border:#e5e7eb;--shadow:0 8px 30px rgba(0,0,0,0.08);}
@@ -15,6 +15,7 @@
         .hidden{display:none !important;}
         .d-flex{display:flex;}
         .justify-between{justify-content:space-between;}
+        .justify-center{justify-content:center;}
         .align-center{align-items:center;}
         .text-center{text-align:center;}
         .mt-1{margin-top:0.5rem;}
@@ -24,6 +25,30 @@
         .gap-1{gap:0.5rem;}
         .gap-2{gap:1rem;}
         .w-100{width:100%;}
+
+        /* 星级评分样式 */
+        .stars{display:flex;gap:0.2rem;color:#f59e0b;font-size:1.2rem;}
+        .star-empty{color:var(--border);}
+        .review-item{padding:1rem;border-bottom:1px solid var(--border);}
+        .review-header{display:flex;justify-between;align-center;margin-bottom:0.5rem;}
+        .review-name{font-weight:600;}
+        .review-time{color:var(--gray);font-size:0.9rem;}
+        .review-content{margin-top:0.5rem;line-height:1.8;}
+
+        /* 规格选择样式 */
+        .spec-group{margin:1rem 0;}
+        .spec-title{font-weight:600;margin-bottom:0.8rem;}
+        .spec-options{display:flex;gap:0.8rem;flex-wrap:wrap;}
+        .spec-btn{padding:0.6rem 1.2rem;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:0.2s;background:#fff;}
+        .spec-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+        .spec-btn:hover{border-color:var(--primary);}
+
+        /* 促销标签 */
+        .product-tags{display:flex;gap:0.5rem;margin:1rem 0;}
+        .tag{padding:0.3rem 0.8rem;border-radius:4px;font-size:0.8rem;font-weight:600;}
+        .tag-hot{background:#fee2e2;color:var(--red);}
+        .tag-new{background:#d1fae5;color:#065f46;}
+        .tag-sale{background:#fef3c7;color:#92400e;}
 
         /* 🔥 终极超大屏详情弹窗 95%宽度 */
         .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:none;align-items:center;justify-content:center;}
@@ -132,7 +157,7 @@
 
         .table-container{background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
         .table{width:100%;border-collapse:collapse;}
-        .table th{background:var(--light);padding:1rem;text-align:left;font-weight:70;}
+        .table th{background:var(--light);padding:1rem;text-align:left;font-weight:700;}
         .table td{padding:1rem;border-bottom:1px solid var(--border);}
         .table img{width:50px;height:50px;object-fit:cover;border-radius:6px;}
         .badge{padding:0.3rem 0.6rem;border-radius:4px;font-size:0.8rem;font-weight:600;}
@@ -171,7 +196,7 @@
         <button class="btn btn-primary w-100" onclick="goCheckout()">Checkout Now</button>
     </div>
 
-    <!-- 🔥 10张图 超大屏详情页 -->
+    <!-- 🔥 10张图+全功能详情页 -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal-box">
             <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -245,7 +270,7 @@
     </section>
 
     <div class="wrapper" id="products">
-        <h2 class="text-center">All Products</h2>
+        <h2 class="text-center">All Products</h>
         <p class="text-center text-gray mt-1">Unique Handmade Gifts | Premium Quality | Fast Shipping | Perfect Gift for Your Loved Ones</p>
         <div class="products" id="productList"></div>
     </div>
@@ -304,11 +329,11 @@
                 </div>
                 <div class="search-bar">
                     <input type="text" class="form-control" placeholder="Search product name/ASIN" id="searchProduct">
-                    <button class="btn btn-dark" onclick="searchProduct()">Search</button>
+                    <button class="btn btn-dark" onclick="searchProductFunc()">Search</button>
                 </div>
                 <div class="table-container">
                     <table class="table">
-                        <thead><tr><th>Image</th><th>Name</th><th>Price</th><th>Stock</th><th>ASIN</th><th>Publish Time</th><th>Status</th><th>Action</th></tr></thead>
+                        <thead><tr><th>Image</th><th>Name</th><th>Price</th><th>Rating</th><th>Sales</th><th>Stock</th><th>ASIN</th><th>Status</th><th>Action</th></tr></thead>
                         <tbody id="productTable"></tbody>
                     </table>
                 </div>
@@ -320,7 +345,7 @@
                 </div>
                 <div class="search-bar">
                     <input type="text" class="form-control" placeholder="Search order number/user email" id="searchOrder">
-                    <button class="btn btn-dark" onclick="searchOrder()">Search</button>
+                    <button class="btn btn-dark" onclick="searchOrderFunc()">Search</button>
                 </div>
                 <div class="table-container">
                     <table class="table">
@@ -407,77 +432,79 @@
     </div>
 </div>
 
-<!-- 🔥 后台产品表单：支持10张图片上传 -->
+<!-- 🔥 后台产品表单：可编辑详情页所有内容 -->
 <div class="modal-overlay" id="productModal">
     <div class="modal-box">
         <span class="modal-close" onclick="closeModal()">&times;</span>
         <h3 class="text-center mb-2" id="productModalTitle">Add Product</h3>
         <input type="hidden" id="editProductId">
+        
         <div class="form-group">
-            <label>Product Name</label>
+            <label>Product Name (商品名称)</label>
             <input type="text" class="form-control" id="productName">
         </div>
-        <!-- 10张产品图输入框 -->
+
+        <!-- 10张产品图 -->
         <div class="form-group">
-            <label>Image 1 (Main) / 图1（主图）</label>
+            <label>Image 1 (Main) / 主图</label>
             <input type="text" class="form-control" id="img1">
         </div>
+        <div class="form-group"><label>Image 2</label><input type="text" class="form-control" id="img2"></div>
+        <div class="form-group"><label>Image 3</label><input type="text" class="form-control" id="img3"></div>
+        <div class="form-group"><label>Image 4</label><input type="text" class="form-control" id="img4"></div>
+        <div class="form-group"><label>Image 5</label><input type="text" class="form-control" id="img5"></div>
+        <div class="form-group"><label>Image 6</label><input type="text" class="form-control" id="img6"></div>
+        <div class="form-group"><label>Image 7</label><input type="text" class="form-control" id="img7"></div>
+        <div class="form-group"><label>Image 8</label><input type="text" class="form-control" id="img8"></div>
+        <div class="form-group"><label>Image 9</label><input type="text" class="form-control" id="img9"></div>
+        <div class="form-group"><label>Image 10</label><input type="text" class="form-control" id="img10"></div>
+
+        <!-- 详情页全编辑字段 -->
         <div class="form-group">
-            <label>Image 2 / 图2</label>
-            <input type="text" class="form-control" id="img2">
-        </div>
-        <div class="form-group">
-            <label>Image 3 / 图3</label>
-            <input type="text" class="form-control" id="img3">
-        </div>
-        <div class="form-group">
-            <label>Image 4 / 图4</label>
-            <input type="text" class="form-control" id="img4">
-        </div>
-        <div class="form-group">
-            <label>Image 5 / 图5</label>
-            <input type="text" class="form-control" id="img5">
-        </div>
-        <div class="form-group">
-            <label>Image 6 / 图6</label>
-            <input type="text" class="form-control" id="img6">
-        </div>
-        <div class="form-group">
-            <label>Image 7 / 图7</label>
-            <input type="text" class="form-control" id="img7">
-        </div>
-        <div class="form-group">
-            <label>Image 8 / 图8</label>
-            <input type="text" class="form-control" id="img8">
-        </div>
-        <div class="form-group">
-            <label>Image 9 / 图9</label>
-            <input type="text" class="form-control" id="img9">
-        </div>
-        <div class="form-group">
-            <label>Image 10 / 图10</label>
-            <input type="text" class="form-control" id="img10">
-        </div>
-        <div class="form-group">
-            <label>Price ($)</label>
+            <label>Price ($) / 价格</label>
             <input type="number" step="0.01" class="form-control" id="productPrice">
         </div>
         <div class="form-group">
-            <label>Stock</label>
-            <input type="number" class="form-control" id="productStock" value="99">
+            <label>Stock / 库存</label>
+            <input type="number" class="form-control" id="productStock">
         </div>
         <div class="form-group">
             <label>ASIN</label>
             <input type="text" class="form-control" id="productAsin">
         </div>
         <div class="form-group">
-            <label>Status</label>
+            <label>Rating (0-5) / 评分</label>
+            <input type="number" step="0.1" min="0" max="5" class="form-control" id="productRating" value="5.0">
+        </div>
+        <div class="form-group">
+            <label>Sales / 销量</label>
+            <input type="number" class="form-control" id="productSales" value="0">
+        </div>
+        <div class="form-group">
+            <label>Favorites / 收藏数</label>
+            <input type="number" class="form-control" id="productFav" value="0">
+        </div>
+        <div class="form-group">
+            <label>Color Specs / 颜色规格 (逗号分隔)</label>
+            <input type="text" class="form-control" id="productColor" placeholder="Red,Blue,Pink">
+        </div>
+        <div class="form-group">
+            <label>Size Specs / 尺寸规格 (逗号分隔)</label>
+            <input type="text" class="form-control" id="productSize" placeholder="S,M,L,XL">
+        </div>
+        <div class="form-group">
+            <label>Product Description / 商品描述</label>
+            <textarea class="form-control" id="productDesc" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Status / 状态</label>
             <select class="form-control" id="productStatus">
                 <option value="1">On Sale</option>
                 <option value="0">Off Shelf</option>
             </select>
         </div>
-        <button class="btn btn-primary w-100 mt-2" onclick="saveProduct()">Save Product</button>
+
+        <button class="btn btn-primary w-100 mt-2" onclick="saveProductFunc()">Save Product</button>
     </div>
 </div>
 
@@ -485,7 +512,8 @@
 // 管理员配置
 let adminAccount = JSON.parse(localStorage.getItem('adminAccount')) || { account: "admin", pwd: "admin123" };
 let currentMenu = "dashboard";
-let currentProductImages = []; // 详情页10张图临时存储
+let currentProductImages = [];
+let currentDetailId = "";
 
 // 格式化时间
 function formatTime(time = new Date()) {
@@ -498,29 +526,25 @@ function formatTime(time = new Date()) {
     return `${year}-${month}-${day} ${h}:${m}`;
 }
 
-// 核心数据：新增10张图字段，兼容旧数据
+// 核心数据：完整兼容所有功能
 let storeData = JSON.parse(localStorage.getItem('storeData')) || {
     products: [
         {
             id:"p1",name:"Middle Finger Crochet Positive Animals Gifts",
-            // 10张默认图片
             images:["https://picsum.photos/800/800","https://picsum.photos/800/801","https://picsum.photos/800/802","https://picsum.photos/800/803","https://picsum.photos/800/804","https://picsum.photos/800/805","https://picsum.photos/800/806","https://picsum.photos/800/807","https://picsum.photos/800/808","https://picsum.photos/800/809"],
-            price:19.99,stock:99,asin:"B0GWMB9J8J",status:1,publishTime:formatTime()
-        },
-        {
-            id:"p2",name:"New Premium Gift Product",
-            images:["https://picsum.photos/800/810","https://picsum.photos/800/811","https://picsum.photos/800/812","https://picsum.photos/800/813","https://picsum.photos/800/814","https://picsum.photos/800/815","https://picsum.photos/800/816","https://picsum.photos/800/817","https://picsum.photos/800/818","https://picsum.photos/800/819"],
-            price:24.99,stock:99,asin:"B0XXXXXX11",status:1,publishTime:formatTime()
+            price:19.99,stock:99,asin:"B0GWMB9J8J",status:1,publishTime:formatTime(),
+            rating:4.8, sales:126, favorites:89,
+            specs:{color:["Red","Blue","Pink","White"],size:["S","M","L","XL"]},
+            desc:"Premium handmade gift, 100% original design by Yopcuvi. U.S. Copyright Protected.",
+            reviews:[{user:"Sarah",time:"2025-01-15",rating:5,content:"Super cute product!"}]
         }
     ],
     users: [],
     orders: [],
     settings: {
-        name:"Yopcuvi",
-        heroTitle:"Yopcuvi Official Gift Store",
+        name:"Yopcuvi",heroTitle:"Yopcuvi Official Gift Store",
         heroDesc:"Original Designs | U.S. Copyright Protected | Premium Emotional Support Gifts",
-        heroBg:"",
-        email:"kangbozhao3@gmail.com",
+        heroBg:"",email:"kangbozhao3@gmail.com",
         address:"1217, 12th Floor, No.1 Commercial Building, No.55 Hongkang Road, Jinshui District, Zhengzhou City, Henan Province, China",
         copyright:"All product images, designs, text, and intellectual property on Yopcuvi.com are the SOLE & EXCLUSIVE original copyrighted works of Yopcuvi."
     }
@@ -530,7 +554,7 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 let adminStatus = localStorage.getItem('adminStatus') === 'true';
 
-// 前台商品列表渲染
+// 前台商品渲染
 function renderProducts() {
     const list = storeData.products.filter(p => p.status == 1);
     document.getElementById('productList').innerHTML = list.map(p => `
@@ -540,118 +564,116 @@ function renderProducts() {
                 <div class="product-title">${p.name}</div>
                 <div class="product-price">$${p.price.toFixed(2)}</div>
                 <div class="product-asin">ASIN: ${p.asin}</div>
-                <div class="product-publish">Published: ${p.publishTime}</div>
+                <div class="d-flex align-center gap-1 mt-1">
+                    <div class="stars">${generateStars(p.rating)}</div>
+                    <span style="font-size:0.9rem;color:var(--gray);">${p.sales} sold</span>
+                </div>
                 <button class="btn btn-primary w-100 mt-2" onclick="event.stopPropagation();addToCart('${p.id}')">Add to Cart</button>
             </div>
         </div>
     `).join('');
 }
 
-// 🔥 切换详情页主图（10张图专用）
+// 星级生成
+function generateStars(rating){
+    let stars = "";
+    for(let i=1;i<=5;i++) stars += i <= rating ? "⭐" : "<span class='star-empty'>⭐</span>";
+    return stars;
+}
+
+// 图片切换
 function switchMainImage(imgUrl){
     document.getElementById('mainDetailImg').src = imgUrl;
     document.querySelectorAll('.thumb-img').forEach(thumb=>thumb.classList.remove('active'));
     event.target.classList.add('active');
 }
 
-// 🔥 终极10张图 超详细详情页
+// 规格选择
+function selectSpec(type){
+    document.querySelectorAll(`.spec-btn.${type}`).forEach(btn=>btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+// 收藏
+function toggleFavorite(){
+    if(!currentUser){alert("Please login first!");openLoginModal();return;}
+    const p = storeData.products.find(x=>x.id===currentDetailId);
+    p.favorites += 1;
+    saveData();
+    document.getElementById("favCount").innerText = p.favorites;
+    alert("Added to favorites successfully!");
+}
+
+// 分享
+function shareProduct(){
+    navigator.clipboard.writeText(window.location.href);
+    alert("Link copied!");
+}
+
+// 发布评论
+function submitReview(){
+    if(!currentUser){alert("Please login first!");openLoginModal();return;}
+    const content = document.getElementById("reviewContent").value;
+    const rating = document.getElementById("reviewRating").value;
+    if(!content || rating <1 || rating >5){alert("Invalid input!");return;}
+    
+    const p = storeData.products.find(x=>x.id===currentDetailId);
+    p.reviews.unshift({user:currentUser.name,time:formatTime(),rating:parseInt(rating),content});
+    let total = p.reviews.reduce((s,r)=>s+r.rating,0);
+    p.rating = (total/p.reviews.length).toFixed(1);
+    saveData();
+    openProductDetail(currentDetailId);
+    alert("Review submitted!");
+}
+
+// 详情页
 function openProductDetail(id){
+    currentDetailId = id;
     const p = storeData.products.find(x=>x.id===id);
-    currentProductImages = p.images;
     const related = storeData.products.filter(x=>x.id!==id && x.status==1).slice(0,4);
     
     document.getElementById('productDetail').innerHTML = `
         <div class="d-flex" style="gap:2.5rem;flex-wrap:wrap;">
-            <!-- 左侧：10张图 主图+缩略图 -->
             <div class="detail-gallery">
-                <img src="${p.images[0]}" id="mainDetailImg" class="detail-main-img" alt="${p.name}" onclick="window.open('${p.images[0]}','_blank')">
-                <!-- 10张缩略图网格 -->
-                <div class="thumbnails">
-                    ${p.images.map((img,index)=>`
-                        <img src="${img}" class="thumb-img ${index===0?'active':''}" onclick="switchMainImage('${img}')" alt="Thumb ${index+1}">
-                    `).join('')}
-                </div>
-                <p class="text-center text-gray mt-2" style="cursor:pointer;">🔍 Click Image to Preview Full Size | 10 Images Total</p>
+                <img src="${p.images[0]}" id="mainDetailImg" class="detail-main-img" onclick="window.open('${p.images[0]}','_blank')">
+                <div class="thumbnails">${p.images.map((img,i)=>`<img src="${img}" class="thumb-img ${i===0?'active':''}" onclick="switchMainImage('${img}')">`).join('')}</div>
             </div>
-
-            <!-- 右侧：超详细信息 -->
             <div class="detail-info">
-                <h1 style="font-size:2.5rem;line-height:1.2;">${p.name}</h1>
-                <h2 style="color:var(--primary);font-size:2.2rem;margin:1.5rem 0;">$${p.price.toFixed(2)}</h2>
-
-                <div class="detail-section">
-                    <h3 class="mb-2">📦 Product Basic Information</h3>
-                    <div class="detail-grid">
-                        <div><strong>ASIN:</strong> ${p.asin}</div>
-                        <div><strong>Stock:</strong> ${p.stock} Pcs</div>
-                        <div><strong>Publish Time:</strong> ${p.publishTime}</div>
-                        <div><strong>Status:</strong> <span style="color:#065f46;font-weight:600;">On Sale</span></div>
-                        <div><strong>Images:</strong> 10 Photos</div>
-                    </div>
+                <h1 style="font-size:2.5rem;">${p.name}</h1>
+                <div class="product-tags">
+                    ${p.sales>100 ? '<span class="tag tag-hot">Hot Sale</span>' : ''}
+                    <span class="tag tag-sale">Official</span>
                 </div>
-
-                <div class="detail-section">
-                    <h3 class="mb-2">📝 Product Description</h3>
-                    <p style="color:var(--dark);line-height:2;font-size:1rem;">
-                        Premium handmade gift, 100% original design by Yopcuvi. U.S. Copyright Protected. Perfect gift for your loved ones, friends, family. 
-                        High quality material, fast shipping, exclusive design, durable and cute. All products are handmade with love and care.
-                    </p>
+                <div class="d-flex align-center gap-2 mt-2">
+                    <div class="stars">${generateStars(p.rating)}</div>
+                    <span>${p.rating} Rating</span>
+                    <span>| ${p.sales} Bought</span>
+                    <span>| <span id="favCount">${p.favorites}</span> Favorites</span>
                 </div>
-
-                <div class="detail-section">
-                    <h3 class="mb-2">⭐ Core Features</h3>
-                    <ul style="padding-left:1.5rem;line-height:2.2;font-size:1rem;">
-                        <li>100% Handmade & Premium Quality Material</li>
-                        <li>U.S. Copyright Protected Exclusive Original Design</li>
-                        <li>Perfect Gift for Birthday/Christmas/Anniversary</li>
-                        <li>Fast & Safe Worldwide Shipping</li>
-                        <li>Durable, Cute & Long-Lasting Appearance</li>
-                        <li>Exclusive Design Only for Yopcuvi Customers</li>
-                    </ul>
-                </div>
-
-                <div class="detail-section">
-                    <h3 class="mb-2">🚚 Shipping & Service</h3>
-                    <p>✅ Shipping Time: 2-5 Business Days</p>
-                    <p>✅ Free Shipping Over $39</p>
-                    <p>✅ 30 Days Free Return & Exchange</p>
-                    <p>✅ 24/7 Online Customer Service</p>
-                </div>
-
-                <div class="detail-section" style="background:#fff;border:1px solid var(--border);">
-                    <h3 class="mb-2">© Copyright Protection</h3>
-                    <p style="color:var(--red);font-weight:600;">
-                        All designs, images and text of this product are exclusively copyrighted by Yopcuvi. 
-                        Any unauthorized copying, imitation and sale will be held legally responsible!
-                    </p>
-                </div>
-
+                <h2 style="color:var(--primary);font-size:2.2rem;margin:1rem 0;">$${p.price.toFixed(2)}</h2>
+                <div class="spec-group"><div class="spec-title">Color</div><div class="spec-options">${p.specs.color.map(c=>`<button class="spec-btn color" onclick="selectSpec('color')">${c}</button>`).join('')}</div></div>
+                <div class="spec-group"><div class="spec-title">Size</div><div class="spec-options">${p.specs.size.map(s=>`<button class="spec-btn size" onclick="selectSpec('size')">${s}</button>`).join('')}</div></div>
+                <div class="mt-2 font-bold">Stock: ${p.stock>0 ? `<span style="color:#065f46;">${p.stock} In Stock</span>` : `<span style="color:red;">Out Of Stock</span>`}</div>
+                <div class="detail-section mt-3"><h3>Product Info</h3><div class="detail-grid"><div>ASIN: ${p.asin}</div><div>Stock: ${p.stock}</div></div></div>
+                <div class="detail-section"><h3>Description</h3><p>${p.desc}</p></div>
                 <div class="d-flex gap-2 mt-3">
                     <button class="btn btn-primary btn-lg flex-1" onclick="addToCart('${p.id}')">🛒 Add to Cart</button>
-                    <button class="btn btn-dark btn-lg flex-1" onclick="closeModal()">⬅ Back to List</button>
+                    <button class="btn btn-dark btn-lg flex-1" onclick="toggleFavorite()">❤️ Favorite</button>
+                    <button class="btn btn-light btn-lg flex-1" onclick="shareProduct()">🔗 Share</button>
                 </div>
+                <button class="btn btn-dark w-100 mt-2" onclick="closeModal()">Back</button>
             </div>
         </div>
-
-        <div class="mt-4">
-            <h3 class="mb-2">🔗 Related Products</h3>
-            <div class="related-products">
-                ${related.length>0 ? related.map(item=>`
-                    <div class="related-card" onclick="openProductDetail('${item.id}')">
-                        <img src="${item.images[0]}" alt="${item.name}">
-                        <div class="related-info">
-                            <div style="font-weight:600;font-size:0.9rem;">${item.name}</div>
-                            <div style="color:var(--primary);font-weight:700;margin-top:0.3rem;">$${item.price.toFixed(2)}</div>
-                        </div>
-                    </div>
-                `).join('') : '<p class="text-center w-100">No related products</p>'}
-            </div>
+        <div class="detail-section mt-4"><h3>Reviews (${p.reviews.length})</h3>
+            <div class="form-group"><label>Write Review</label><div class="d-flex gap-2"><select id="reviewRating" class="form-control"><option>5</option></select><button class="btn btn-primary" onclick="submitReview()">Submit</button></div><textarea class="form-control" id="reviewContent"></textarea></div>
+            ${p.reviews.map(r=>`<div class="review-item"><div class="review-header"><div>${r.user}</div><div>${r.time}</div></div><div class="stars">${generateStars(r.rating)}</div><div class="review-content">${r.content}</div></div>`).join('')}
         </div>
+        <div class="mt-4"><h3>Related Products</h3><div class="related-products">${related.map(i=>`<div class="related-card" onclick="openProductDetail('${i.id}')"><img src="${i.images[0]}"><div class="related-info"><div>${i.name}</div><div>$${i.price.toFixed(2)}</div></div></div>`).join('')}</div></div>
     `;
     document.getElementById('detailModal').classList.add('active');
 }
 
-// 购物车功能
+// 购物车
 function toggleCart() {
     document.getElementById('cartSidebar').classList.toggle('active');
     document.querySelector('.overlay').classList.toggle('active');
@@ -678,12 +700,15 @@ function addToCart(id) {
     const p = storeData.products.find(x => x.id === id);
     const item = cart.find(x => x.id === id);
     item ? item.qty++ : cart.push({ ...p, qty: 1 });
+    p.sales +=1;
+    saveData();
     localStorage.setItem('cart', JSON.stringify(cart));
     renderCart();
-    alert('Added to Cart Successfully!');
+    renderProducts();
+    alert('Added to Cart!');
 }
 
-// 结算功能
+// 结算
 function goCheckout() {
     if (cart.length === 0) { alert('Cart Empty!'); return; }
     closeModal();
@@ -692,23 +717,16 @@ function goCheckout() {
 function submitOrder() {
     const address = document.getElementById('address').value;
     const method = document.getElementById('payMethod').value;
-    if (!address) { alert('Please Enter Shipping Address!'); return; }
+    if (!address) { alert('Enter Address!'); return; }
     const order = {
-        no: "YOP" + new Date().getTime(),
-        user: currentUser.email,
-        items: [...cart],
-        total: cart.reduce((s, i) => s + i.price * i.qty, 0),
-        address, method,
-        time: new Date().toLocaleString(),
-        status: "Paid"
+        no: "YOP" + new Date().getTime(),user: currentUser.email,items: [...cart],
+        total: cart.reduce((s,i)=>s+i.price*i.qty,0),address,method,
+        time: new Date().toLocaleString(),status: "Paid"
     };
     storeData.orders.unshift(order);
     saveData();
-    cart = [];
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart();
-    closeModal();
-    alert(`Order Success!\nOrder Number: ${order.no}`);
+    cart = []; localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart(); closeModal(); alert(`Order Success! ${order.no}`);
 }
 
 // 用户登录注册
@@ -720,47 +738,33 @@ function userRegister() {
     const name = document.getElementById('regName').value;
     const email = document.getElementById('regEmail').value;
     const pwd = document.getElementById('regPwd').value;
-    if (!name || !email || !pwd) { alert('Please Fill All Fields!'); return; }
-    if (storeData.users.find(u => u.email === email)) { alert('Email Already Registered!'); return; }
+    if (!name || !email || !pwd) { alert('Fill all!'); return; }
+    if (storeData.users.find(u => u.email === email)) { alert('Email exists!'); return; }
     storeData.users.push({ name, email, pwd, time: new Date().toLocaleString(), status: 1 });
-    saveData();
-    alert('Register Success!');
-    switchToLogin();
+    saveData(); alert('Register Success!'); switchToLogin();
 }
 function userLogin() {
     const email = document.getElementById('loginEmail').value;
     const pwd = document.getElementById('loginPwd').value;
     const user = storeData.users.find(u => u.email === email && u.pwd === pwd && u.status == 1);
-    if (!user) { alert('Email/Password Error Or Account Disabled!'); return; }
-    currentUser = user;
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    closeModal();
-    alert('Login Success!');
+    if (!user) { alert('Error!'); return; }
+    currentUser = user; localStorage.setItem('currentUser', JSON.stringify(user));
+    closeModal(); alert('Login Success!');
 }
 
-// 管理员功能
+// 管理员核心功能
 function openAdminLogin() {
     const account = prompt('Admin Account:');
     const pwd = prompt('Admin Password:');
     if (account === adminAccount.account && pwd === adminAccount.pwd) {
-        adminStatus = true;
-        localStorage.setItem('adminStatus', 'true');
+        adminStatus = true; localStorage.setItem('adminStatus', 'true');
         document.getElementById('frontend').classList.add('hidden');
         document.getElementById('admin').classList.remove('hidden');
         renderAdmin();
-    } else {
-        alert('Account Or Password Error!');
-    }
+    } else alert('Error!');
 }
-function backToFront() {
-    document.getElementById('admin').classList.add('hidden');
-    document.getElementById('frontend').classList.remove('hidden');
-}
-function adminLogout() {
-    adminStatus = false;
-    localStorage.removeItem('adminStatus');
-    backToFront();
-}
+function backToFront() { document.getElementById('admin').classList.add('hidden'); document.getElementById('frontend').classList.remove('hidden'); }
+function adminLogout() { adminStatus = false; localStorage.removeItem('adminStatus'); backToFront(); }
 function switchMenu(menu) {
     currentMenu = menu;
     document.querySelectorAll('.menu-content').forEach(m => m.classList.add('hidden'));
@@ -771,15 +775,15 @@ function switchMenu(menu) {
 }
 function renderAdmin() {
     renderDashboard();
-    renderProductTable();
-    renderOrderTable();
-    renderUserTable();
+    renderProductTableFunc();
+    renderOrderTableFunc();
+    renderUserTableFunc();
     loadSettings();
 }
 function renderDashboard() {
     document.getElementById('statUser').textContent = storeData.users.length;
     document.getElementById('statOrder').textContent = storeData.orders.length;
-    document.getElementById('statSales').textContent = `$${storeData.orders.reduce((s, o) => s + o.total, 0).toFixed(2)}`;
+    document.getElementById('statSales').textContent = `$${storeData.orders.reduce((s,o)=>s+o.total,0).toFixed(2)}`;
     document.getElementById('statProduct').textContent = storeData.products.length;
 }
 
@@ -789,141 +793,131 @@ function updateAdminPwd(){
     const n = document.getElementById('newPwd').value;
     const c = document.getElementById('confirmPwd').value;
     if(old !== adminAccount.pwd){ alert('Current Password Error!'); return; }
-    if(n !== c){ alert('Two passwords do not match!'); return; }
-    if(n.length < 6){ alert('Password length at least 6 digits!'); return; }
-    adminAccount.pwd = n;
-    localStorage.setItem('adminAccount', JSON.stringify(adminAccount));
-    alert('Password modified successfully!');
-    document.getElementById('oldPwd').value = '';
-    document.getElementById('newPwd').value = '';
-    document.getElementById('confirmPwd').value = '';
+    if(n !== c){ alert('Not match!'); return; }
+    adminAccount.pwd = n; localStorage.setItem('adminAccount', JSON.stringify(adminAccount));
+    alert('Success!');
 }
 
-// 🔥 产品管理：保存10张图
+// ==============================================
+// 🔥 后台商品管理（修复空白 + 全功能编辑）
+// ==============================================
 function openAddProduct() {
     document.getElementById('productModalTitle').textContent = 'Add Product';
     document.getElementById('editProductId').value = '';
-    document.querySelectorAll('#productModal input,#productModal select').forEach(i => i.value = '');
+    document.querySelectorAll('#productModal input,textarea,select').forEach(i => i.value = '');
     document.getElementById('productStock').value = 99;
+    document.getElementById('productRating').value = 5.0;
+    document.getElementById('productSales').value = 0;
+    document.getElementById('productFav').value = 0;
+    document.getElementById('productColor').value = "Red,Blue,White";
+    document.getElementById('productSize').value = "S,M,L";
     document.getElementById('productModal').classList.add('active');
 }
-function saveProduct() {
+
+// 保存商品（全字段）
+function saveProductFunc() {
     const id = document.getElementById('editProductId').value || 'p' + new Date().getTime();
     const name = document.getElementById('productName').value;
-    // 获取10张图片
-    const images = [
-        document.getElementById('img1').value,document.getElementById('img2').value,document.getElementById('img3').value,
-        document.getElementById('img4').value,document.getElementById('img5').value,document.getElementById('img6').value,
-        document.getElementById('img7').value,document.getElementById('img8').value,document.getElementById('img9').value,
-        document.getElementById('img10').value
-    ].filter(i=>i); // 过滤空值
+    const images = [document.getElementById('img1').value,document.getElementById('img2').value,document.getElementById('img3').value,document.getElementById('img4').value,document.getElementById('img5').value,document.getElementById('img6').value,document.getElementById('img7').value,document.getElementById('img8').value,document.getElementById('img9').value,document.getElementById('img10').value].filter(i=>i);
     const price = parseFloat(document.getElementById('productPrice').value);
     const stock = parseInt(document.getElementById('productStock').value);
     const asin = document.getElementById('productAsin').value;
+    const rating = parseFloat(document.getElementById('productRating').value);
+    const sales = parseInt(document.getElementById('productSales').value);
+    const fav = parseInt(document.getElementById('productFav').value);
+    const color = document.getElementById('productColor').value.split(',').map(i=>i.trim());
+    const size = document.getElementById('productSize').value.split(',').map(i=>i.trim());
+    const desc = document.getElementById('productDesc').value;
     const status = document.getElementById('productStatus').value;
-    
-    if (!name || !images[0] || !price) { alert('Please Fill Required Fields!'); return; }
+
+    if (!name || !images[0] || !price) { alert('Fill required fields!'); return; }
+
+    const data = {
+        id,name,images,price,stock,asin,status,
+        rating,sales,favorites:fav,
+        specs:{color,size},desc,
+        reviews:[],publishTime:formatTime()
+    };
 
     const index = storeData.products.findIndex(p => p.id === id);
-    if (index > -1) {
-        const oldPublishTime = storeData.products[index].publishTime;
-        storeData.products[index] = { id, name, images, price, stock, asin, status, publishTime: oldPublishTime };
-    } else {
-        storeData.products.push({ id, name, images, price, stock, asin, status, publishTime: formatTime() });
-    }
-    saveData();
-    closeModal();
-    renderProductTable();
-    renderProducts();
-    alert('Save Product Success!');
+    index > -1 ? storeData.products[index] = {...storeData.products[index],...data} : storeData.products.push(data);
+    
+    saveData(); closeModal(); renderProductTableFunc(); renderProducts(); alert('Saved!');
 }
-function renderProductTable() {
+
+// 渲染商品列表
+function renderProductTableFunc() {
     document.getElementById('productTable').innerHTML = storeData.products.map(p => `
         <tr>
             <td><img src="${p.images[0]}"></td>
             <td>${p.name}</td>
             <td>$${p.price.toFixed(2)}</td>
+            <td>${p.rating} ⭐</td>
+            <td>${p.sales}</td>
             <td>${p.stock}</td>
             <td>${p.asin}</td>
-            <td>${p.publishTime}</td>
-            <td><span class="badge ${p.status == 1 ? 'badge-success' : 'badge-danger'}">${p.status == 1 ? 'On Sale' : 'Off Shelf'}</span></td>
+            <td><span class="badge ${p.status==1?'badge-success':'badge-danger'}">${p.status==1?'On Sale':'Off'}</span></td>
             <td>
-                <button class="btn btn-sm btn-primary" onclick="editProduct('${p.id}')">Edit</button>
-                <button class="btn btn-sm btn-red" onclick="deleteProduct('${p.id}')">Delete</button>
+                <button class="btn btn-sm btn-primary" onclick="editProductFunc('${p.id}')">Edit</button>
+                <button class="btn btn-sm btn-red" onclick="deleteProductFunc('${p.id}')">Delete</button>
             </td>
         </tr>
     `).join('');
 }
-// 编辑产品：自动填充10张图
-function editProduct(id) {
+
+// 编辑商品（自动填充所有字段）
+function editProductFunc(id) {
     const p = storeData.products.find(x => x.id === id);
     document.getElementById('productModalTitle').textContent = 'Edit Product';
     document.getElementById('editProductId').value = p.id;
     document.getElementById('productName').value = p.name;
-    // 填充10张图
-    for(let i=1;i<=10;i++){
-        document.getElementById(`img${i}`).value = p.images[i-1] || '';
-    }
+    for(let i=1;i<=10;i++) document.getElementById(`img${i}`).value = p.images[i-1] || '';
     document.getElementById('productPrice').value = p.price;
     document.getElementById('productStock').value = p.stock;
     document.getElementById('productAsin').value = p.asin;
+    document.getElementById('productRating').value = p.rating;
+    document.getElementById('productSales').value = p.sales;
+    document.getElementById('productFav').value = p.favorites;
+    document.getElementById('productColor').value = p.specs.color.join(',');
+    document.getElementById('productSize').value = p.specs.size.join(',');
+    document.getElementById('productDesc').value = p.desc || '';
     document.getElementById('productStatus').value = p.status;
     document.getElementById('productModal').classList.add('active');
 }
-function deleteProduct(id) {
-    if (!confirm('Confirm Delete?')) return;
+
+// 删除商品
+function deleteProductFunc(id) {
+    if (!confirm('Delete?')) return;
     storeData.products = storeData.products.filter(p => p.id !== id);
-    saveData();
-    renderProductTable();
-    renderProducts();
+    saveData(); renderProductTableFunc(); renderProducts();
 }
-function searchProduct() {
-    const keyword = document.getElementById('searchProduct').value.toLowerCase();
-    const list = storeData.products.filter(p => p.name.toLowerCase().includes(keyword) || p.asin.toLowerCase().includes(keyword));
-    document.getElementById('productTable').innerHTML = list.map(p => `
-        <tr><td><img src="${p.images[0]}"></td><td>${p.name}</td><td>$${p.price.toFixed(2)}</td><td>${p.stock}</td><td>${p.asin}</td>
-        <td>${p.publishTime}</td>
-        <td><span class="badge ${p.status ==1 ? 'badge-success' : 'badge-danger'}">${p.status ==1 ? 'On Sale' : 'Off Shelf'}</span></td>
-        <td><button class="btn btn-sm btn-primary" onclick="editProduct('${p.id}')">Edit</button><button class="btn btn-sm btn-red" onclick="deleteProduct('${p.id}')">Delete</button></td></tr>
+
+// 搜索商品
+function searchProductFunc() {
+    const k = document.getElementById('searchProduct').value.toLowerCase();
+    const list = storeData.products.filter(p=>p.name.toLowerCase().includes(k)||p.asin.toLowerCase().includes(k));
+    document.getElementById('productTable').innerHTML = list.map(p=>`
+        <tr><td><img src="${p.images[0]}"></td><td>${p.name}</td><td>$${p.price.toFixed(2)}</td><td>${p.rating}⭐</td><td>${p.sales}</td><td>${p.stock}</td><td>${p.asin}</td>
+        <td><span class="badge ${p.status==1?'badge-success':'badge-danger'}">${p.status==1?'On Sale':'Off'}</span></td>
+        <td><button class="btn btn-sm btn-primary" onclick="editProductFunc('${p.id}')">Edit</button><button class="btn btn-sm btn-red" onclick="deleteProductFunc('${p.id}')">Delete</button></td></tr>
     `).join('');
 }
 
 // 订单/用户管理
-function renderOrderTable() {
+function renderOrderTableFunc() {
     document.getElementById('orderTable').innerHTML = storeData.orders.map(o => `
-        <tr><td>${o.no}</td><td>${o.user}</td><td>$${o.total.toFixed(2)}</td>
-        <td><span class="badge badge-success">${o.status}</span></td><td>${o.time}</td>
-        <td><button class="btn btn-sm btn-primary" onclick="updateOrderStatus('${o.no}')">Change Status</button></td></tr>
+        <tr><td>${o.no}</td><td>${o.user}</td><td>$${o.total.toFixed(2)}</td><td><span class="badge badge-success">${o.status}</span></td><td>${o.time}</td></tr>
     `).join('');
 }
-function updateOrderStatus(no) {
-    const status = prompt('Enter New Status:\nPaid/Shipped/Completed/Cancelled');
-    if (!status) return;
-    const order = storeData.orders.find(o => o.no === no);
-    if (order) order.status = status;
-    saveData();
-    renderOrderTable();
+function searchOrderFunc() {
+    const k = document.getElementById('searchOrder').value.toLowerCase();
+    const list = storeData.orders.filter(o=>o.no.toLowerCase().includes(k)||o.user.toLowerCase().includes(k));
+    document.getElementById('orderTable').innerHTML = list.map(o=>`<tr><td>${o.no}</td><td>${o.user}</td><td>$${o.total.toFixed(2)}</td><td><span class="badge badge-success">${o.status}</span></td><td>${o.time}</td></tr>`).join('');
 }
-function searchOrder() {
-    const keyword = document.getElementById('searchOrder').value.toLowerCase();
-    const list = storeData.orders.filter(o => o.no.toLowerCase().includes(keyword) || o.user.toLowerCase().includes(keyword));
-    document.getElementById('orderTable').innerHTML = list.map(o => `
-        <tr><td>${o.no}</td><td>${o.user}</td><td>$${o.total.toFixed(2)}</td><td><span class="badge badge-success">${o.status}</span></td><td>${o.time}</td>
-        <td><button class="btn btn-sm btn-primary" onclick="updateOrderStatus('${o.no}')">Change Status</button></td></tr>
-    `).join('');
-}
-function renderUserTable() {
+function renderUserTableFunc() {
     document.getElementById('userTable').innerHTML = storeData.users.map(u => `
-        <tr><td>${u.name}</td><td>${u.email}</td><td>${u.time}</td>
-        <td><span class="badge ${u.status ==1 ? 'badge-success' : 'badge-danger'}">${u.status ==1 ? 'Normal' : 'Disabled'}</span></td>
-        <td><button class="btn btn-sm btn-warning" onclick="toggleUserStatus('${u.email}')">${u.status ==1 ? 'Disable' : 'Enable'}</button></td></tr>
+        <tr><td>${u.name}</td><td>${u.email}</td><td>${u.time}</td><td><span class="badge ${u.status==1?'badge-success':'badge-danger'}">${u.status==1?'Normal':'Disabled'}</span></td></tr>
     `).join('');
-}
-function toggleUserStatus(email) {
-    const user = storeData.users.find(u => u.email === email);
-    user.status = user.status ==1 ? 0 : 1;
-    saveData();
-    renderUserTable();
 }
 
 // 网站设置
@@ -938,57 +932,31 @@ function loadSettings() {
 }
 function saveSettings() {
     storeData.settings = {
-        name: document.getElementById('storeName').value,
-        heroTitle: document.getElementById('heroTitleInput').value,
-        heroDesc: document.getElementById('heroDescInput').value,
-        heroBg: document.getElementById('heroBgInput').value,
-        email: document.getElementById('storeEmail').value,
-        address: document.getElementById('storeAddress').value,
-        copyright: document.getElementById('storeCopyright').value
+        name:document.getElementById('storeName').value,heroTitle:document.getElementById('heroTitleInput').value,
+        heroDesc:document.getElementById('heroDescInput').value,heroBg:document.getElementById('heroBgInput').value,
+        email:document.getElementById('storeEmail').value,address:document.getElementById('storeAddress').value,
+        copyright:document.getElementById('storeCopyright').value
     };
-    saveData();
-    alert('Save Settings Success!');
-    renderAll();
+    saveData(); alert('Saved!'); renderAll();
 }
 
 // 数据管理
 function backupData() {
-    const data = JSON.stringify(storeData);
-    const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = 'yopcuvi_backup.json';
-    a.click();
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(storeData)],{type:'application/json'}));
+    a.download = 'backup.json'; a.click();
 }
-function clearData() {
-    if (!confirm('⚠️ Confirm Clear All Data?')) return;
-    storeData = { products: [], users: [], orders: [], settings: storeData.settings };
-    saveData();
-    renderAdmin();
-    renderProducts();
-    alert('Clear Data Success!');
-}
-function saveData() {
-    localStorage.setItem('storeData', JSON.stringify(storeData));
-}
+function clearData() { if(confirm('Clear?')){ storeData = {...storeData,products:[],users:[],orders:[]}; saveData(); renderAdmin(); renderProducts(); } }
+function saveData() { localStorage.setItem('storeData', JSON.stringify(storeData)); }
 
 // 全局渲染
-function renderAll(){
-    renderHeroText();
-    renderCopyright();
-    renderProducts();
-}
+function renderAll(){ renderHeroText(); renderCopyright(); renderProducts(); }
 function renderHeroText(){
     document.getElementById('heroTitle').innerText = storeData.settings.heroTitle;
     document.getElementById('heroDesc').innerText = storeData.settings.heroDesc;
     const hero = document.getElementById('home');
-    if(storeData.settings.heroBg){
-        hero.style.backgroundImage = `url(${storeData.settings.heroBg})`;
-    } else {
-        hero.style.backgroundImage = 'none';
-        hero.style.backgroundColor = '#111827';
-    }
+    hero.style.backgroundImage = storeData.settings.heroBg ? `url(${storeData.settings.heroBg})` : 'none';
+    if(!storeData.settings.heroBg) hero.style.backgroundColor = '#111827';
 }
 function renderCopyright() {
     document.getElementById('copyrightText').innerHTML = storeData.settings.copyright;
@@ -998,14 +966,8 @@ function renderCopyright() {
 
 // 初始化
 function init() {
-    renderAll();
-    renderCart();
-    if (adminStatus) {
-        document.getElementById('frontend').classList.add('hidden');
-        document.getElementById('admin').classList.remove('hidden');
-        renderAdmin();
-    }
-    console.log('✅ 10 Images Detail Page Loaded | All Functions Ready');
+    renderAll(); renderCart();
+    if (adminStatus) { document.getElementById('frontend').classList.add('hidden'); document.getElementById('admin').classList.remove('hidden'); renderAdmin(); }
 }
 init();
 </script>
